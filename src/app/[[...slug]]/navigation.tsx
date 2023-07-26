@@ -41,7 +41,7 @@ export default function Navigation({
             }
             className={`flex hover:bg-neutral-700 hover:bg-opacity-20 ${
               isBook
-                ? 'w-40 h-56 bg-neutral-800 flex justify-center pt-16'
+                ? 'w-40 h-56 bg-neutral-300 dark:bg-neutral-800 flex justify-center pt-16'
                 : isAuthor
                 ? 'flex flex-col gap-3 p-2 items-center'
                 : ''
