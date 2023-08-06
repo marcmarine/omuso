@@ -1,9 +1,7 @@
 import { Author, Book, Chapter } from '../(data)/types'
 
 export async function getAuthors() {
-  const response = await fetch('http://localhost:3000/api/authors', {
-    cache: 'force-cache'
-  })
+  const response = await fetch('http://localhost:3000/api/authors')
   if (!response.ok) {
     throw new Error('Failed to fetch data')
   }
@@ -12,9 +10,7 @@ export async function getAuthors() {
 }
 
 export async function getAuthor(slug: string) {
-  const response = await fetch(`http://localhost:3000/api/authors/${slug}`, {
-    cache: 'force-cache'
-  })
+  const response = await fetch(`http://localhost:3000/api/authors/${slug}`)
   if (!response.ok) {
     throw new Error('Failed to fetch data')
   }
@@ -24,10 +20,7 @@ export async function getAuthor(slug: string) {
 
 export async function getAuthorItems(slug: string) {
   const response = await fetch(
-    `http://localhost:3000/api/authors/${slug}/items`,
-    {
-      cache: 'force-cache'
-    }
+    `http://localhost:3000/api/authors/${slug}/items`
   )
   if (!response.ok) {
     throw new Error('Failed to fetch data')
@@ -37,9 +30,7 @@ export async function getAuthorItems(slug: string) {
 }
 
 export async function getBook(slug: string) {
-  const response = await fetch(`http://localhost:3000/api/books/${slug}`, {
-    cache: 'force-cache'
-  })
+  const response = await fetch(`http://localhost:3000/api/books/${slug}`)
   if (!response.ok) {
     throw new Error('Failed to fetch data')
   }
@@ -48,12 +39,7 @@ export async function getBook(slug: string) {
 }
 
 export async function getBookItems(slug: string) {
-  const response = await fetch(
-    `http://localhost:3000/api/books/${slug}/items`,
-    {
-      cache: 'force-cache'
-    }
-  )
+  const response = await fetch(`http://localhost:3000/api/books/${slug}/items`)
   if (!response.ok) {
     throw new Error('Failed to fetch data')
   }
@@ -63,10 +49,7 @@ export async function getBookItems(slug: string) {
 
 export async function getChapter(bookSlug: string, chapterSlug: string) {
   const response = await fetch(
-    `http://localhost:3000/api/books/${bookSlug}/${chapterSlug}`,
-    {
-      cache: 'force-cache'
-    }
+    `http://localhost:3000/api/books/${bookSlug}/${chapterSlug}`
   )
   if (!response.ok) {
     throw new Error('Failed to fetch data')
