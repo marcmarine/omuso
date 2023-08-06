@@ -32,6 +32,6 @@ body {
   background-attachment: fixed;
 }
 
-h1 {
-  @apply text-2xl;
+.container {
+  @apply flex flex-col gap-5 mx-auto;
 }

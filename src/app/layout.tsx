@@ -20,13 +20,13 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body
-        className={`${rufina.className} grid grid-rows-[auto_1fr] text-center min-h-screen`}
-      >
+      <body className={`${rufina.className} text-center min-h-screen`}>
         <header role="banner" className="p-5">
           <Link href="/">omuso</Link>
         </header>
-        <main role="main">{children}</main>
+        <main role="main" className="pb-10">
+          {children}
+        </main>
       </body>
     </html>
   )

@@ -8,5 +8,11 @@ export interface Book {
   title: string
   language: string
   author: string
-  chapters: Chapter[]
+  items: Chapter[]
+}
+
+export interface Author {
+  name: string
+  image: string
+  items: string[]
 }
