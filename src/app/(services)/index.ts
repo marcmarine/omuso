@@ -1,59 +1,63 @@
-import { Author, Book, Chapter } from '../(data)/types'
+import { Author, Book, Chapter } from '../../data/types'
 
-export async function getAuthors() {
-  const response = await fetch('http://localhost:3000/api/authors')
+const dev = process.env.NODE_ENV !== 'production'
+const baseUrl = dev ? 'http://localhost:3000' : 'https://omu.so'
+
+export async function getAuthors(): Promise<Author[]> {
+  const response = await fetch(`${baseUrl}/api/authors`)
+  console.log(response.status)
   if (!response.ok) {
     throw new Error('Failed to fetch data')
   }
-  const authors = (await response.json()) as Author[]
-  return authors
+  return response.json()
 }
 
-export async function getAuthor(slug: string) {
-  const response = await fetch(`http://localhost:3000/api/authors/${slug}`)
+export async function getAuthor(slug: string): Promise<Author> {
+  const response = await fetch(`${baseUrl}/api/authors/${slug}`)
   if (!response.ok) {
     throw new Error('Failed to fetch data')
   }
-  const author = (await response.json()) as Author
-  return author
+
+  return response.json()
 }
 
-export async function getAuthorItems(slug: string) {
+export async function getAuthorItems(slug: string): Promise<Book[]> {
+  const response = await fetch(`${baseUrl}/api/authors/${slug}/items`)
+  if (!response.ok) {
+    throw new Error('Failed to fetch data')
+  }
+
+  return response.json()
+}
+
+export async function getBook(slug: string): Promise<Book> {
+  const response = await fetch(`${baseUrl}/api/books/${slug}`)
+  if (!response.ok) {
+    throw new Error('Failed to fetch data')
+  }
+
+  return response.json()
+}
+
+export async function getBookItems(slug: string): Promise<Chapter[]> {
+  const response = await fetch(`${baseUrl}/api/books/${slug}/items`)
+  if (!response.ok) {
+    throw new Error('Failed to fetch data')
+  }
+
+  return response.json()
+}
+
+export async function getChapter(
+  bookSlug: string,
+  chapterSlug: string
+): Promise<Chapter> {
   const response = await fetch(
-    `http://localhost:3000/api/authors/${slug}/items`
+    `${baseUrl}/api/books/${bookSlug}/${chapterSlug}`
   )
   if (!response.ok) {
     throw new Error('Failed to fetch data')
   }
-  const items = (await response.json()) as Book[]
-  return items
-}
 
-export async function getBook(slug: string) {
-  const response = await fetch(`http://localhost:3000/api/books/${slug}`)
-  if (!response.ok) {
-    throw new Error('Failed to fetch data')
-  }
-  const book = (await response.json()) as Book
-  return book
-}
-
-export async function getBookItems(slug: string) {
-  const response = await fetch(`http://localhost:3000/api/books/${slug}/items`)
-  if (!response.ok) {
-    throw new Error('Failed to fetch data')
-  }
-  const bookItems = (await response.json()) as Chapter[]
-  return bookItems
-}
-
-export async function getChapter(bookSlug: string, chapterSlug: string) {
-  const response = await fetch(
-    `http://localhost:3000/api/books/${bookSlug}/${chapterSlug}`
-  )
-  if (!response.ok) {
-    throw new Error('Failed to fetch data')
-  }
-  const chapter = (await response.json()) as Chapter
-  return chapter
+  return response.json()
 }

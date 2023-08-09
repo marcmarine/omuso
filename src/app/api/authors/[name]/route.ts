@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
 
-import { authors } from '@/app/(data)/database'
+import { authors } from '@/data/database'
 import { slugify } from '@/utils/slugify'
 
 export async function GET(

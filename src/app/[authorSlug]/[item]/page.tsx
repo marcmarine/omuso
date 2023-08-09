@@ -1,14 +1,12 @@
 import { getAuthorItems, getAuthors, getBookItems } from '@/app/(services)'
 import { Suspense } from 'react'
-import Authors, {
-  Skeleton as AuthorsSkeleton
-} from '@/app/(components)/authors'
-import Books, { Skeleton as BooksSkeleton } from '@/app/(components)/books'
+import Authors, { Skeleton as AuthorsSkeleton } from '@/app/components/authors'
+import Books, { Skeleton as BooksSkeleton } from '@/app/components/books'
 import Chapters, {
   Skeleton as ChaptersSkeleton
-} from '@/app/(components)/chapters'
-import { Skeleton } from '@/app/(components)/chapter'
-import Divider from '@/app/(components)/divider'
+} from '@/app/components/chapters'
+import { Skeleton } from '@/app/components/chapter'
+import Divider from '@/app/components/divider'
 
 export default async function AuthorPage({
   params

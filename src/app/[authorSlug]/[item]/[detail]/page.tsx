@@ -1,13 +1,9 @@
-import Authors, {
-  Skeleton as AuthorsSkeleton
-} from '@/app/(components)/authors'
-import Books, { Skeleton as BooksSkeleton } from '@/app/(components)/books'
+import Authors, { Skeleton as AuthorsSkeleton } from '@/app/components/authors'
+import Books, { Skeleton as BooksSkeleton } from '@/app/components/books'
 import Chapters, {
   Skeleton as ChaptersSkeleton
-} from '@/app/(components)/chapters'
-import Chapter, {
-  Skeleton as ChapterSkeleton
-} from '@/app/(components)/chapter'
+} from '@/app/components/chapters'
+import Chapter, { Skeleton as ChapterSkeleton } from '@/app/components/chapter'
 import {
   getAuthorItems,
   getAuthors,
@@ -15,7 +11,7 @@ import {
   getChapter
 } from '@/app/(services)'
 import { Suspense } from 'react'
-import Divider from '@/app/(components)/divider'
+import Divider from '@/app/components/divider'
 
 export default async function AuthorPage({
   params
@@ -51,15 +47,6 @@ export default async function AuthorPage({
       <Divider />
       <Suspense fallback={<ChapterSkeleton />}>
         <Chapter promise={chapterData} />
-      </Suspense>
-      <Divider />
-      <Suspense fallback={<ChaptersSkeleton />}>
-        <Chapters
-          promise={chaptersData}
-          authorSlug={authorSlug}
-          bookSlug={bookSlug}
-          selected={chapterSlug}
-        />
       </Suspense>
     </div>
   )

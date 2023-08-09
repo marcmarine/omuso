@@ -1,5 +1,5 @@
 import Link from 'next/link'
-import { Chapter } from '../(data)/types'
+import { Chapter } from '../../data/types'
 import { slugify } from '@/utils/slugify'
 
 export function Skeleton() {
@@ -8,7 +8,7 @@ export function Skeleton() {
       {([...Array(4)] as number[]).map(index => (
         <li
           key={index}
-          className="w-20 h-6 bg-neutral-300 dark:bg-neutral-700"
+          className="w-20 h-6 bg-neutral-300 dark:bg-neutral-700 blur-sm"
         />
       ))}
     </ul>
@@ -21,7 +21,7 @@ export default async function Books({
   bookSlug,
   selected
 }: {
-  promise: Promise<Chapter[]>
+  promise: Promise<Chapter[] | undefined>
   authorSlug: string
   bookSlug: string
   selected?: string
@@ -30,7 +30,7 @@ export default async function Books({
   return (
     <nav className="px-5">
       <ul className="inline-flex gap-5 flex-wrap justify-center">
-        {chapters.map(({ title }) => {
+        {chapters?.map(({ title }) => {
           const chapterSlug = slugify(title)
           const isSelected = chapterSlug === selected
           return (

@@ -1,12 +1,12 @@
 import { slugify } from '@/utils/slugify'
 import Image from 'next/image'
 import Link from 'next/link'
-import { Author } from '../(data)/types'
+import { Author } from '../../data/types'
 
 export function Skeleton() {
   return (
     <ul className="animate-pulse inline-flex flex-wrap justify-center px-5">
-      <li className="w-[118px] h-[154px] bg-neutral-300 dark:bg-neutral-700" />
+      <li className="w-[118px] h-[154px] bg-neutral-300 dark:bg-neutral-700 blur-sm" />
     </ul>
   )
 }

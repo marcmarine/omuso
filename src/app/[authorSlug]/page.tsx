@@ -1,8 +1,8 @@
-import { getAuthorItems, getAuthors } from '../(services)'
-import Authors, { Skeleton as AuthorsSkeleton } from '../(components)/authors'
+import { getAuthorItems, getAuthors } from '@/lib/authors'
+import Authors, { Skeleton as AuthorsSkeleton } from '../components/authors'
 import { Suspense } from 'react'
-import Books, { Skeleton as BooksSkeleton } from '../(components)/books'
-import Divider from '../(components)/divider'
+import Books, { Skeleton as BooksSkeleton } from '../components/books'
+import Divider from '../components/divider'
 
 export default async function AuthorPage({
   params

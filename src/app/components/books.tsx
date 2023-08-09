@@ -1,11 +1,11 @@
 import { slugify } from '@/utils/slugify'
-import { Book } from '../(data)/types'
+import { Book } from '../../data/types'
 import Link from 'next/link'
 
 export function Skeleton() {
   return (
     <ul className="animate-pulse inline-flex flex-wrap justify-center px-5">
-      <li className="w-40 h-56 bg-neutral-300 dark:bg-neutral-700" />
+      <li className="w-40 h-56 bg-neutral-300 dark:bg-neutral-700 blur-sm" />
     </ul>
   )
 }
@@ -14,14 +14,14 @@ export default async function Books({
   promise,
   selected
 }: {
-  promise: Promise<Book[]>
+  promise: Promise<Book[] | undefined>
   selected?: string
 }) {
   const books = await promise
   return (
     <nav className="px-5">
       <ul className="inline-flex flex-wrap justify-center">
-        {books.map(item => {
+        {books?.map(item => {
           let authorSlug = slugify(item.author),
             bookSlug = slugify(item.title),
             isSelected = bookSlug === selected
