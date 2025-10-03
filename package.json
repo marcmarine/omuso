@@ -1,0 +1,18 @@
+{
+  "name": "mark-json",
+  "version": "1.0.0",
+  "description": "Converts Markdown to a structured JSON format.",
+  "module": "dist/index.js",
+  "types": "dist/types/index.d.ts",
+  "type": "module",
+  "scripts": {
+    "build:types": "tsc ./src/index.ts --declaration --emitDeclarationOnly --outdir dist/types",
+    "build": "bun build ./src/index.ts --outdir ./dist --target node --minify && bun run build:types"
+  },
+  "devDependencies": {
+    "@types/bun": "latest"
+  },
+  "peerDependencies": {
+    "typescript": "^5"
+  }
+}

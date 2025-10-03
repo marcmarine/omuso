@@ -1,0 +1,8 @@
+node_modules
+dist
+coverage
+*.lcov
+logs
+_.log
+.cache
+.DS_Store
