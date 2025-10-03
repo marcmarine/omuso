@@ -12,7 +12,7 @@ export interface RootNode extends ParentNode {
 	author?: string
 	language?: string
 	translator?: string
-	date?: string | Date
+	date?: string
 }
 
 export interface SectionNode extends ParentNode {
