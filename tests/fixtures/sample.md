@@ -1,9 +1,9 @@
 ---
-title: The Odyssey
+title: La Iliada
 author: Homer
-language: en
-translator: Samuel Butler
-date: 1900-01-01
+language: ca
+translator: Conrad Roure i Bofill
+date: 1879-01-01
 ---
 
 ## Section A
