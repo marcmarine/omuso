@@ -5,6 +5,12 @@
 	"module": "dist/index.js",
 	"types": "dist/types/index.d.ts",
 	"type": "module",
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/marcmarine/mark-json.git"
+	},
+	"bugs": "https://github.com/marcmarine/mark-json/issues/new",
+	"author": "Marc Mariné <shenobi@gmail.com>",
 	"license": "MIT",
 	"scripts": {
 		"build:types": "tsc ./src/index.ts --declaration --emitDeclarationOnly --outdir dist/types",
@@ -12,9 +18,23 @@
 	},
 	"devDependencies": {
 		"@biomejs/biome": "2.2.5",
-		"@types/bun": "latest"
+		"@semantic-release/changelog": "^6.0.3",
+		"@semantic-release/git": "^10.0.1",
+		"@types/bun": "latest",
+		"semantic-release": "^24.2.9"
 	},
 	"peerDependencies": {
 		"typescript": "^5"
-	}
+	},
+	"files": [
+		"dist"
+	],
+	"keywords": [
+		"markdown",
+		"md",
+		"json",
+		"parser",
+		"syntax",
+		"tree"
+	]
 }
