@@ -1,12 +1,12 @@
-interface BaseNode {
+interface BaseElement {
 	type: string
 }
 
-interface ParentNode extends BaseNode {
-	content: MarkdownNode[]
+interface ParentNode extends BaseElement {
+	content: (Section | Paragraph)[]
 }
 
-export interface RootNode extends ParentNode {
+export interface Root extends ParentNode {
 	type: 'root'
 	title: string
 	author?: string
@@ -15,27 +15,25 @@ export interface RootNode extends ParentNode {
 	date?: string
 }
 
-export interface SectionNode extends ParentNode {
+export interface Section extends ParentNode {
 	type: 'section'
 	title: string
 	depth: number
 }
 
-export interface ParagraphMark {
-	type: 'strong' | 'emphasis'
+export interface Mark {
+	type: 'emphasis'
 	start: number
 	end: number
 }
 
-export interface ParagraphNode extends BaseNode {
+export interface Paragraph extends BaseElement {
 	type: 'paragraph'
-	content: string
-	marks: ParagraphMark[]
+	value: string
+	marks: Mark[]
 }
 
-type MarkdownNode = SectionNode | ParagraphNode
-
 export interface MarkRule {
-	type: string
+	type: 'emphasis'
 	delimiter: string
 }

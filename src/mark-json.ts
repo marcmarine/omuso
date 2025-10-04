@@ -1,20 +1,14 @@
-import type {
-	MarkRule,
-	ParagraphMark,
-	ParagraphNode,
-	RootNode,
-	SectionNode,
-} from './definitions'
+import type { Mark, MarkRule, Paragraph, Root, Section } from './definitions'
 
-function fromMarkdown(text: string): RootNode {
+function fromMarkdown(text: string): Root {
 	const { frontmatter, content } = splitFrontmatter(text)
 
-	let metadata: Partial<RootNode> = {}
+	let metadata: Partial<Root> = {}
 	if (frontmatter.trim()) {
-		metadata = parseFrontmatter(frontmatter) as Partial<RootNode>
+		metadata = parseFrontmatter(frontmatter) as Partial<Root>
 	}
 
-	const root: RootNode = {
+	const root: Root = {
 		type: 'root',
 		title: metadata.title ?? '',
 		author: metadata.author ?? '',
@@ -25,7 +19,7 @@ function fromMarkdown(text: string): RootNode {
 	}
 
 	const lines = content.split('\n').filter((line) => line.trim() !== '')
-	const sectionStack: SectionNode[] = []
+	const sectionStack: Section[] = []
 
 	for (const line of lines) {
 		if (line[0] === '#') {
@@ -37,7 +31,7 @@ function fromMarkdown(text: string): RootNode {
 				root.title = title
 				sectionStack.length = 0
 			} else {
-				const newSection: SectionNode = {
+				const newSection: Section = {
 					type: 'section',
 					title,
 					depth: depth - 1,
@@ -102,9 +96,9 @@ function parseFrontmatter(frontmatter: string): Record<string, string> {
 	return metadata
 }
 
-function parseParagraph(text: string): ParagraphNode {
-	let content = ''
-	const marks: ParagraphMark[] = []
+function parseParagraph(text: string): Paragraph {
+	let value = ''
+	const marks: Mark[] = []
 
 	let buffer = ''
 	let inside: MarkRule | null = null
@@ -115,12 +109,12 @@ function parseParagraph(text: string): ParagraphNode {
 		if (inside) {
 			const { delimiter } = inside
 			if (remaining.startsWith(delimiter)) {
-				const start = content.length
-				content += buffer
-				const end = content.length
+				const start = value.length
+				value += buffer
+				const end = value.length
 
 				marks.push({
-					type: inside.type as ParagraphMark['type'],
+					type: inside.type as Mark['type'],
 					start,
 					end,
 				})
@@ -143,17 +137,17 @@ function parseParagraph(text: string): ParagraphNode {
 			buffer = ''
 			i += foundRule.delimiter.length - 1
 		} else {
-			content += text[i]
+			value += text[i]
 		}
 	}
 
 	if (inside) {
-		content += inside.delimiter + buffer
+		value += inside.delimiter + buffer
 	}
 
 	return {
 		type: 'paragraph',
-		content,
+		value,
 		marks,
 	}
 }

@@ -1,13 +1,14 @@
 import { beforeAll, expect, test } from 'bun:test'
 import {
 	fromMarkdown,
-	type ParagraphMark,
-	type ParagraphNode,
-	type SectionNode,
+	type Mark,
+	type Paragraph,
+	type Root,
+	type Section,
 } from '../src'
 import sampleMarkdown from './fixtures/sample.md' with { type: 'file' }
 
-let root: ReturnType<typeof fromMarkdown>
+let root: Root
 
 beforeAll(async () => {
 	const content = await Bun.file(sampleMarkdown).text()
@@ -16,14 +17,14 @@ beforeAll(async () => {
 
 test('Split frontmatter and parse metadata', () => {
 	expect(root.type).toBe('root')
-	expect(root.title).toBe('The Odyssey')
+	expect(root.title).toBe('La Iliada')
 	expect(root.author).toBe('Homer')
-	expect(root.language).toBe('en')
+	expect(root.language).toBe('ca')
 })
 
 test('Parses sections hierarchy', () => {
 	expect(root.content.length).toBe(1)
-	const section = root.content[0] as SectionNode
+	const section = root.content[0] as Section
 
 	expect(section.type).toBe('section')
 
@@ -40,45 +41,45 @@ test('Parses sections hierarchy', () => {
 })
 
 test('Parses paragraphs with emphasis markup (*)', () => {
-	const section = root.content[0] as SectionNode
+	const section = root.content[0] as Section
 	if (section.type === 'section') {
-		const paraStar = section.content[0] as ParagraphNode
-		expect(paraStar.type).toBe('paragraph')
-		if (paraStar.type === 'paragraph') {
-			expect(paraStar.content).toContain('Text in italics and more text.')
-			expect(paraStar.marks.length).toBe(1)
-			const mark = paraStar.marks[0] as ParagraphMark
+		const paragraph = section.content[0] as Paragraph
+		expect(paragraph.type).toBe('paragraph')
+		if (paragraph.type === 'paragraph') {
+			expect(paragraph.value).toContain('Text in italics and more text.')
+			expect(paragraph.marks.length).toBe(1)
+			const mark = paragraph.marks[0] as Mark
 			expect(mark.type).toBe('emphasis')
-			expect(paraStar.content.slice(mark.start, mark.end)).toBe('italics')
+			expect(paragraph.value.slice(mark.start, mark.end)).toBe('italics')
 		}
 	}
 })
 
 test('Parses paragraphs with emphasis markup (_ underscore)', () => {
-	const sectionA = root.content[0] as SectionNode
+	const sectionA = root.content[0] as Section
 	if (sectionA.type === 'section') {
-		const paragraph = sectionA.content[1] as ParagraphNode
+		const paragraph = sectionA.content[1] as Paragraph
 		expect(paragraph.type).toBe('paragraph')
 		if (paragraph.type === 'paragraph') {
-			expect(paragraph.content).toContain('Text in italics with underscore.')
+			expect(paragraph.value).toContain('Text in italics with underscore.')
 			expect(paragraph.marks.length).toBe(1)
-			const mark = paragraph.marks[0] as ParagraphMark
+			const mark = paragraph.marks[0] as Mark
 			expect(mark.type).toBe('emphasis')
-			expect(paragraph.content.slice(mark.start, mark.end)).toBe('italics')
+			expect(paragraph.value.slice(mark.start, mark.end)).toBe('italics')
 		}
 	}
 })
 
 test('Handles unclosed marks gracefully', () => {
-	const section = root.content[0] as SectionNode
+	const section = root.content[0] as Section
 	if (section.type === 'section') {
 		const subsection = section.content.find((n) => n.type === 'section')
 		if (subsection && subsection.type === 'section') {
-			const paragraph = subsection.content[1] as ParagraphNode
+			const paragraph = subsection.content[1] as Paragraph
 			expect(paragraph.type).toBe('paragraph')
 			if (paragraph.type === 'paragraph') {
 				expect(paragraph.marks.length).toBe(0)
-				expect(paragraph.content).toContain('Text with *unclosed mark')
+				expect(paragraph.value).toContain('Text with *unclosed mark')
 			}
 		}
 	}
