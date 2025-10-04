@@ -5,7 +5,7 @@ import {
 	type Paragraph,
 	type Root,
 	type Section,
-} from '../src'
+} from '../src/index'
 import sampleMarkdown from './fixtures/sample.md' with { type: 'file' }
 
 let root: Root
@@ -56,9 +56,9 @@ test('Parses paragraphs with emphasis markup (*)', () => {
 })
 
 test('Parses paragraphs with emphasis markup (_ underscore)', () => {
-	const sectionA = root.content[0] as Section
-	if (sectionA.type === 'section') {
-		const paragraph = sectionA.content[1] as Paragraph
+	const section = root.content[0] as Section
+	if (section.type === 'section') {
+		const paragraph = section.content[1] as Paragraph
 		expect(paragraph.type).toBe('paragraph')
 		if (paragraph.type === 'paragraph') {
 			expect(paragraph.value).toContain('Text in italics with underscore.')

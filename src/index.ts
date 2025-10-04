@@ -1,2 +1,2 @@
 export * from './definitions'
-export { fromMarkdown } from './mark-json'
+export { fromMarkdown } from './from-markdown'
