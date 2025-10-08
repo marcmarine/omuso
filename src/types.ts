@@ -1,8 +1,8 @@
-interface BaseElement {
+export interface BaseElement {
 	type: string
 }
 
-interface ParentNode extends BaseElement {
+export interface ParentNode extends BaseElement {
 	content: (Section | Paragraph)[]
 }
 
@@ -21,7 +21,7 @@ export interface Section extends ParentNode {
 	depth: number
 }
 
-export interface Mark {
+export interface InlineMark {
 	type: 'emphasis'
 	start: number
 	end: number
@@ -30,10 +30,10 @@ export interface Mark {
 export interface Paragraph extends BaseElement {
 	type: 'paragraph'
 	value: string
-	marks: Mark[]
+	marks: InlineMark[]
 }
 
-export interface MarkRule {
+export interface InlineMarkRule {
 	type: 'emphasis'
 	delimiter: string
 }

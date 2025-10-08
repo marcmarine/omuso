@@ -1,41 +1,69 @@
-# Mark JSON
+# frommark
 
-A lightweight TypeScript library that converts Markdown documents to structured JSON format, preserving document hierarchy and text formatting marks.
+A lightweight TypeScript library that converts Markdown documents into a structured JSON representation, preserving document hierarchy and text formatting information.
+
+## Key Features
+
+- **Hierarchical Structure**: Headings (#, ##, etc.) create nested sections that form a logical document tree
+- **Text Formatting Preservation**: Italic text formatting is captured with positioning
+- **Frontmatter Support**: YAML metadata is extracted and mapped to document properties
+- **TypeScript First**: Full type definitions for reliable development experience
+- **Lightweight**: Minimal dependencies with a focused feature set
+
+## Why frommark?
+
+Unlike traditional Markdown parsers that produce flat ASTs, frommark interprets content as a hierarchical document structure. Each heading creates a new section that contains all subsequent content until the next heading of equal or higher level.
 
 ## Installation
 
 ```bash
-npm install mark-json
+npm install frommark
 ```
 
 ## Quick Start
 
 ```typescript
-import { fromMarkdown } from 'mark-json'
+import { parse } from 'frommark'
 
-const markdown = `---
-title: My Document
-author: John Doe
----
+const markdown = `# Hello World
 
-# My Document
+This is a simple paragraph.
 
-## Introduction
+## Section 1
 
-This is a paragraph with *emphasis* text.
-
-### Subsection
-
-Another paragraph here.
+Another paragraph with *italic text*.
 `
 
-const result = fromMarkdown(markdown)
-console.log(JSON.stringify(result, null, 2))
+const result = parse(markdown)-
+// Result structure:
+// {
+//   type: 'root',
+//   title: 'Hello World',
+//   content: [
+//     {
+//       type: 'paragraph',
+//       value: 'This is a simple paragraph.',
+//       marks: []
+//     },
+//     {
+//       type: 'section',
+//       title: 'Section 1',
+//       depth: 1,
+//       content: [
+//         {
+//           type: 'paragraph',
+//           value: 'Another paragraph with italic text.',
+//           marks: [{ type: 'emphasis', start: 22, end: 33 }]
+//         }
+//       ]
+//     }
+//   ]
+// }
 ```
 
 ## API Reference
 
-### `fromMarkdown(text: string): Root`
+### `parse(text: string): Root`
 
 Converts a Markdown string to a structured JSON representation.
 
@@ -105,7 +133,7 @@ interface Mark {
 ### Basic Document
 
 ```typescript
-import { fromMarkdown } from 'mark-json'
+import { fromMarkdown } from 'frommark'
 
 const markdown = `# Hello World
 
