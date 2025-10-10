@@ -1,3 +1,10 @@
+## [1.0.2](https://github.com/marcmarine/omuso/compare/v1.0.1...v1.0.2) (2025-10-10)
+
+
+### Bug Fixes
+
+* Rename package to OMUSO (initial release) ([dc065a2](https://github.com/marcmarine/omuso/commit/dc065a223221ab613865da001496a107c98deff9))
+
 ## [1.0.1](https://github.com/marcmarine/frommark/compare/v1.0.0...v1.0.1) (2025-10-08)
 
 
