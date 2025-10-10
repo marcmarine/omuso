@@ -1,4 +1,4 @@
-# frommark
+# OMUSO Markdown Parser
 
 A lightweight TypeScript library that converts Markdown documents into a structured JSON representation, preserving document hierarchy and text formatting information.
 
@@ -10,20 +10,22 @@ A lightweight TypeScript library that converts Markdown documents into a structu
 - **TypeScript First**: Full type definitions for reliable development experience
 - **Lightweight**: Minimal dependencies with a focused feature set
 
-## Why frommark?
+## Why another Markdown parser?
 
-Unlike traditional Markdown parsers that produce flat ASTs, frommark interprets content as a hierarchical document structure. Each heading creates a new section that contains all subsequent content until the next heading of equal or higher level.
+Unlike traditional Markdown parsers that generate a detailed, syntax-oriented tree, the **OMUSO Markdown Parser** interprets Markdown as a *hierarchical logical structure* organized by sections. In this model, headings (#, ##, etc.) are not just identified, they define nested sections where each heading introduces a new node containing its associated content.
+
+This approach is especially valuable when Markdown is used to express not only formatting but also *semantic hierarchy*. The parser outputs structured JSON that accurately represents the author’s intended document organization.
 
 ## Installation
 
 ```bash
-npm install frommark
+npm install omuso
 ```
 
 ## Quick Start
 
 ```typescript
-import { parse } from 'frommark'
+import { parse } from 'omuso'
 
 const markdown = `# Hello World
 
@@ -133,7 +135,7 @@ interface Mark {
 ### Basic Document
 
 ```typescript
-import { fromMarkdown } from 'frommark'
+import { parse } from 'omuso'
 
 const markdown = `# Hello World
 
@@ -144,7 +146,7 @@ This is a simple paragraph.
 Another paragraph with *italic text*.
 `
 
-const result = fromMarkdown(markdown)
+const result = parse(markdown)
 // Result structure:
 // {
 //   type: 'root',
@@ -187,7 +189,7 @@ date: 1879-01-01
 Canta, deesa, la cólera d'Aquiles, fill de Peleo, cólera fatal que abocá un sens fí de mals...
 `
 
-const result = fromMarkdown(markdownWithFrontmatter)
+const result = parse(markdownWithFrontmatter)
 // The frontmatter data will be available in the root node properties
 console.log(result.title)      // "La Iliada"
 console.log(result.author)     // "Homer"
@@ -201,7 +203,7 @@ The library supports emphasis formatting using both `*` and `_` delimiters:
 ```typescript
 const markdown = `Paragraph with *asterisk emphasis* and _underscore emphasis_.`
 
-const result = fromMarkdown(markdown)
+const result = parse(markdown)
 const paragraph = result.content[0] as ParagraphNode
 
 console.log(paragraph.content) // "Paragraph with asterisk emphasis and underscore emphasis."
@@ -233,7 +235,7 @@ Another subsection.
 Second chapter content.
 `
 
-const result = fromMarkdown(markdown)
+const result = parse(markdown)
 // Creates a hierarchical structure with nested sections
 ```
 
@@ -243,7 +245,7 @@ const result = fromMarkdown(markdown)
 - ✅ **Paragraphs** - Text content with formatting marks
 - ✅ **Emphasis** - `*italic*` and `_italic_` text
 - ✅ **Frontmatter** - YAML-style metadata parsing
-- ❌ **Strong text** - Partially supported (coming soon)
+- ❌ **Strong text** - Coming soon...
 - ❌ **Lists** - Not currently supported
 - ❌ **Links** - Not currently supported
 - ❌ **Images** - Not currently supported

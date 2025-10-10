@@ -1,5 +1,5 @@
 {
-	"name": "frommark",
+	"name": "omuso",
 	"version": "1.0.1",
 	"description": "Converts Markdown to a structured JSON format.",
 	"module": "dist/index.js",
@@ -7,9 +7,9 @@
 	"type": "module",
 	"repository": {
 		"type": "git",
-		"url": "https://github.com/marcmarine/frommark.git"
+		"url": "https://github.com/marcmarine/omuso.git"
 	},
-	"bugs": "https://github.com/marcmarine/frommark/issues/new",
+	"bugs": "https://github.com/marcmarine/omuso/issues/new",
 	"author": "Marc Mariné <shenobi@gmail.com>",
 	"license": "MIT",
 	"scripts": {
