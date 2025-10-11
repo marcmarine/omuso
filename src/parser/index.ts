@@ -12,7 +12,7 @@ import { parseFrontmatterMetadata, splitFrontmatter } from './frontmatter'
  *
  * @example
  * ```typescript
- * import { parse } from 'frommark'
+ * import { parse } from 'omuso'
  *
  * const markdown = `---
  * title: My Document

@@ -4,7 +4,7 @@ import * as index from '../src/index'
 describe('index', () => {
 	test('should have all expected exports', () => {
 		const exportedKeys = Object.keys(index)
-		expect(exportedKeys).toContain('frommark')
+		expect(exportedKeys).toContain('omuso')
 		expect(exportedKeys).toContain('parse')
 	})
 })

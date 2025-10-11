@@ -1,3 +1,3 @@
 export { parse } from './parser'
-export * as frommark from './parser/index'
+export * as omuso from './parser/index'
 export * from './types'
