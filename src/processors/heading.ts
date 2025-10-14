@@ -26,7 +26,7 @@ function createSection(title: string, markdownDepth: number): Section {
 	return {
 		type: 'section',
 		title,
-		depth: markdownDepth - 1,
+		depth: markdownDepth,
 		content: [],
 	}
 }

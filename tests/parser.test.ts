@@ -35,7 +35,7 @@ describe('parser', () => {
 		expect(subsection).toBeDefined()
 		if (subsection && subsection.type === 'section') {
 			expect(subsection.title).toBe('Subsection A1')
-			expect(subsection.depth).toBe(2)
+			expect(subsection.depth).toBe(3)
 			expect(subsection.content.length).toBe(2)
 		}
 	})
