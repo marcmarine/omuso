@@ -27,10 +27,6 @@ export class SectionStack {
 		this.sections.push(section)
 	}
 
-	clear(): void {
-		this.sections.length = 0
-	}
-
 	addContentToCurrentParent(content: Section | Paragraph): void {
 		const parent = this.getCurrentParent()
 		parent.content.push(content)

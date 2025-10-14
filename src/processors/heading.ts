@@ -14,8 +14,6 @@ export function processHeading(
 
 	if (depth === 1) {
 		root.title = title
-		sections.clear()
-		return
 	}
 
 	const newSection = createSection(title, depth)
