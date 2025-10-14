@@ -39,23 +39,36 @@ Another paragraph with *italic text*.
 const result = parse(markdown)-
 // Result structure:
 // {
-//   type: 'root',
-//   title: 'Hello World',
-//   content: [
+//   "type": "root",
+//   "title": "Hello World",
+//   "content": [
 //     {
-//       type: 'paragraph',
-//       value: 'This is a simple paragraph.',
-//       marks: []
-//     },
-//     {
-//       type: 'section',
-//       title: 'Section 1',
-//       depth: 1,
-//       content: [
+//       "type": "section",
+//       "title": "Hello World",
+//       "depth": 1,
+//       "content": [
 //         {
-//           type: 'paragraph',
-//           value: 'Another paragraph with italic text.',
-//           marks: [{ type: 'emphasis', start: 22, end: 33 }]
+//           "type": "paragraph",
+//           "value": "This is a simple paragraph.",
+//           "marks": []
+//         },
+//         {
+//           "type": "section",
+//           "title": "Section 1",
+//           "depth": 2,
+//           "content": [
+//             {
+//               "type": "paragraph",
+//               "value": "Another paragraph with italic text.",
+//               "marks": [
+//                 {
+//                   "type": "emphasis",
+//                   "start": 23,
+//                   "end": 34
+//                 }
+//               ]
+//             }
+//           ]
 //         }
 //       ]
 //     }
@@ -149,23 +162,36 @@ Another paragraph with *italic text*.
 const result = parse(markdown)
 // Result structure:
 // {
-//   type: 'root',
-//   title: 'Hello World',
-//   content: [
+//   "type": "root",
+//   "title": "Hello World",
+//   "content": [
 //     {
-//       type: 'paragraph',
-//       value: 'This is a simple paragraph.',
-//       marks: []
-//     },
-//     {
-//       type: 'section',
-//       title: 'Section 1',
-//       depth: 1,
-//       content: [
+//       "type": "section",
+//       "title": "Hello World",
+//       "depth": 1,
+//       "content": [
 //         {
-//           type: 'paragraph',
-//           value: 'Another paragraph with italic text.',
-//           marks: [{ type: 'emphasis', start: 22, end: 33 }]
+//           "type": "paragraph",
+//           "value": "This is a simple paragraph.",
+//           "marks": []
+//         },
+//         {
+//           "type": "section",
+//           "title": "Section 1",
+//           "depth": 2,
+//           "content": [
+//             {
+//               "type": "paragraph",
+//               "value": "Another paragraph with italic text.",
+//               "marks": [
+//                 {
+//                   "type": "emphasis",
+//                   "start": 23,
+//                   "end": 34
+//                 }
+//               ]
+//             }
+//           ]
 //         }
 //       ]
 //     }
