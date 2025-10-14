@@ -1,29 +1,57 @@
-import { beforeAll, describe, expect, test } from 'bun:test'
+import { describe, expect, test } from 'bun:test'
 import {
 	type InlineMark,
 	type Paragraph,
 	parse,
-	type Root,
 	type Section,
 } from '../src/index'
-import sampleMarkdown from './fixtures/sample.md' with { type: 'file' }
-
-let root: Root
-
-beforeAll(async () => {
-	const content = await Bun.file(sampleMarkdown).text()
-	root = parse(content)
-})
 
 describe('parser', () => {
-	test('splits frontmatter and parse metadata', () => {
+	test('parses simple markdown with section and emphasis', async () => {
+		const markdown = await Bun.file('./tests/fixtures/simple.md').text()
+		const result = parse(markdown)
+
+		expect(result.type).toBe('root')
+		expect(result.title).toBe('Hello World')
+		expect(result.content.length).toBe(1)
+
+		const topLevelSection = result.content[0] as Section
+		const firstParagraph = topLevelSection.content[0] as Paragraph
+		expect(firstParagraph.type).toBe('paragraph')
+		expect(firstParagraph.value).toBe('This is a simple paragraph.')
+		expect(firstParagraph.marks.length).toBe(0)
+
+		const section = topLevelSection.content[1] as Section
+		expect(section.type).toBe('section')
+		expect(section.title).toBe('Section 1')
+		expect(section.depth).toBe(2)
+		expect(section.content.length).toBe(1)
+
+		const sectionParagraph = section.content[0] as Paragraph
+		expect(sectionParagraph.type).toBe('paragraph')
+		expect(sectionParagraph.value).toBe('Another paragraph with italic text.')
+		expect(sectionParagraph.marks.length).toBe(1)
+
+		const emphasisMark = sectionParagraph.marks[0] as InlineMark
+		expect(emphasisMark.type).toBe('emphasis')
+		expect(emphasisMark.start).toBe(23)
+		expect(emphasisMark.end).toBe(34)
+	})
+
+	test('splits frontmatter and parse metadata', async () => {
+		const markdown = await Bun.file('./tests/fixtures/frontmatter.md').text()
+		const root = parse(markdown)
+
 		expect(root.type).toBe('root')
 		expect(root.title).toBe('La Iliada')
 		expect(root.author).toBe('Homer')
 		expect(root.language).toBe('ca')
 	})
 
-	test('parses sections hierarchy', () => {
+	test('parses sections hierarchy', async () => {
+		const markdown = await Bun.file('./tests/fixtures/frontmatter.md').text()
+		const root = parse(markdown)
+
 		expect(root.content.length).toBe(1)
 		const section = root.content[0] as Section
 		expect(section.type).toBe('section')
@@ -40,7 +68,10 @@ describe('parser', () => {
 		}
 	})
 
-	test('parses paragraphs with emphasis markup (*)', () => {
+	test('parses paragraphs with emphasis markup (*)', async () => {
+		const markdown = await Bun.file('./tests/fixtures/frontmatter.md').text()
+		const root = parse(markdown)
+
 		const section = root.content[0] as Section
 		if (section.type === 'section') {
 			const paragraph = section.content[0] as Paragraph
@@ -55,7 +86,10 @@ describe('parser', () => {
 		}
 	})
 
-	test('parses paragraphs with emphasis markup (_)', () => {
+	test('parses paragraphs with emphasis markup (_)', async () => {
+		const markdown = await Bun.file('./tests/fixtures/frontmatter.md').text()
+		const root = parse(markdown)
+
 		const section = root.content[0] as Section
 		if (section.type === 'section') {
 			const paragraph = section.content[1] as Paragraph
@@ -70,7 +104,10 @@ describe('parser', () => {
 		}
 	})
 
-	test('handles unclosed marks gracefully', () => {
+	test('handles unclosed marks gracefully', async () => {
+		const markdown = await Bun.file('./tests/fixtures/frontmatter.md').text()
+		const root = parse(markdown)
+
 		const section = root.content[0] as Section
 		if (section.type === 'section') {
 			const subsection = section.content.find((n) => n.type === 'section')
