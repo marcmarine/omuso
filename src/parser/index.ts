@@ -54,11 +54,11 @@ export function parse(text: string): Root {
 function createInitialRoot(metadata: Record<string, string>): Root {
 	return {
 		type: 'root',
-		title: metadata.title || '',
-		author: metadata.author || '',
-		language: metadata.language || '',
-		translator: metadata.translator || '',
-		date: metadata.date || '',
+		title: metadata.title || undefined,
+		author: metadata.author || undefined,
+		language: metadata.language || undefined,
+		translator: metadata.translator || undefined,
+		date: metadata.date || undefined,
 		content: [],
 	}
 }

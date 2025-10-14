@@ -8,7 +8,7 @@ export interface ParentNode extends BaseElement {
 
 export interface Root extends ParentNode {
 	type: 'root'
-	title: string
+	title?: string
 	author?: string
 	language?: string
 	translator?: string
