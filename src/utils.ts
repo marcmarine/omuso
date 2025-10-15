@@ -22,13 +22,47 @@ export class SectionStack {
 		}
 
 		const parent = this.getCurrentParent()
-		parent.content.push(section)
 
-		this.sections.push(section)
+		let sectionCount = 0
+		for (const item of parent.content) {
+			if (item.type === 'section') {
+				sectionCount++
+			}
+		}
+
+		const path = this.createPath(parent, sectionCount)
+
+		const sectionWithPath = {
+			...section,
+			path,
+		}
+
+		parent.content.push(sectionWithPath)
+		this.sections.push(sectionWithPath)
 	}
 
-	addContentToCurrentParent(content: Section | Paragraph): void {
+	addContentToCurrentParent(content: Paragraph): void {
 		const parent = this.getCurrentParent()
-		parent.content.push(content)
+		const contentCount = parent.content.length
+		const path = this.createPath(parent, contentCount, '#')
+
+		const contentWithPath = {
+			...content,
+			path,
+		}
+
+		parent.content.push(contentWithPath)
+	}
+
+	private createPath(
+		parent: Section | Root,
+		index: number,
+		separator: string = '.',
+	): string {
+		if (parent.type === 'root') {
+			return `${separator === '.' ? '' : separator}${index + 1}`
+		} else {
+			return `${parent.path}${separator}${index + 1}`
+		}
 	}
 }

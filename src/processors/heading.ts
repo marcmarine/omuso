@@ -22,6 +22,7 @@ export function processHeading(
 
 function createSection(title: string, markdownDepth: number): Section {
 	return {
+		path: '',
 		type: 'section',
 		title,
 		depth: markdownDepth,

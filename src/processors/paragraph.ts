@@ -10,6 +10,7 @@ export function processParagraph(line: string, sections: SectionStack): void {
 
 function createParagraph(value: string, marks: InlineMark[]): Paragraph {
 	return {
+		path: '',
 		type: 'paragraph',
 		value,
 		marks,

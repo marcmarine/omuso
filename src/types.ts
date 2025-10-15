@@ -16,6 +16,7 @@ export interface Root extends ParentNode {
 }
 
 export interface Section extends ParentNode {
+	path: string
 	type: 'section'
 	title: string
 	depth: number
@@ -28,6 +29,7 @@ export interface InlineMark {
 }
 
 export interface Paragraph extends BaseElement {
+	path: string
 	type: 'paragraph'
 	value: string
 	marks: InlineMark[]
