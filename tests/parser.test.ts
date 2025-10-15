@@ -10,7 +10,6 @@ describe('parser', () => {
 	test('parses simple markdown with section and emphasis', async () => {
 		const markdown = await Bun.file('./tests/fixtures/simple.md').text()
 		const result = parse(markdown)
-
 		expect(result.type).toBe('root')
 		expect(result.title).toBe('Hello World')
 		expect(result.content.length).toBe(1)
@@ -120,5 +119,62 @@ describe('parser', () => {
 				}
 			}
 		}
+	})
+
+	test('parses deeply nested sections', async () => {
+		const markdown = await Bun.file('./tests/fixtures/nested.md').text()
+		const root = parse(markdown)
+
+		expect(root.type).toBe('root')
+		expect(root.content.length).toBe(3)
+
+		const introParagraph = root.content[0] as Paragraph
+		expect(introParagraph.type).toBe('paragraph')
+		expect(introParagraph.value).toBe('Introduction paragraph.')
+		expect(introParagraph.marks.length).toBe(0)
+		expect(introParagraph.path).toBe('#1')
+
+		const chapter1 = root.content[1] as Section
+		expect(chapter1.type).toBe('section')
+		expect(chapter1.title).toBe('Chapter 1')
+		expect(chapter1.depth).toBe(2)
+		expect(chapter1.content.length).toBe(3)
+		expect(chapter1.path).toBe('1')
+
+		const chapter1Intro = chapter1.content[0] as Paragraph
+		expect(chapter1Intro.type).toBe('paragraph')
+		expect(chapter1Intro.value).toBe('Introduction paragraph.')
+		expect(chapter1Intro.path).toBe('1#1')
+
+		const section1_1 = chapter1.content[1] as Section
+		expect(section1_1.type).toBe('section')
+		expect(section1_1.title).toBe('Section 1.1')
+		expect(section1_1.depth).toBe(3)
+		expect(section1_1.content.length).toBe(2)
+		expect(section1_1.path).toBe('1.1')
+
+		const subsection1_1_1 = section1_1.content[1] as Section
+		expect(subsection1_1_1.type).toBe('section')
+		expect(subsection1_1_1.title).toBe('Section 1.1.1')
+		expect(subsection1_1_1.depth).toBe(4)
+		expect(subsection1_1_1.content.length).toBe(1)
+		expect(subsection1_1_1.path).toBe('1.1.1')
+
+		const paragraph1_1_1 = subsection1_1_1.content[0] as Paragraph
+		expect(paragraph1_1_1.path).toBe('1.1.1#1')
+
+		const section1_2 = chapter1.content[2] as Section
+		expect(section1_2.type).toBe('section')
+		expect(section1_2.title).toBe('Section 1.2')
+		expect(section1_2.depth).toBe(3)
+		expect(section1_2.content.length).toBe(1)
+		expect(section1_2.path).toBe('1.2')
+
+		const chapter2 = root.content[2] as Section
+		expect(chapter2.type).toBe('section')
+		expect(chapter2.title).toBe('Chapter 2')
+		expect(chapter2.depth).toBe(2)
+		expect(chapter2.content.length).toBe(1)
+		expect(chapter2.path).toBe('2')
 	})
 })
