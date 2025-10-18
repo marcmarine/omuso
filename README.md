@@ -1,20 +1,25 @@
 # OMUSO Markdown Parser
 
-A lightweight TypeScript library that converts Markdown documents into a structured JSON representation, preserving document hierarchy and text formatting information.
+A small TypeScript library that turns Markdown into structured JSON, keeping the document’s hierarchy and some text styles.
+
+[![NPM Version](https://img.shields.io/npm/v/omuso)](https://www.npmjs.com/package/omuso)
+[![GitHub License](https://img.shields.io/github/license/marcmarine/omuso)](LICENSE)
+[![View Changelog](https://img.shields.io/badge/view-CHANGELOG.md-red.svg)](https://github.com/marcmarine/omuso/releases)
+![NPM Unpacked Size](https://img.shields.io/npm/unpacked-size/omuso)
 
 ## Key Features
 
-- **Hierarchical Structure**: Headings (#, ##, etc.) create nested sections that form a logical document tree
-- **Text Formatting Preservation**: Italic text formatting is captured with positioning
-- **Frontmatter Support**: YAML metadata is extracted and mapped to document properties
-- **TypeScript First**: Full type definitions for reliable development experience
-- **Lightweight**: Minimal dependencies with a focused feature set
+- **Hierarchical Structure**: Headings (#, ##, etc.) create nested sections, building a clear document tree
+- **Text Formatting Preservation**: Italic text are kept with their position in the tex
+- **Frontmatter Support**: YAML metadata is extracted and linked to document propertie
+- **TypeScript First**: Full type definitions for smooth development experience
+- **Lightweight**: Zero dependencies, designed for efficient parsing
 
-## Why another Markdown parser?
+## Why another parser?
 
-Unlike traditional Markdown parsers that generate a detailed, syntax-oriented tree, the **OMUSO Markdown Parser** interprets Markdown as a *hierarchical logical structure* organized by sections. In this model, headings (#, ##, etc.) are not just identified, they define nested sections where each heading introduces a new node containing its associated content.
+Unlike typical Markdown parsers that build detailed syntax trees, the **OMUSO Markdown Parser** focuses on the logical hierarchy of documents. It uses headings not just to identify formatting but to define nested sections, making each heading start a new node with its related content.
 
-This approach is especially valuable when Markdown is used to express not only formatting but also *semantic hierarchy*. The parser outputs structured JSON that accurately represents the author’s intended document organization.
+This method is helpful when Markdown encodes semantic structure as well as visual formatting. The parser outputs a well-organized JSON object that reflects the author’s intended document layout, making it easier for developers to understand and work with the content.
 
 ## Installation
 
@@ -43,21 +48,25 @@ const result = parse(markdown)-
 //   "title": "Hello World",
 //   "content": [
 //     {
+//       "path": "1",
 //       "type": "section",
 //       "title": "Hello World",
 //       "depth": 1,
 //       "content": [
 //         {
+//           "path": "1#1",
 //           "type": "paragraph",
 //           "value": "This is a simple paragraph.",
 //           "marks": []
 //         },
 //         {
+//           "path": "1.1",
 //           "type": "section",
 //           "title": "Section 1",
 //           "depth": 2,
 //           "content": [
 //             {
+//               "path": "1.1#1",
 //               "type": "paragraph",
 //               "value": "Another paragraph with italic text.",
 //               "marks": [
@@ -97,7 +106,7 @@ The top-level document node.
 ```typescript
 interface Root {
   type: 'root'
-  title: string
+  title?: string
   author?: string
   language?: string
   translator?: string
@@ -113,6 +122,7 @@ Represents a heading and its content.
 ```typescript
 interface Section {
   type: 'section'
+  path: string
   title: string
   depth: number
   content: (Section | Paragraph)[]
@@ -126,17 +136,18 @@ Represents a paragraph with text formatting marks.
 ```typescript
 interface Paragraph {
   type: 'paragraph'
+  path: string
   content: string
-  marks: Mark[]
+  marks: InlineMark[]
 }
 ```
 
-#### `Mark`
+#### `InlineMark`
 
 Defines formatting applied to text ranges.
 
 ```typescript
-interface Mark {
+interface InlineMark {
   type: 'emphasis'
   start: number
   end: number
@@ -166,21 +177,25 @@ const result = parse(markdown)
 //   "title": "Hello World",
 //   "content": [
 //     {
+//       "path": "1",
 //       "type": "section",
 //       "title": "Hello World",
 //       "depth": 1,
 //       "content": [
 //         {
+//           "path": "1#1",
 //           "type": "paragraph",
 //           "value": "This is a simple paragraph.",
 //           "marks": []
 //         },
 //         {
+//           "path": "1.1",
 //           "type": "section",
 //           "title": "Section 1",
 //           "depth": 2,
 //           "content": [
 //             {
+//               "path": "1.1#1",
 //               "type": "paragraph",
 //               "value": "Another paragraph with italic text.",
 //               "marks": [
