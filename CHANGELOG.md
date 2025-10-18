@@ -1,3 +1,18 @@
+# [1.1.0](https://github.com/marcmarine/omuso/compare/v1.0.2...v1.1.0) (2025-10-18)
+
+
+### Bug Fixes
+
+* Adjust section depth calculation ([32210fc](https://github.com/marcmarine/omuso/commit/32210fc8032b031effd477ec6d158039538f7881))
+* Preserve top-level headings in parser ([6bbdffa](https://github.com/marcmarine/omuso/commit/6bbdffa80e36b973c0a002ede66a0ae59b154678))
+* Remove empty fields from root object ([93a318c](https://github.com/marcmarine/omuso/commit/93a318c01cad3339e87bc6fe68930534534d706e))
+* Rename package exports ([531a393](https://github.com/marcmarine/omuso/commit/531a39323ab5ace62a80cfd54483c6a666c8e8a0))
+
+
+### Features
+
+* Add path property to section and paragraph types ([5f26707](https://github.com/marcmarine/omuso/commit/5f26707c69e23699aff486b3e0f9238f4cae5af7))
+
 ## [1.0.2](https://github.com/marcmarine/omuso/compare/v1.0.1...v1.0.2) (2025-10-10)
 
 
