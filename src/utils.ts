@@ -44,7 +44,7 @@ export class SectionStack {
 	addContentToCurrentParent(content: Paragraph): void {
 		const parent = this.getCurrentParent()
 		const contentCount = parent.content.length
-		const path = this.createPath(parent, contentCount, '#')
+		const path = this.createPath(parent, contentCount, '_')
 
 		const contentWithPath = {
 			...content,

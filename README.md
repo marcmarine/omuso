@@ -54,7 +54,7 @@ const result = parse(markdown)-
 //       "depth": 1,
 //       "content": [
 //         {
-//           "path": "1#1",
+//           "path": "1_1",
 //           "type": "paragraph",
 //           "value": "This is a simple paragraph.",
 //           "marks": []
@@ -66,7 +66,7 @@ const result = parse(markdown)-
 //           "depth": 2,
 //           "content": [
 //             {
-//               "path": "1.1#1",
+//               "path": "1.1_1",
 //               "type": "paragraph",
 //               "value": "Another paragraph with italic text.",
 //               "marks": [
@@ -183,7 +183,7 @@ const result = parse(markdown)
 //       "depth": 1,
 //       "content": [
 //         {
-//           "path": "1#1",
+//           "path": "1_1",
 //           "type": "paragraph",
 //           "value": "This is a simple paragraph.",
 //           "marks": []
@@ -195,7 +195,7 @@ const result = parse(markdown)
 //           "depth": 2,
 //           "content": [
 //             {
-//               "path": "1.1#1",
+//               "path": "1.1_1",
 //               "type": "paragraph",
 //               "value": "Another paragraph with italic text.",
 //               "marks": [

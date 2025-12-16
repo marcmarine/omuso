@@ -132,7 +132,7 @@ describe('parser', () => {
 		expect(introParagraph.type).toBe('paragraph')
 		expect(introParagraph.value).toBe('Introduction paragraph.')
 		expect(introParagraph.marks.length).toBe(0)
-		expect(introParagraph.path).toBe('#1')
+		expect(introParagraph.path).toBe('_1')
 
 		const chapter1 = root.content[1] as Section
 		expect(chapter1.type).toBe('section')
@@ -144,7 +144,7 @@ describe('parser', () => {
 		const chapter1Intro = chapter1.content[0] as Paragraph
 		expect(chapter1Intro.type).toBe('paragraph')
 		expect(chapter1Intro.value).toBe('Introduction paragraph.')
-		expect(chapter1Intro.path).toBe('1#1')
+		expect(chapter1Intro.path).toBe('1_1')
 
 		const section1_1 = chapter1.content[1] as Section
 		expect(section1_1.type).toBe('section')
@@ -161,7 +161,7 @@ describe('parser', () => {
 		expect(subsection1_1_1.path).toBe('1.1.1')
 
 		const paragraph1_1_1 = subsection1_1_1.content[0] as Paragraph
-		expect(paragraph1_1_1.path).toBe('1.1.1#1')
+		expect(paragraph1_1_1.path).toBe('1.1.1_1')
 
 		const section1_2 = chapter1.content[2] as Section
 		expect(section1_2.type).toBe('section')
