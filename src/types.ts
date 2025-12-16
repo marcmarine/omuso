@@ -2,8 +2,10 @@ export interface BaseElement {
 	type: string
 }
 
+export type Content = (Section | Paragraph)[]
+
 export interface ParentNode extends BaseElement {
-	content: (Section | Paragraph)[]
+	content: Content
 }
 
 export interface Root extends ParentNode {
