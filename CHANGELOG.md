@@ -1,3 +1,10 @@
+## [1.2.1](https://github.com/marcmarine/omuso/compare/v1.2.0...v1.2.1) (2025-12-17)
+
+
+### Bug Fixes
+
+* Add CommonJS and type definitions to package exports ([3a191f6](https://github.com/marcmarine/omuso/commit/3a191f670cea7635a3abac5cc458d055c57848e9))
+
 # [1.2.0](https://github.com/marcmarine/omuso/compare/v1.1.0...v1.2.0) (2025-12-17)
 
 
