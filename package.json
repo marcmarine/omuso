@@ -2,8 +2,13 @@
 	"name": "omuso",
 	"version": "1.2.0",
 	"description": "Converts Markdown to a structured JSON format.",
-	"exports": "./dist/index.js",
-	"types": "dist/types.d.ts",
+	"exports": {
+		".": {
+			"import": "./dist/index.js",
+			"require": "./dist/index.js",
+			"types": "./dist/types.d.ts"
+		}
+	},
 	"type": "module",
 	"repository": {
 		"type": "git",
