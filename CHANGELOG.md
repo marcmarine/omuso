@@ -1,3 +1,16 @@
+# [1.2.0](https://github.com/marcmarine/omuso/compare/v1.1.0...v1.2.0) (2025-12-17)
+
+
+### Bug Fixes
+
+* Change path separator in content paths ([e8c441c](https://github.com/marcmarine/omuso/commit/e8c441cdb55cc4057c0ab0ae3245025a59b1fd04))
+* Update package exports and repository URL format ([839c984](https://github.com/marcmarine/omuso/commit/839c984c5e82d68b6cdc495c899e3d0c8431b5b1))
+
+
+### Features
+
+* Add Content type for content array in ParentNode ([baaeab0](https://github.com/marcmarine/omuso/commit/baaeab0f88a5cd9aad2e8c6f0360e000089d1552))
+
 # [1.1.0](https://github.com/marcmarine/omuso/compare/v1.0.2...v1.1.0) (2025-10-18)
 
 
