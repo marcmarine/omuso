@@ -9,6 +9,7 @@
 			"types": "./dist/types.d.ts"
 		}
 	},
+	"types": "dist/types.d.ts",
 	"type": "module",
 	"repository": {
 		"type": "git",
