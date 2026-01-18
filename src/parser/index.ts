@@ -5,7 +5,7 @@ import type {
 	Root,
 	Section,
 } from './types'
-import { SectionStack } from './utils'
+import { createSectionBuilder, type SectionBuilder } from './utils'
 
 /**
  * Parses a Markdown string into a structured document tree.
@@ -38,15 +38,15 @@ export function parse(text: string): Root {
 	const metadata = frontmatter ? parseFrontmatterMetadata(frontmatter) : {}
 
 	const root = createInitialRoot(metadata)
-	const sections = new SectionStack(root)
+	const builder = createSectionBuilder(root)
 
 	const contentLines = content.split('\n').filter((line) => line.trim() !== '')
 
 	for (const line of contentLines) {
 		if (line.startsWith('#')) {
-			processHeading(line, sections, root)
+			processHeading(line, builder, root)
 		} else {
-			processParagraph(line, sections)
+			processParagraph(line, builder)
 		}
 	}
 
@@ -117,7 +117,7 @@ function parseFrontmatterMetadata(frontmatter: string): Record<string, string> {
 
 function processHeading(
 	line: string,
-	sections: SectionStack,
+	builder: SectionBuilder,
 	root: Root,
 ): void {
 	let depth = 0
@@ -130,8 +130,7 @@ function processHeading(
 		root.title = title
 	}
 
-	const newSection = createSection(title, depth)
-	sections.pushSection(newSection)
+	builder.pushSection(createSection(title, depth))
 }
 
 function createSection(title: string, markdownDepth: number): Section {
@@ -145,10 +144,9 @@ function createSection(title: string, markdownDepth: number): Section {
 	}
 }
 
-function processParagraph(line: string, sections: SectionStack): void {
+function processParagraph(line: string, builder: SectionBuilder): void {
 	const { value, marks } = parseInlineMarks(line)
-	const newParagraph = createParagraph(value, marks)
-	sections.addContentToCurrentParent(newParagraph)
+	builder.addContent(createParagraph(value, marks))
 }
 
 function createParagraph(value: string, marks: InlineMark[]): Paragraph {
