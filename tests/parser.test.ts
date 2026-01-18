@@ -177,4 +177,33 @@ describe('parser', () => {
 		expect(chapter2.content.length).toBe(1)
 		expect(chapter2.path).toBe('2')
 	})
+
+	test('generates correct slugs for sections and paragraphs', async () => {
+		const markdown = await Bun.file('./tests/fixtures/nested.md').text()
+		const root = parse(markdown)
+
+		const introParagraph = root.content[0] as Paragraph
+		expect(introParagraph.slug).toBe('#1')
+
+		const chapter1 = root.content[1] as Section
+		expect(chapter1.slug).toBe('/chapter-1')
+
+		const chapter1Intro = chapter1.content[0] as Paragraph
+		expect(chapter1Intro.slug).toBe('/chapter-1#1')
+
+		const section1_1 = chapter1.content[1] as Section
+		expect(section1_1.slug).toBe('/chapter-1/section-11')
+
+		const subsection1_1_1 = section1_1.content[1] as Section
+		expect(subsection1_1_1.slug).toBe('/chapter-1/section-11/section-111')
+
+		const paragraph1_1_1 = subsection1_1_1.content[0] as Paragraph
+		expect(paragraph1_1_1.slug).toBe('/chapter-1/section-11/section-111#1')
+
+		const section1_2 = chapter1.content[2] as Section
+		expect(section1_2.slug).toBe('/chapter-1/section-12')
+
+		const chapter2 = root.content[2] as Section
+		expect(chapter2.slug).toBe('/chapter-2')
+	})
 })
