@@ -51,24 +51,28 @@ const result = parse(markdown)-
 //       "path": "1",
 //       "type": "section",
 //       "title": "Hello World",
+//       "slug": "/hello-world",
 //       "depth": 1,
 //       "content": [
 //         {
 //           "path": "1_1",
 //           "type": "paragraph",
 //           "value": "This is a simple paragraph.",
+//           "slug": "/hello-world#1",
 //           "marks": []
 //         },
 //         {
 //           "path": "1.1",
 //           "type": "section",
 //           "title": "Section 1",
+//           "slug": "/hello-world/section-1",
 //           "depth": 2,
 //           "content": [
 //             {
 //               "path": "1.1_1",
 //               "type": "paragraph",
 //               "value": "Another paragraph with italic text.",
+//               "slug": "/hello-world/section-1#1",
 //               "marks": [
 //                 {
 //                   "type": "emphasis",
@@ -124,6 +128,7 @@ interface Section {
   type: 'section'
   path: string
   title: string
+  slug: string
   depth: number
   content: (Section | Paragraph)[]
 }
@@ -137,7 +142,8 @@ Represents a paragraph with text formatting marks.
 interface Paragraph {
   type: 'paragraph'
   path: string
-  content: string
+  value: string
+  slug: string
   marks: InlineMark[]
 }
 ```
@@ -180,24 +186,28 @@ const result = parse(markdown)
 //       "path": "1",
 //       "type": "section",
 //       "title": "Hello World",
+//       "slug": "/hello-world",
 //       "depth": 1,
 //       "content": [
 //         {
 //           "path": "1_1",
 //           "type": "paragraph",
 //           "value": "This is a simple paragraph.",
+//           "slug": "/hello-world#1",
 //           "marks": []
 //         },
 //         {
 //           "path": "1.1",
 //           "type": "section",
 //           "title": "Section 1",
+//           "slug": "/hello-world/section-1",
 //           "depth": 2,
 //           "content": [
 //             {
 //               "path": "1.1_1",
 //               "type": "paragraph",
 //               "value": "Another paragraph with italic text.",
+//               "slug": "/hello-world/section-1#1",
 //               "marks": [
 //                 {
 //                   "type": "emphasis",

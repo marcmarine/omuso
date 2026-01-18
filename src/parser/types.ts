@@ -2,6 +2,11 @@ export interface BaseElement {
 	type: string
 }
 
+interface Location {
+	path: string
+	slug: string
+}
+
 export type Content = (Section | Paragraph)[]
 
 export interface ParentNode extends BaseElement {
@@ -17,8 +22,7 @@ export interface Root extends ParentNode {
 	date?: string
 }
 
-export interface Section extends ParentNode {
-	path: string
+export interface Section extends Location, ParentNode {
 	type: 'section'
 	title: string
 	depth: number
@@ -30,8 +34,7 @@ export interface InlineMark {
 	end: number
 }
 
-export interface Paragraph extends BaseElement {
-	path: string
+export interface Paragraph extends Location, BaseElement {
 	type: 'paragraph'
 	value: string
 	marks: InlineMark[]

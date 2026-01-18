@@ -4,7 +4,7 @@ import type {
 	Paragraph,
 	Root,
 	Section,
-} from '../types'
+} from './types'
 import { SectionStack } from './utils'
 
 /**
@@ -115,7 +115,11 @@ function parseFrontmatterMetadata(frontmatter: string): Record<string, string> {
 	return metadata
 }
 
-function processHeading(line: string, sections: SectionStack, root: Root): void {
+function processHeading(
+	line: string,
+	sections: SectionStack,
+	root: Root,
+): void {
 	let depth = 0
 	while (line[depth] === '#') {
 		depth++
@@ -135,6 +139,7 @@ function createSection(title: string, markdownDepth: number): Section {
 		path: '',
 		type: 'section',
 		title,
+		slug: '',
 		depth: markdownDepth,
 		content: [],
 	}
@@ -151,6 +156,7 @@ function createParagraph(value: string, marks: InlineMark[]): Paragraph {
 		path: '',
 		type: 'paragraph',
 		value,
+		slug: '',
 		marks,
 	}
 }
