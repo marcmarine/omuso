@@ -1,3 +1,12 @@
+# [1.3.0](https://github.com/marcmarine/omuso/compare/v1.2.1...v1.3.0) (2026-01-19)
+
+
+### Features
+
+* Add slugs for sections and paragraphs ([35fc125](https://github.com/marcmarine/omuso/commit/35fc1253cf6601ebd22d8e6629f577bd6e1a0234))
+* Add type declarations for Node projects ([aab472e](https://github.com/marcmarine/omuso/commit/aab472e18c5e7913ed4798b5234e626fbecc52bd))
+* Update slugify to handle numbers in section names ([4b3298f](https://github.com/marcmarine/omuso/commit/4b3298fd8db5f81ed7231cacf8c843d6a0caaed5))
+
 ## [1.2.1](https://github.com/marcmarine/omuso/compare/v1.2.0...v1.2.1) (2025-12-17)
 
 
