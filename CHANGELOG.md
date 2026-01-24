@@ -1,3 +1,16 @@
+# [1.4.0](https://github.com/marcmarine/omuso/compare/v1.3.0...v1.4.0) (2026-01-24)
+
+
+### Bug Fixes
+
+* Rename Element to ContentElement ([7925818](https://github.com/marcmarine/omuso/commit/7925818609c6fb0269f0603c375078ff655eac09))
+
+
+### Features
+
+* Add context module for document parsing and navigation ([af3d1a9](https://github.com/marcmarine/omuso/commit/af3d1a9d7b020bbb08aa22e30b6677a0ea968204))
+* Export createContext from context index file ([0d7fe48](https://github.com/marcmarine/omuso/commit/0d7fe483b8b9d5f0215c2cb338a04304a49ca854))
+
 # [1.3.0](https://github.com/marcmarine/omuso/compare/v1.2.1...v1.3.0) (2026-01-19)
 
 
