@@ -7,7 +7,8 @@ interface Location {
 	slug: string
 }
 
-export type Content = (Section | Paragraph)[]
+export type Element = Section | Paragraph
+export type Content = Array<Element>
 
 export interface ParentNode extends BaseElement {
 	content: Content
