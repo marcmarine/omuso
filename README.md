@@ -1,33 +1,51 @@
-# OMUSO Markdown Parser
+# OMUSO Markdown
 
-A small TypeScript library that turns Markdown into structured JSON, keeping the document’s hierarchy and some text styles.
+A lightweight TypeScript library that converts Markdown into structured data for building reading-focused applications.
 
 [![NPM Version](https://img.shields.io/npm/v/omuso)](https://www.npmjs.com/package/omuso)
 [![GitHub License](https://img.shields.io/github/license/marcmarine/omuso)](LICENSE)
 [![View Changelog](https://img.shields.io/badge/view-CHANGELOG.md-red.svg)](https://github.com/marcmarine/omuso/releases)
 ![NPM Unpacked Size](https://img.shields.io/npm/unpacked-size/omuso)
 
-## Key Features
+OMUSO is designed for apps where Markdown represents document structure, not just formatting, such as books, essays, documentation, or long-form reading experiences.
 
-- **Hierarchical Structure**: Headings (#, ##, etc.) create nested sections, building a clear document tree
-- **Text Formatting Preservation**: Italic text are kept with their position in the tex
-- **Frontmatter Support**: YAML metadata is extracted and linked to document propertie
-- **TypeScript First**: Full type definitions for smooth development experience
-- **Lightweight**: Zero dependencies, designed for efficient parsing
+[Parser](#parser) · [Context](#context)
 
-## Why another parser?
+## Parser
 
-Unlike typical Markdown parsers that build detailed syntax trees, the **OMUSO Markdown Parser** focuses on the logical hierarchy of documents. It uses headings not just to identify formatting but to define nested sections, making each heading start a new node with its related content.
+The parser turns Markdown into a hierarchical, typed JSON structure that mirrors how people actually read documents.
 
-This method is helpful when Markdown encodes semantic structure as well as visual formatting. The parser outputs a well-organized JSON object that reflects the author’s intended document layout, making it easier for developers to understand and work with the content.
+[Go to definitions ↓](#parser-types-definitions)
 
-## Installation
+### Key Features
+
+- **Hierarchical structure**: Headings (#, ##, etc.) create nested sections, forming a clear document tree.
+- **Text formatting preservation**: Inline emphasis is preserved as positional marks instead of raw Markdown.
+- **Frontmatter support**: YAML frontmatter is extracted and exposed as document metadata.
+- **TypeScript-first**: Fully typed output for a smooth developer experience.
+- **Lightweight**: Zero runtime dependencies.
+
+### Why another parser?
+
+Most Markdown parsers focus on producing a detailed syntax tree. **OMUSO focuses on meaning and navigation**.
+
+Headings define logical sections, each becoming a node with its own content, path, and slug. The result is a structured representation that reflects the author’s intended layout and is easy to use for:
+
+- Table of contents
+- Pagination and navigation
+- Breadcrumbs
+- Reading sessions
+- Multi-language documents
+
+The output is optimized for apps, not renderers.
+
+### Installation
 
 ```bash
 npm install omuso
 ```
 
-## Quick Start
+### Quick Start
 
 ```typescript
 import { parse } from 'omuso'
@@ -41,69 +59,73 @@ This is a simple paragraph.
 Another paragraph with *italic text*.
 `
 
-const result = parse(markdown)-
-// Result structure:
-// {
-//   "type": "root",
-//   "title": "Hello World",
-//   "content": [
-//     {
-//       "path": "1",
-//       "type": "section",
-//       "title": "Hello World",
-//       "slug": "/hello-world",
-//       "depth": 1,
-//       "content": [
-//         {
-//           "path": "1_1",
-//           "type": "paragraph",
-//           "value": "This is a simple paragraph.",
-//           "slug": "/hello-world#1",
-//           "marks": []
-//         },
-//         {
-//           "path": "1.1",
-//           "type": "section",
-//           "title": "Section 1",
-//           "slug": "/hello-world/section-1",
-//           "depth": 2,
-//           "content": [
-//             {
-//               "path": "1.1_1",
-//               "type": "paragraph",
-//               "value": "Another paragraph with italic text.",
-//               "slug": "/hello-world/section-1#1",
-//               "marks": [
-//                 {
-//                   "type": "emphasis",
-//                   "start": 23,
-//                   "end": 34
-//                 }
-//               ]
-//             }
-//           ]
-//         }
-//       ]
-//     }
-//   ]
-// }
+const result = parse(markdown)
 ```
 
-## API Reference
+Example output:
 
-### `parse(text: string): Root`
+```json
+{
+  "type": "root",
+  "title": "Hello World",
+  "content": [
+    {
+      "path": "1",
+      "type": "section",
+      "title": "Hello World",
+      "slug": "/hello-world",
+      "depth": 1,
+      "content": [
+        {
+          "path": "1_1",
+          "type": "paragraph",
+          "value": "This is a simple paragraph.",
+          "slug": "/hello-world#1",
+          "marks": []
+        },
+        {
+          "path": "1.1",
+          "type": "section",
+          "title": "Section 1",
+          "slug": "/hello-world/section-1",
+          "depth": 2,
+          "content": [
+            {
+              "path": "1.1_1",
+              "type": "paragraph",
+              "value": "Another paragraph with italic text.",
+              "slug": "/hello-world/section-1#1",
+              "marks": [
+                {
+                  "type": "emphasis",
+                  "start": 23,
+                  "end": 34
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
+```
 
-Converts a Markdown string to a structured JSON representation.
+### API Reference
+
+#### `parse(text: string): Root`
+
+Converts a Markdown string into a structured document tree.
 
 **Parameters:**
-- `text`: The Markdown content as a string
+- `text`: Markdown source
 
 **Returns:**
-- `Root`: The root node containing the parsed document structure
+- `Root`: The parsed document
 
-### Type Definitions
+#### Parser Types Definitions
 
-#### `Root`
+##### `Root`
 
 The top-level document node.
 
@@ -119,9 +141,9 @@ interface Root {
 }
 ```
 
-#### `Section`
+##### `Section`
 
-Represents a heading and its content.
+Represents a heading and its nested content.
 
 ```typescript
 interface Section {
@@ -134,9 +156,9 @@ interface Section {
 }
 ```
 
-#### `Paragraph`
+##### `Paragraph`
 
-Represents a paragraph with text formatting marks.
+A paragraph with inline formatting marks.
 
 ```typescript
 interface Paragraph {
@@ -148,9 +170,9 @@ interface Paragraph {
 }
 ```
 
-#### `InlineMark`
+##### `InlineMark`
 
-Defines formatting applied to text ranges.
+Inline text formatting metadata.
 
 ```typescript
 interface InlineMark {
@@ -160,74 +182,10 @@ interface InlineMark {
 }
 ```
 
-## Usage Examples
-
-### Basic Document
+#### Frontmatter Example
 
 ```typescript
-import { parse } from 'omuso'
-
-const markdown = `# Hello World
-
-This is a simple paragraph.
-
-## Section 1
-
-Another paragraph with *italic text*.
-`
-
-const result = parse(markdown)
-// Result structure:
-// {
-//   "type": "root",
-//   "title": "Hello World",
-//   "content": [
-//     {
-//       "path": "1",
-//       "type": "section",
-//       "title": "Hello World",
-//       "slug": "/hello-world",
-//       "depth": 1,
-//       "content": [
-//         {
-//           "path": "1_1",
-//           "type": "paragraph",
-//           "value": "This is a simple paragraph.",
-//           "slug": "/hello-world#1",
-//           "marks": []
-//         },
-//         {
-//           "path": "1.1",
-//           "type": "section",
-//           "title": "Section 1",
-//           "slug": "/hello-world/section-1",
-//           "depth": 2,
-//           "content": [
-//             {
-//               "path": "1.1_1",
-//               "type": "paragraph",
-//               "value": "Another paragraph with italic text.",
-//               "slug": "/hello-world/section-1#1",
-//               "marks": [
-//                 {
-//                   "type": "emphasis",
-//                   "start": 23,
-//                   "end": 34
-//                 }
-//               ]
-//             }
-//           ]
-//         }
-//       ]
-//     }
-//   ]
-// }
-```
-
-### Document with Frontmatter
-
-```typescript
-const markdownWithFrontmatter = `---
+const markdown = `---
 title: La Iliada
 author: Homer
 language: ca
@@ -240,14 +198,14 @@ date: 1879-01-01
 Canta, deesa, la cólera d'Aquiles, fill de Peleo, cólera fatal que abocá un sens fí de mals...
 `
 
-const result = parse(markdownWithFrontmatter)
-// The frontmatter data will be available in the root node properties
+const result = parse(markdown)
+
 console.log(result.title)      // "La Iliada"
 console.log(result.author)     // "Homer"
 console.log(result.language)   // "ca"
 ```
 
-### Text Formatting
+#### Text Formatting
 
 The library supports emphasis formatting using both `*` and `_` delimiters:
 
@@ -255,7 +213,7 @@ The library supports emphasis formatting using both `*` and `_` delimiters:
 const markdown = `Paragraph with *asterisk emphasis* and _underscore emphasis_.`
 
 const result = parse(markdown)
-const paragraph = result.content[0] as ParagraphNode
+const paragraph = result.content[0] as Paragraph
 
 console.log(paragraph.content) // "Paragraph with asterisk emphasis and underscore emphasis."
 console.log(paragraph.marks)   // [
@@ -264,57 +222,165 @@ console.log(paragraph.marks)   // [
                                // ]
 ```
 
-### Nested Sections
+### Supported Markdown Features
 
-```typescript
-const markdown = `# Main Title
+- ✅ Headings (H1-H6)
+- ✅ Paragraphs
+- ✅ Emphasis (`*italic*`, `_italic_`)
+- ✅ YAML frontmatter
+- 
+Planned / not yet supported:
 
-## Chapter 1
+- ❌ Strong text
+- ❌ Lists
+- ❌ Links
+- ❌ Images
+- ❌ Code blocks
 
-Introduction paragraph.
+## Context
 
-### Section 1.1
+The context layer builds on top of the parser to support reading workflows.
 
-Subsection content.
+It lets you:
 
-### Section 1.2
+- Load one or more Markdown sources (typically per language).
+- Generate navigation manifests.
+- Create reading sessions with next/previous navigation, breadcrumbs and search.
 
-Another subsection.
+[Go to definitions ↓](#context-types-definitions)
 
-## Chapter 2
+### `createContext()`
 
-Second chapter content.
-`
+Creates an isolated context instance.
 
-const result = parse(markdown)
-// Creates a hierarchical structure with nested sections
+```ts
+import { createContext } from 'omuso'
+
+const ctx = createContext().init({
+  markdowns: {
+    en: '# Title\n\n## Chapter 1\n\nHello'
+  }
+})
 ```
 
-## Supported Markdown Features
+After initialization:
 
-- ✅ **Headers** (H1-H6) - Converted to sections with depth
-- ✅ **Paragraphs** - Text content with formatting marks
-- ✅ **Emphasis** - `*italic*` and `_italic_` text
-- ✅ **Frontmatter** - YAML-style metadata parsing
-- ❌ **Strong text** - Coming soon...
-- ❌ **Lists** - Not currently supported
-- ❌ **Links** - Not currently supported
-- ❌ **Images** - Not currently supported
-- ❌ **Code blocks** - Not currently supported
+- `ctx.languages` → Available languages
+- `ctx.roots[lang]` → Parsed document
+- `ctx.manifests[lang]` → Navigation metadata
+
+#### `ctx.manifest(lang: string)`
+
+Returns the manifest for a language.
+
+```
+const manifest = ctx.manifest('en')
+console.log(manifest?.paths)
+```
+
+#### `ctx.session(path: string, query = '', lang: string)`
+
+Creates a reading session for a specific section.
+
+```
+const session = ctx.session('1.1', '', 'en')
+
+console.log(session.currentSection?.title)
+console.log(session.breadcrumbs.map(b => b.title))
+console.log(session.nextSection?.path)
+```
+
+A session includes:
+
+- Current section content
+- Breadcrumbs
+- Previous / Next section
+- Search state
+
+### Singleton `context`
+
+If you don’t need multiple contexts, OMUSO exports a singleton:
+
+```
+import { context } from 'omuso'
+
+context.init({
+  markdowns: { en: '# Title\n\n## Chapter 1\n\nHello' }
+})
+
+const session = context.session('1', '', 'en')
+```
+
+> [!TIP]
+> The parsed section data is available at `session.currentSection`.
+
+### Context Types Definitions
+
+#### `Manifest`
+
+Derived metadata used for navigation and lookup.
+
+```
+interface Manifest {
+  metadata: {
+    title: string
+    author: string
+    language: string
+    translator: string
+  }
+  tableOfContents: Section[]
+  paths: string[]
+  slugs: Record<string, string>
+  pathBySlug: Record<string, string>
+  breadcrumbIndex: Record<string, SectionReference[]>
+}
+```
+
+#### `Session`
+
+Represents the current “reading state” for a given section path.
+
+```
+interface Session {
+  currentSection: Section | null
+  nextSection: SectionReference | null
+  prevSection: SectionReference | null
+  breadcrumbs: SectionReference[]
+  search: {
+    query: string
+    results: SearchResult[]
+    totalMatches: number
+  }
+  language: string
+}
+```
+
+#### `SectionReference`
+
+A lightweight reference to a section, used for breadcrumbs and navigation.
+
+```
+interface SectionReference {
+  path: string
+  title: string
+  depth: number
+  slug: string
+}
+```
+
+#### `SearchResult`
+
+Under development...
 
 ## Development
 
 ```bash
-# Install dependencies
 bun install
-
-# Run tests
+bun dev
 bun test
-
-# Build the package
 bun run build
 ```
 
 ## License
 
-MIT License - see the [LICENSE](LICENSE) file for details.
+MIT - see [LICENSE ↗](LICENSE).
