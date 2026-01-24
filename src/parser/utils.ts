@@ -1,3 +1,4 @@
+import { slugify } from '../common/utils'
 import type { Paragraph, Root, Section } from './types'
 
 export type SectionBuilder = ReturnType<typeof createSectionBuilder>
@@ -72,15 +73,4 @@ function buildSlug(
 ): string {
 	const suffix = title ? `/${slugify(title)}` : `#${index + 1}`
 	return parent.type === 'root' ? suffix : `${parent.slug}${suffix}`
-}
-
-function slugify(text: string): string {
-	return text
-		.toLowerCase()
-		.normalize('NFKD')
-		.replace(/[^\p{L}\p{N}\s.-]/gu, '')
-		.trim()
-		.replace(/\s+/g, '-')
-		.replace(/-+/g, '-')
-		.replace(/\./g, '-')
 }

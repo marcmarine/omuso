@@ -1,3 +1,4 @@
+export { context } from './context/index'
+export type * from './context/types'
 export { parse } from './parser'
-export * as omuso from './parser/index'
 export * from './parser/types'
