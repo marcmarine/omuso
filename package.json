@@ -1,7 +1,7 @@
 {
 	"name": "omuso",
 	"version": "1.4.0",
-	"description": "Converts Markdown to a structured JSON format.",
+	"description": "Converts Markdown into structured data for building reading-focused applications.",
 	"exports": {
 		".": {
 			"import": "./dist/index.js",
