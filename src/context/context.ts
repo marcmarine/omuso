@@ -1,19 +1,21 @@
 import { parse } from '../parser'
 import type { Root } from '../parser/types'
-import { buildManifest, generateReadingSession, type Manifest } from '.'
+import {
+	type BookContext,
+	type BookContextConfig,
+	buildManifest,
+	generateReadingSession,
+	type Manifest,
+} from '.'
 
 export const createContext = () => {
-	const ctx = {
-		roots: {} as Record<string, Root>,
-		manifests: {} as Record<string, Manifest>,
-		maxNavigationDepth: Infinity as number | undefined,
-		languages: [] as Array<string>,
+	const ctx: BookContext = {
+		roots: {},
+		manifests: {},
+		maxNavigationDepth: Infinity,
+		languages: [],
 
-		init(config: {
-			markdowns: Record<string, string>
-			defaultLanguage?: string
-			maxNavigationDepth?: number
-		}) {
+		init(config: BookContextConfig) {
 			const markdowns = config.markdowns
 			this.languages = Object.keys(markdowns)
 			this.maxNavigationDepth = config.maxNavigationDepth
@@ -28,7 +30,7 @@ export const createContext = () => {
 		},
 
 		manifest(lang: string) {
-			const manifest = this.manifests[lang]
+			const manifest = this.manifests[lang] as Manifest
 
 			return manifest
 		},
@@ -53,5 +55,4 @@ export const createContext = () => {
 	return ctx
 }
 
-export type BookContext = ReturnType<typeof createContext>
 export const context = createContext()

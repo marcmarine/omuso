@@ -1,4 +1,72 @@
-import type { Section } from '../parser/types'
+import type { Root, Section } from '../parser/types'
+
+/**
+ * Represents the context for a book, containing roots, manifests, and session management.
+ */
+export type BookContext = {
+	/**
+	 * A record of root objects keyed by language.
+	 */
+	roots: Record<string, Root>
+
+	/**
+	 * A record of manifest objects keyed by language.
+	 */
+	manifests: Record<string, Manifest>
+
+	/**
+	 * The maximum depth for navigation in the book.
+	 */
+	maxNavigationDepth: number | undefined
+
+	/**
+	 * An array of supported languages for the book.
+	 */
+	languages: Array<string>
+
+	/**
+	 * Initializes the BookContext with the provided configuration.
+	 * @param config - Configuration object for initialization.
+	 * @returns The initialized BookContext.
+	 */
+	init(config: BookContextConfig): BookContext
+
+	/**
+	 * Retrieves the manifest for a specific language.
+	 * @param lang - The language code for the manifest.
+	 * @returns The manifest for the specified language.
+	 */
+	manifest(lang: string): Manifest
+
+	/**
+	 * Creates a new session for the given path, query, and language.
+	 * @param path - The path to the current section.
+	 * @param query - The search query (if any).
+	 * @param lang - The language code for the session.
+	 * @returns A new Session object.
+	 */
+	session(path: string, query: string, lang: string): Session
+}
+
+/**
+ * Configuration options for initializing a BookContext.
+ */
+export type BookContextConfig = {
+	/**
+	 * A record of markdown content keyed by language.
+	 */
+	markdowns: Record<string, string>
+
+	/**
+	 * The default language for the book (optional).
+	 */
+	defaultLanguage?: string
+
+	/**
+	 * The maximum navigation depth (optional).
+	 */
+	maxNavigationDepth?: number
+}
 
 interface BaseResult {
 	path: string
