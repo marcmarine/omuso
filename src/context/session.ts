@@ -65,15 +65,13 @@ export const generateReadingSession = (
 	const breadcrumbs: SectionReference[] =
 		(currentPath ? breadcrumbIndex[currentPath] : undefined) ?? []
 
+	const navigator = createSectionNavigator(paths, references, { maxNavigationDepth, omittedPaths })
+
 	return {
 		currentSection,
 		breadcrumbs,
-		nextSection: currentPath
-			? getNextSection(paths, currentPath, references, maxNavigationDepth, omittedPaths)
-			: null,
-		prevSection: currentPath
-			? getPrevSection(paths, currentPath, references, maxNavigationDepth, omittedPaths)
-			: null,
+		nextSection: currentPath ? navigator.getNext(currentPath) : null,
+		prevSection: currentPath ? navigator.getPrev(currentPath) : null,
 		search: {
 			query,
 			results,
@@ -83,72 +81,48 @@ export const generateReadingSession = (
 	}
 }
 
-function getNextSection(
-	paths: string[],
-	currentPath: string,
-	references: Record<string, SectionReference>,
-	maxNavigationDepth?: number,
+interface SectionNavigatorOptions {
+	maxNavigationDepth?: number
 	omittedPaths?: Array<string>
-): SectionReference | null {
-	const effectivePath =
-		maxNavigationDepth === undefined || maxNavigationDepth === Infinity
-			? currentPath
-			: clampPathToDepth(currentPath, maxNavigationDepth)
-	const index = paths.indexOf(effectivePath)
-	if (index === -1) return null
-
-	const isOmitted = (path: string): boolean =>
-		omittedPaths?.some((omitted) => path === omitted || path.startsWith(`${omitted}.`)) ?? false
-
-	if (maxNavigationDepth === undefined || maxNavigationDepth === Infinity) {
-		for (let i = index + 1; i < paths.length; i++) {
-			if (!isOmitted(paths[i] as string)) {
-				return references[paths[i] as string] ?? null
-			}
-		}
-		return null
-	}
-
-	for (let i = index + 1; i < paths.length; i++) {
-		const path = paths[i] as string
-		if (path.split('.').length <= maxNavigationDepth && !isOmitted(path)) {
-			return references[path] ?? null
-		}
-	}
-	return null
 }
 
-function getPrevSection(
+function createSectionNavigator(
 	paths: string[],
-	currentPath: string,
 	references: Record<string, SectionReference>,
-	maxNavigationDepth?: number,
-	omittedPaths?: Array<string>
-): SectionReference | null {
-	const effectivePath =
-		maxNavigationDepth === undefined || maxNavigationDepth === Infinity
-			? currentPath
-			: clampPathToDepth(currentPath, maxNavigationDepth)
-	const index = paths.indexOf(effectivePath)
-	if (index <= 0) return null
+	options: SectionNavigatorOptions = {}
+) {
+	const { maxNavigationDepth, omittedPaths } = options
 
 	const isOmitted = (path: string): boolean =>
 		omittedPaths?.some((omitted) => path === omitted || path.startsWith(`${omitted}.`)) ?? false
 
-	if (maxNavigationDepth === undefined || maxNavigationDepth === Infinity) {
-		for (let i = index - 1; i >= 0; i--) {
-			if (!isOmitted(paths[i] as string)) {
-				return references[paths[i] as string] ?? null
+	const withinDepth = (path: string): boolean =>
+		maxNavigationDepth === undefined || maxNavigationDepth === Infinity
+			? true
+			: path.split('.').length <= maxNavigationDepth
+
+	function getAdjacent(currentPath: string, direction: 'next' | 'prev'): SectionReference | null {
+		const effectivePath =
+			maxNavigationDepth === undefined || maxNavigationDepth === Infinity
+				? currentPath
+				: clampPathToDepth(currentPath, maxNavigationDepth)
+		const index = paths.indexOf(effectivePath)
+		if (direction === 'next' ? index === -1 : index <= 0) return null
+
+		const step = direction === 'next' ? 1 : -1
+		const withinBounds = (i: number) => direction === 'next' ? i < paths.length : i >= 0
+
+		for (let i = index + step; withinBounds(i); i += step) {
+			const path = paths[i] as string
+			if (withinDepth(path) && !isOmitted(path)) {
+				return references[path] ?? null
 			}
 		}
 		return null
 	}
 
-	for (let i = index - 1; i >= 0; i--) {
-		const path = paths[i] as string
-		if (path.split('.').length <= maxNavigationDepth && !isOmitted(path)) {
-			return references[path] ?? null
-		}
+	return {
+		getNext: (currentPath: string) => getAdjacent(currentPath, 'next'),
+		getPrev: (currentPath: string) => getAdjacent(currentPath, 'prev'),
 	}
-	return null
 }
