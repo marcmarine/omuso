@@ -25,6 +25,11 @@ export type BookContext = {
 	languages: Array<string>
 
 	/**
+	 * An array of section paths to omit from the book context.
+	 */
+	omittedPaths: Array<string>
+
+	/**
 	 * Initializes the BookContext with the provided configuration.
 	 * @param config - Configuration object for initialization.
 	 * @returns The initialized BookContext.
@@ -45,7 +50,7 @@ export type BookContext = {
 	 * @param lang - The language code for the session.
 	 * @returns A new Session object.
 	 */
-	session(path: string, query: string, lang: string): Session
+  session(path: string, query: string, lang: string): Session
 }
 
 /**
@@ -66,6 +71,11 @@ export type BookContextConfig = {
 	 * The maximum navigation depth (optional).
 	 */
 	maxNavigationDepth?: number
+
+	/**
+	 * An array of section paths to omit from the book context (optional).
+	 */
+	omitPaths?: Array<string>
 }
 
 interface BaseResult {

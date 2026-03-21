@@ -100,12 +100,15 @@ export function buildSlugs(
 	)
 }
 
-export function buildTableOfContents(content: Content): Section[] {
+export function buildTableOfContents(content: Content, omittedPaths: Array<string> = []): Section[] {
 	const collect = (elements: Array<ContentElement>): Section[] => {
-		const tableOfContents: Section[] = []
+    const tableOfContents: Section[] = []
 
-		for (const element of elements) {
-			if (element.type !== 'section') continue
+    const hasOmit = omittedPaths.length > 0
+    const omitSet = hasOmit ? new Set(omittedPaths) : null
+
+    for (const element of elements) {
+			if (element.type !== 'section' || omitSet?.has(element.path)) continue
 
 			tableOfContents.push({
 				...element,

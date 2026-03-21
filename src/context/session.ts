@@ -16,7 +16,8 @@ export const generateReadingSession = (
 	initialPath: string | null,
 	query: string,
 	language: string,
-	maxNavigationDepth?: number,
+  maxNavigationDepth?: number,
+	omittedPaths?: Array<string>
 ): Session => {
 	const { breadcrumbIndex, paths } = manifest
 	const currentPath = initialPath
@@ -68,10 +69,10 @@ export const generateReadingSession = (
 		currentSection,
 		breadcrumbs,
 		nextSection: currentPath
-			? getNextSection(paths, currentPath, references, maxNavigationDepth)
+			? getNextSection(paths, currentPath, references, maxNavigationDepth, omittedPaths)
 			: null,
 		prevSection: currentPath
-			? getPrevSection(paths, currentPath, references, maxNavigationDepth)
+			? getPrevSection(paths, currentPath, references, maxNavigationDepth, omittedPaths)
 			: null,
 		search: {
 			query,
@@ -87,25 +88,33 @@ function getNextSection(
 	currentPath: string,
 	references: Record<string, SectionReference>,
 	maxNavigationDepth?: number,
+	omittedPaths?: Array<string>
 ): SectionReference | null {
 	const effectivePath =
 		maxNavigationDepth === undefined || maxNavigationDepth === Infinity
 			? currentPath
 			: clampPathToDepth(currentPath, maxNavigationDepth)
-
 	const index = paths.indexOf(effectivePath)
 	if (index === -1) return null
 
+	const isOmitted = (path: string): boolean =>
+		omittedPaths?.some((omitted) => path === omitted || path.startsWith(`${omitted}.`)) ?? false
+
 	if (maxNavigationDepth === undefined || maxNavigationDepth === Infinity) {
-		return references[paths[index + 1] as string] ?? null
+		for (let i = index + 1; i < paths.length; i++) {
+			if (!isOmitted(paths[i] as string)) {
+				return references[paths[i] as string] ?? null
+			}
+		}
+		return null
 	}
 
 	for (let i = index + 1; i < paths.length; i++) {
-		if ((paths[i] as string).split('.').length <= maxNavigationDepth) {
-			return references[paths[i] as string] ?? null
+		const path = paths[i] as string
+		if (path.split('.').length <= maxNavigationDepth && !isOmitted(path)) {
+			return references[path] ?? null
 		}
 	}
-
 	return null
 }
 
@@ -114,24 +123,32 @@ function getPrevSection(
 	currentPath: string,
 	references: Record<string, SectionReference>,
 	maxNavigationDepth?: number,
+	omittedPaths?: Array<string>
 ): SectionReference | null {
 	const effectivePath =
 		maxNavigationDepth === undefined || maxNavigationDepth === Infinity
 			? currentPath
 			: clampPathToDepth(currentPath, maxNavigationDepth)
-
 	const index = paths.indexOf(effectivePath)
 	if (index <= 0) return null
 
+	const isOmitted = (path: string): boolean =>
+		omittedPaths?.some((omitted) => path === omitted || path.startsWith(`${omitted}.`)) ?? false
+
 	if (maxNavigationDepth === undefined || maxNavigationDepth === Infinity) {
-		return references[paths[index - 1] as string] ?? null
+		for (let i = index - 1; i >= 0; i--) {
+			if (!isOmitted(paths[i] as string)) {
+				return references[paths[i] as string] ?? null
+			}
+		}
+		return null
 	}
 
 	for (let i = index - 1; i >= 0; i--) {
-		if ((paths[i] as string).split('.').length <= maxNavigationDepth) {
-			return references[paths[i] as string] ?? null
+		const path = paths[i] as string
+		if (path.split('.').length <= maxNavigationDepth && !isOmitted(path)) {
+			return references[path] ?? null
 		}
 	}
-
 	return null
 }

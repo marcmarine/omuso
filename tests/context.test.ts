@@ -52,7 +52,46 @@ describe('context', () => {
 			expect(ctx.session('1', '', 'en').currentSection?.title).toBe('Chapter 1')
 		})
 	})
+  describe('omitPaths', () => {
+   	const collectTocPaths = (sections: Array<{ path: string; content?: any[] }>): string[] =>
+        sections.flatMap((s) => [s.path, ...(s.content ? collectTocPaths(s.content) : [])])
 
+		test('removes specified sections from the manifest', async () => {
+			const markdown = await Bun.file('./tests/fixtures/nested.md').text()
+
+			const ctx = context.init({
+				markdowns: { en: markdown },
+				omitPaths: ['1.1'],
+			})
+
+      const manifest = ctx.manifest('en')
+      const tocPaths = collectTocPaths(manifest.tableOfContents)
+
+  		expect(tocPaths).not.toContain('1.1')
+  		expect(tocPaths).not.toContain('1.1.1')
+
+
+			const session = ctx.session('1', '', 'en')
+			expect(session.currentSection?.title).toBe('Chapter 1')
+			expect(session.nextSection?.path).toBe('1.2')
+		})
+
+		test('works with singleton context', async () => {
+			const markdown = await Bun.file('./tests/fixtures/nested.md').text()
+
+			const ctx = context.init({
+				markdowns: { en: markdown },
+				omitPaths: ['1.2'],
+			})
+
+      const manifest = ctx.manifest('en')
+      const tocPaths = collectTocPaths(manifest.tableOfContents)
+      expect(tocPaths).not.toContain('1.2')
+
+			const session = ctx.session('1.1', '', 'en')
+			expect(session.nextSection?.path).toBe('1.1.1')
+		})
+	})
 	describe('manifest', () => {
 		test('buildManifest produces expected metadata and indices', async () => {
 			const markdown = await Bun.file('./tests/fixtures/frontmatter.md').text()
@@ -132,7 +171,7 @@ describe('context', () => {
 			expect(slugs['1.1.1']).toBe('/chapter-1/section-1-1/section-1-1-1')
 		})
 
-		test('navigation: buildTableOfContents returns only sections (no paragraphs)', async () => {
+		test('buildTableOfContents returns only sections (no paragraphs)', async () => {
 			const markdown = await Bun.file('./tests/fixtures/nested.md').text()
 			const root = parse(markdown)
 
