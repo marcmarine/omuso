@@ -253,7 +253,7 @@ It lets you:
 
 Creates an isolated context instance.
 
-```ts
+```typescript
 import { createContext } from 'omuso'
 
 const ctx = createContext().init({
@@ -273,7 +273,7 @@ After initialization:
 
 Returns the manifest for a language.
 
-```
+```javascript
 const manifest = ctx.manifest('en')
 console.log(manifest?.paths)
 ```
@@ -282,7 +282,7 @@ console.log(manifest?.paths)
 
 Creates a reading session for a specific section.
 
-```
+```javascript
 const session = ctx.session('1.1', '', 'en')
 
 console.log(session.currentSection?.title)
@@ -301,7 +301,7 @@ A session includes:
 
 If you don’t need multiple contexts, OMUSO exports a singleton:
 
-```
+```javascript
 import { context } from 'omuso'
 
 context.init({
@@ -320,7 +320,7 @@ const session = context.session('1', '', 'en')
 
 Derived metadata used for navigation and lookup.
 
-```
+```typescript
 interface Manifest {
   metadata: {
     title: string
@@ -340,7 +340,7 @@ interface Manifest {
 
 Represents the current “reading state” for a given section path.
 
-```
+```typescript
 interface Session {
   currentSection: Section | null
   nextSection: SectionReference | null
@@ -359,7 +359,7 @@ interface Session {
 
 A lightweight reference to a section, used for breadcrumbs and navigation.
 
-```
+```typescript
 interface SectionReference {
   path: string
   title: string
