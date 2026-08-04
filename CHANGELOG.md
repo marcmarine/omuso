@@ -1,3 +1,16 @@
+# [1.5.0](https://github.com/marcmarine/omuso/compare/v1.4.0...v1.5.0) (2026-08-04)
+
+
+### Bug Fixes
+
+* Implement proper Markdown paragraph splitting ([6a76972](https://github.com/marcmarine/omuso/commit/6a7697292c9a91aff4da15edf7a790622c6621c3))
+
+
+### Features
+
+* Add BookContext and BookContextConfig types ([65ccf44](https://github.com/marcmarine/omuso/commit/65ccf446e882734bdd8ae6488351fd6aab93aaca))
+* Support omitting specific paths from context ([549ecf6](https://github.com/marcmarine/omuso/commit/549ecf6f274d0f841ce9903f465d8c8b935d7950))
+
 # [1.4.0](https://github.com/marcmarine/omuso/compare/v1.3.0...v1.4.0) (2026-01-24)
 
 
