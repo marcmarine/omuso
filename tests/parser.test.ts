@@ -206,4 +206,75 @@ describe('parser', () => {
 		const chapter2 = root.content[2] as Section
 		expect(chapter2.slug).toBe('/chapter-2')
 	})
+
+	test('keeps a single line break inside a paragraph', () => {
+		const root = parse('First line.\nSecond line.')
+
+		expect(root.content.length).toBe(1)
+		const paragraph = root.content[0] as Paragraph
+		expect(paragraph.type).toBe('paragraph')
+		expect(paragraph.value).toBe('First line.\nSecond line.')
+		expect(paragraph.path).toBe('_1')
+		expect(paragraph.slug).toBe('#1')
+		expect(paragraph.marks).toEqual([])
+	})
+
+	test('splits paragraphs on two consecutive line breaks', () => {
+		const root = parse('a\n\nb')
+
+		expect(root.content.length).toBe(2)
+		expect((root.content[0] as Paragraph).value).toBe('a')
+		expect((root.content[1] as Paragraph).value).toBe('b')
+	})
+
+	test('does not create empty paragraphs from extra line breaks', () => {
+		const root = parse('a\n\n\nb')
+
+		expect(root.content.length).toBe(2)
+		expect((root.content[0] as Paragraph).value).toBe('a')
+		expect((root.content[1] as Paragraph).value).toBe('b')
+	})
+
+	test('splits paragraphs on four consecutive line breaks', () => {
+		const root = parse('a\n\n\n\nb')
+
+		expect(root.content.length).toBe(2)
+	})
+
+	test('parses multiple multi-line paragraphs', () => {
+		const root = parse(
+			`First line.\nSecond line.\n\nThird paragraph.\nFourth line.`,
+		)
+
+		expect(root.content.length).toBe(2)
+		expect((root.content[0] as Paragraph).value).toBe(
+			'First line.\nSecond line.',
+		)
+		expect((root.content[1] as Paragraph).value).toBe(
+			'Third paragraph.\nFourth line.',
+		)
+	})
+
+	test('headings interrupt paragraphs without a blank line', () => {
+		const root = parse('Intro text.\n## Heading\nMore text.')
+
+		expect(root.content.length).toBe(2)
+		expect((root.content[0] as Paragraph).value).toBe('Intro text.')
+
+		const section = root.content[1] as Section
+		expect(section.type).toBe('section')
+		expect(section.title).toBe('Heading')
+		expect((section.content[0] as Paragraph).value).toBe('More text.')
+	})
+
+	test('keeps inline marks across a multi-line paragraph', () => {
+		const root = parse('Text with *emphasis*\ncontinues here.')
+
+		expect(root.content.length).toBe(1)
+		const paragraph = root.content[0] as Paragraph
+		expect(paragraph.value).toBe('Text with emphasis\ncontinues here.')
+		expect(paragraph.marks.length).toBe(1)
+		const mark = paragraph.marks[0] as InlineMark
+		expect(paragraph.value.slice(mark.start, mark.end)).toBe('emphasis')
+	})
 })

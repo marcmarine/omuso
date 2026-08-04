@@ -40,17 +40,49 @@ export function parse(text: string): Root {
 	const root = createInitialRoot(metadata)
 	const builder = createSectionBuilder(root)
 
-	const contentLines = content.split('\n').filter((line) => line.trim() !== '')
-
-	for (const line of contentLines) {
-		if (line.startsWith('#')) {
-			processHeading(line, builder, root)
+	for (const block of splitBlocks(content)) {
+		if (block.startsWith('#')) {
+			processHeading(block, builder, root)
 		} else {
-			processParagraph(line, builder)
+			processParagraph(block, builder)
 		}
 	}
 
 	return root
+}
+
+/**
+ * Splits Markdown content into blocks (paragraphs and headings) following
+ * standard Markdown paragraph semantics:
+ * - A single newline keeps consecutive lines in the same paragraph.
+ * - Two or more consecutive newlines separate paragraphs (extra blank lines never produce empty paragraphs).
+ * - Heading lines always start a new block, since an ATX heading interrupts a paragraph even without a preceding blank line.
+ */
+function splitBlocks(content: string): string[] {
+	const blocks: string[] = []
+	let paragraphLines: string[] = []
+
+	const flushParagraph = (): void => {
+		if (paragraphLines.length > 0) {
+			blocks.push(paragraphLines.join('\n'))
+			paragraphLines = []
+		}
+	}
+
+	for (const line of content.split('\n')) {
+		if (line.trim() === '' || line.startsWith('#')) {
+			flushParagraph()
+			if (line.trim() !== '') {
+				blocks.push(line)
+			}
+		} else {
+			paragraphLines.push(line)
+		}
+	}
+
+	flushParagraph()
+
+	return blocks
 }
 
 function createInitialRoot(metadata: Record<string, string>): Root {
