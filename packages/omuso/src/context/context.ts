@@ -23,12 +23,12 @@ export const createContext = () => {
 				config?.maxNavigationDepth ?? this.maxNavigationDepth
 			this.omittedPaths = config?.omitPaths ?? this.omittedPaths
 
-      for (const lang of this.languages) {
+			for (const lang of this.languages) {
 				const root = parse(markdowns[lang] as string)
 
 				this.roots[lang] = root
 				this.manifests[lang] = buildManifest(root, this.omittedPaths)
-      }
+			}
 
 			return this
 		},
@@ -49,12 +49,12 @@ export const createContext = () => {
 				path,
 				query,
 				lang,
-        this.maxNavigationDepth,
-				this.omittedPaths
+				this.maxNavigationDepth,
+				this.omittedPaths,
 			)
 
 			return session
-    },
+		},
 	}
 
 	return ctx

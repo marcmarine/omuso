@@ -16,8 +16,8 @@ export const generateReadingSession = (
 	initialPath: string | null,
 	query: string,
 	language: string,
-  maxNavigationDepth?: number,
-	omittedPaths?: Array<string>
+	maxNavigationDepth?: number,
+	omittedPaths?: Array<string>,
 ): Session => {
 	const { breadcrumbIndex, paths } = manifest
 	const currentPath = initialPath
@@ -65,7 +65,10 @@ export const generateReadingSession = (
 	const breadcrumbs: SectionReference[] =
 		(currentPath ? breadcrumbIndex[currentPath] : undefined) ?? []
 
-	const navigator = createSectionNavigator(paths, references, { maxNavigationDepth, omittedPaths })
+	const navigator = createSectionNavigator(paths, references, {
+		maxNavigationDepth,
+		omittedPaths,
+	})
 
 	return {
 		currentSection,
@@ -89,19 +92,24 @@ interface SectionNavigatorOptions {
 function createSectionNavigator(
 	paths: string[],
 	references: Record<string, SectionReference>,
-	options: SectionNavigatorOptions = {}
+	options: SectionNavigatorOptions = {},
 ) {
 	const { maxNavigationDepth, omittedPaths } = options
 
 	const isOmitted = (path: string): boolean =>
-		omittedPaths?.some((omitted) => path === omitted || path.startsWith(`${omitted}.`)) ?? false
+		omittedPaths?.some(
+			(omitted) => path === omitted || path.startsWith(`${omitted}.`),
+		) ?? false
 
 	const withinDepth = (path: string): boolean =>
 		maxNavigationDepth === undefined || maxNavigationDepth === Infinity
 			? true
 			: path.split('.').length <= maxNavigationDepth
 
-	function getAdjacent(currentPath: string, direction: 'next' | 'prev'): SectionReference | null {
+	function getAdjacent(
+		currentPath: string,
+		direction: 'next' | 'prev',
+	): SectionReference | null {
 		const effectivePath =
 			maxNavigationDepth === undefined || maxNavigationDepth === Infinity
 				? currentPath
@@ -110,7 +118,8 @@ function createSectionNavigator(
 		if (direction === 'next' ? index === -1 : index <= 0) return null
 
 		const step = direction === 'next' ? 1 : -1
-		const withinBounds = (i: number) => direction === 'next' ? i < paths.length : i >= 0
+		const withinBounds = (i: number) =>
+			direction === 'next' ? i < paths.length : i >= 0
 
 		for (let i = index + step; withinBounds(i); i += step) {
 			const path = paths[i] as string

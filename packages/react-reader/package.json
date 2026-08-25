@@ -1,0 +1,46 @@
+{
+	"name": "@omuso/react-reader",
+	"version": "0.1.0",
+	"description": "React components and hooks for building reading experiences on top of OMUSO.",
+	"private": true,
+	"exports": {
+		".": {
+			"import": "./dist/index.js",
+			"require": "./dist/index.js",
+			"types": "./dist/index.d.ts"
+		}
+	},
+	"types": "dist/index.d.ts",
+	"type": "module",
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/marcmarine/omuso.git",
+		"directory": "packages/react-reader"
+	},
+	"bugs": "https://github.com/marcmarine/omuso/issues/new",
+	"author": "Marc Mariné <shenobi@gmail.com>",
+	"license": "MIT",
+	"scripts": {
+		"build:types": "tsc --emitDeclarationOnly",
+		"build": "bun build ./src/index.ts --outdir ./dist --target browser --minify && bun run build:types"
+	},
+	"dependencies": {
+		"omuso": "workspace:*"
+	},
+	"devDependencies": {
+		"@types/react": "^19"
+	},
+	"peerDependencies": {
+		"react": "^18 || ^19",
+		"typescript": "^5"
+	},
+	"files": [
+		"dist"
+	],
+	"keywords": [
+		"react",
+		"reader",
+		"markdown",
+		"omuso"
+	]
+}

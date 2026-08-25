@@ -1,0 +1,17 @@
+{
+	"$schema": "https://raw.githubusercontent.com/googleapis/release-please/main/schemas/config.json",
+	"bump-minor-pre-major": true,
+	"separate-pull-requests": true,
+	"packages": {
+		"packages/omuso": {
+			"release-type": "node",
+			"package-name": "omuso",
+			"changelog-path": "CHANGELOG.md"
+		},
+		"packages/react-reader": {
+			"release-type": "node",
+			"package-name": "react-reader",
+			"changelog-path": "CHANGELOG.md"
+		}
+	}
+}

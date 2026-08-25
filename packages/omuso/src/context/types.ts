@@ -50,7 +50,7 @@ export type BookContext = {
 	 * @param lang - The language code for the session.
 	 * @returns A new Session object.
 	 */
-  session(path: string, query: string, lang: string): Session
+	session(path: string, query: string, lang: string): Session
 }
 
 /**

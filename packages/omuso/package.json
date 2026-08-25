@@ -1,0 +1,44 @@
+{
+	"name": "omuso",
+	"version": "1.5.0",
+	"description": "Converts Markdown into structured data for building reading-focused applications.",
+	"exports": {
+		".": {
+			"import": "./dist/index.js",
+			"require": "./dist/index.js",
+			"types": "./dist/types.d.ts"
+		}
+	},
+	"types": "dist/types.d.ts",
+	"type": "module",
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/marcmarine/omuso.git",
+		"directory": "packages/omuso"
+	},
+	"bugs": "https://github.com/marcmarine/omuso/issues/new",
+	"author": "Marc Mariné <shenobi@gmail.com>",
+	"license": "MIT",
+	"scripts": {
+		"build:types": "dts-bundle-generator -o ./dist/types.d.ts ./src/index.ts --no-banner --project tsconfig.build.json",
+		"build": "bun build ./src/index.ts --outdir ./dist --target node --minify && bun run build:types",
+		"test": "bun test"
+	},
+	"devDependencies": {
+		"dts-bundle-generator": "^9.5.1"
+	},
+	"peerDependencies": {
+		"typescript": "^5"
+	},
+	"files": [
+		"dist"
+	],
+	"keywords": [
+		"markdown",
+		"md",
+		"json",
+		"parser",
+		"syntax",
+		"tree"
+	]
+}

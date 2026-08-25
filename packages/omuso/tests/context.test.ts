@@ -52,9 +52,14 @@ describe('context', () => {
 			expect(ctx.session('1', '', 'en').currentSection?.title).toBe('Chapter 1')
 		})
 	})
-  describe('omitPaths', () => {
-   	const collectTocPaths = (sections: Array<{ path: string; content?: any[] }>): string[] =>
-        sections.flatMap((s) => [s.path, ...(s.content ? collectTocPaths(s.content) : [])])
+	describe('omitPaths', () => {
+		const collectTocPaths = (
+			sections: Array<{ path: string; content?: any[] }>,
+		): string[] =>
+			sections.flatMap((s) => [
+				s.path,
+				...(s.content ? collectTocPaths(s.content) : []),
+			])
 
 		test('removes specified sections from the manifest', async () => {
 			const markdown = await Bun.file('./tests/fixtures/nested.md').text()
@@ -64,12 +69,11 @@ describe('context', () => {
 				omitPaths: ['1.1'],
 			})
 
-      const manifest = ctx.manifest('en')
-      const tocPaths = collectTocPaths(manifest.tableOfContents)
+			const manifest = ctx.manifest('en')
+			const tocPaths = collectTocPaths(manifest.tableOfContents)
 
-  		expect(tocPaths).not.toContain('1.1')
-  		expect(tocPaths).not.toContain('1.1.1')
-
+			expect(tocPaths).not.toContain('1.1')
+			expect(tocPaths).not.toContain('1.1.1')
 
 			const session = ctx.session('1', '', 'en')
 			expect(session.currentSection?.title).toBe('Chapter 1')
@@ -84,9 +88,9 @@ describe('context', () => {
 				omitPaths: ['1.2'],
 			})
 
-      const manifest = ctx.manifest('en')
-      const tocPaths = collectTocPaths(manifest.tableOfContents)
-      expect(tocPaths).not.toContain('1.2')
+			const manifest = ctx.manifest('en')
+			const tocPaths = collectTocPaths(manifest.tableOfContents)
+			expect(tocPaths).not.toContain('1.2')
 
 			const session = ctx.session('1.1', '', 'en')
 			expect(session.nextSection?.path).toBe('1.1.1')

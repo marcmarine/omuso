@@ -7,7 +7,10 @@ import {
 	type Manifest,
 } from '.'
 
-export const buildManifest = (data: Root, omittedPaths: Array<string> = []): Manifest => {
+export const buildManifest = (
+	data: Root,
+	omittedPaths: Array<string> = [],
+): Manifest => {
 	const breadcrumbIndex = buildBreadcrumbIndex(data.content)
 	const paths = getAllPaths(data.content)
 	const slugs = buildSlugs(breadcrumbIndex)
