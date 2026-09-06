@@ -1,6 +1,6 @@
 {
 	"name": "omuso",
-	"version": "1.5.0",
+	"version": "1.6.0",
 	"description": "Converts Markdown into structured data for building reading-focused applications.",
 	"exports": {
 		".": {

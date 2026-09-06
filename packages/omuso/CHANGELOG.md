@@ -33,6 +33,19 @@
 * Add type declarations for Node projects ([aab472e](https://github.com/marcmarine/omuso/commit/aab472e18c5e7913ed4798b5234e626fbecc52bd))
 * Update slugify to handle numbers in section names ([4b3298f](https://github.com/marcmarine/omuso/commit/4b3298fd8db5f81ed7231cacf8c843d6a0caaed5))
 
+## [1.6.0](https://github.com/marcmarine/omuso/compare/omuso-v1.5.0...omuso-v1.6.0) (2026-09-06)
+
+
+### Features
+
+* Export parser as subpath entry point ([5c111c1](https://github.com/marcmarine/omuso/commit/5c111c13345377d652b1dbfa651a83ec7c8e473e))
+
+
+### Bug Fixes
+
+* Add date field to manifest metadata ([ad48817](https://github.com/marcmarine/omuso/commit/ad48817bf9f7f37a3997e92da51700f82fe4f8ef))
+* Simplify search results in reading session ([744bb3b](https://github.com/marcmarine/omuso/commit/744bb3b7df2d7e0e2534827a5d7b837089b1c77d))
+
 ## [1.2.1](https://github.com/marcmarine/omuso/compare/v1.2.0...v1.2.1) (2025-12-17)
 
 
