@@ -26,6 +26,7 @@ export const buildManifest = (
 		author: data?.author ?? '',
 		language: data?.language ?? '',
 		translator: data?.translator ?? '',
+		date: data?.date ?? '',
 	}
 
 	return {

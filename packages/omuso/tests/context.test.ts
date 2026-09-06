@@ -107,6 +107,7 @@ describe('context', () => {
 			expect(manifest.metadata.author).toBe('Homer')
 			expect(manifest.metadata.language).toBe('ca')
 			expect(manifest.metadata.translator).toBe('Conrad Roure i Bofill')
+			expect(manifest.metadata.date).toBe('1879-01-01')
 
 			expect(manifest.paths.length).toBeGreaterThan(0)
 			expect(Object.keys(manifest.breadcrumbIndex).length).toBeGreaterThan(0)

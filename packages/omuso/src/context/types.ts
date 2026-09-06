@@ -123,6 +123,7 @@ export interface Manifest {
 		author: string
 		language: string
 		translator: string
+		date: string
 	}
 
 	/**
