@@ -4,7 +4,6 @@ import {
 	findSection,
 	getTotalMatches,
 	type Manifest,
-	type SearchResult,
 	type SectionReference,
 	type Session,
 } from '.'
@@ -39,21 +38,7 @@ export const generateReadingSession = (
 	}
 
 	const searchResults = query ? buildSearchResponse(content, query) : []
-
-	const results: SearchResult[] = []
-	for (const item of searchResults) {
-		let parentSection: SectionReference | null = null
-		if (item.parentSection) {
-			parentSection = item.parentSection
-		}
-
-		results.push({
-			...item,
-			parentSection,
-		} as SearchResult)
-	}
-
-	const totalMatches = getTotalMatches(buildSearchResponse(content, query))
+	const totalMatches = getTotalMatches(searchResults)
 
 	const references: Record<string, SectionReference> = {}
 
@@ -77,7 +62,7 @@ export const generateReadingSession = (
 		prevSection: currentPath ? navigator.getPrev(currentPath) : null,
 		search: {
 			query,
-			results,
+			results: searchResults,
 			totalMatches,
 		},
 		language,

@@ -265,5 +265,111 @@ describe('context', () => {
 
 			expect(session.nextSection?.path).toBe('1.2')
 		})
+
+		test('search results keep parentSection references and consistent totalMatches', async () => {
+			const markdown = await Bun.file('./tests/fixtures/nested.md').text()
+			const root = parse(markdown)
+			const manifest = buildManifest(root)
+
+			// Query matching nested paragraphs in Sections 1.1, 1.1.1 and 1.2
+			const session = generateReadingSession(
+				root.content,
+				manifest,
+				'1.1',
+				'Subsection',
+				'en',
+				Infinity,
+			)
+
+			const sectionResults = session.search.results.filter(
+				(r) => r.type === 'section',
+			)
+			expect(sectionResults.map((r) => r.path).sort()).toEqual([
+				'1.1',
+				'1.1.1',
+				'1.2',
+			])
+
+			// Each nested section result keeps its parent reference
+			expect(
+				sectionResults.find((r) => r.path === '1.1')?.parentSection,
+			).toEqual({
+				path: '1',
+				title: 'Chapter 1',
+				depth: 2,
+				slug: '/chapter-1',
+			})
+			expect(
+				sectionResults.find((r) => r.path === '1.1.1')?.parentSection,
+			).toEqual({
+				path: '1.1',
+				title: 'Section 1.1',
+				depth: 3,
+				slug: '/chapter-1/section-1-1',
+			})
+			expect(
+				sectionResults.find((r) => r.path === '1.2')?.parentSection,
+			).toEqual({
+				path: '1',
+				title: 'Chapter 1',
+				depth: 2,
+				slug: '/chapter-1',
+			})
+
+			// Matching paragraphs are reported with their counts
+			expect(sectionResults.find((r) => r.path === '1.1')?.paragraphs).toEqual([
+				{
+					path: '1.1_1',
+					value: 'Subsection content.',
+					matchCount: 1,
+					hasMatch: true,
+				},
+			])
+
+			// Nested matching paragraphs also surface as standalone results
+			// (current behavior: duplicated with parentSection null)
+			const paragraphResults = session.search.results.filter(
+				(r) => r.type === 'paragraph',
+			)
+			expect(paragraphResults.map((p) => p.path).sort()).toEqual([
+				'1.1.1_1',
+				'1.1_1',
+				'1.2_1',
+			])
+			for (const paragraph of paragraphResults) {
+				expect(paragraph.parentSection).toBeNull()
+			}
+
+			// totalMatches is the sum across all results
+			expect(session.search.totalMatches).toBe(6)
+			expect(session.search.totalMatches).toBe(
+				getTotalMatches(session.search.results),
+			)
+		})
+
+		test('search results keep orphan root paragraphs with null parentSection', async () => {
+			const markdown = await Bun.file('./tests/fixtures/nested.md').text()
+			const root = parse(markdown)
+			const manifest = buildManifest(root)
+
+			// Query matching the root-level paragraph (path '_1')
+			const session = generateReadingSession(
+				root.content,
+				manifest,
+				'1',
+				'Introduction',
+				'en',
+				Infinity,
+			)
+
+			const orphan = session.search.results.find((r) => r.type === 'paragraph')
+			expect(orphan).toBeDefined()
+			expect(orphan?.path).toBe('_1')
+			expect(orphan?.parentSection).toBeNull()
+
+			expect(session.search.totalMatches).toBe(
+				getTotalMatches(session.search.results),
+			)
+		})
 	})
 })
