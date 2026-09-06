@@ -327,6 +327,7 @@ interface Manifest {
     author: string
     language: string
     translator: string
+    date: string
   }
   tableOfContents: Section[]
   paths: string[]
