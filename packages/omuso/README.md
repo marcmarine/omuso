@@ -48,7 +48,7 @@ npm install omuso
 ### Quick Start
 
 ```typescript
-import { parse } from 'omuso'
+import { parse } from 'omuso/parser'
 
 const markdown = `# Hello World
 

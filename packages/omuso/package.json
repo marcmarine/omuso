@@ -7,6 +7,11 @@
 			"import": "./dist/index.js",
 			"require": "./dist/index.js",
 			"types": "./dist/types.d.ts"
+		},
+		"./parser": {
+			"import": "./dist/parser/index.js",
+			"require": "./dist/parser/index.js",
+			"types": "./dist/parser.d.ts"
 		}
 	},
 	"types": "dist/types.d.ts",
@@ -20,8 +25,8 @@
 	"author": "Marc Mariné <shenobi@gmail.com>",
 	"license": "MIT",
 	"scripts": {
-		"build:types": "dts-bundle-generator -o ./dist/types.d.ts ./src/index.ts --no-banner --project tsconfig.build.json",
-		"build": "bun build ./src/index.ts --outdir ./dist --target node --minify && bun run build:types",
+		"build:types": "dts-bundle-generator -o ./dist/types.d.ts ./src/index.ts --no-banner --project tsconfig.build.json && dts-bundle-generator -o ./dist/parser.d.ts ./src/parser/index.ts --no-banner --project tsconfig.build.json",
+		"build": "bun build ./src/index.ts ./src/parser/index.ts --outdir ./dist --target node --minify && bun run build:types",
 		"test": "bun test"
 	},
 	"devDependencies": {
