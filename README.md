@@ -7,10 +7,10 @@ Monorepo for the OMUSO ecosystem, managed as a [bun workspace](https://bun.sh/do
 
 ## Packages
 
-| Package                                   | Description                                                                                       | npm                                                                                       |
-| ----------------------------------------- | ------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------- |
-| [`omuso`](./packages/omuso)               | Converts Markdown into structured data for building reading-focused applications.                 | [![NPM Version](https://img.shields.io/npm/v/omuso)](https://www.npmjs.com/package/omuso) |
-| [`@omuso/react-reader`](./packages/react-reader) | React components and hooks for building reading experiences on top of `omuso`. Not yet published. | —                                                                                         |
+| Package                                          | Description                                                                       | npm                                                                                                                   |
+| ------------------------------------------------ | --------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------- |
+| [`omuso`](./packages/omuso)                      | Converts Markdown into structured data for building reading-focused applications. | [![NPM Version](https://img.shields.io/npm/v/omuso)](https://www.npmjs.com/package/omuso)                             |
+| [`@omuso/react-reader`](./packages/react-reader) | React components and hooks for building reading experiences on top of `omuso`.    | [![NPM Version](https://img.shields.io/npm/v/@omuso/react-reader)](https://www.npmjs.com/package/@omuso/react-reader) |
 
 See each package's README for details.
 
@@ -22,19 +22,22 @@ This repo uses [Bun](https://bun.sh) for package management, running scripts and
 bun install
 ```
 
-Run a script across all packages:
+Run workspace scripts:
 
 ```
+bun run dev
 bun run test
 bun run build
 bun run lint
+bun run lint:fix
 ```
 
 Run a script for a single package:
 
 ```
 bun --filter omuso test
-bun --filter react-reader build
+bun --filter @omuso/react-reader build
+bun --filter @omuso/react-reader dev
 ```
 
 ## Releases

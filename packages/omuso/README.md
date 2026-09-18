@@ -4,7 +4,7 @@ A lightweight TypeScript library that converts Markdown into structured data for
 
 [![NPM Version](https://img.shields.io/npm/v/omuso)](https://www.npmjs.com/package/omuso)
 [![GitHub License](https://img.shields.io/github/license/marcmarine/omuso)](LICENSE)
-[![View Changelog](https://img.shields.io/badge/view-CHANGELOG.md-red.svg)](https://github.com/marcmarine/omuso/releases)
+[![View Changelog](https://img.shields.io/badge/view-CHANGELOG.md-red.svg)](https://github.com/marcmarine/omuso/blob/main/packages/omuso/CHANGELOG.md)
 ![NPM Unpacked Size](https://img.shields.io/npm/unpacked-size/omuso)
 
 OMUSO is designed for apps where Markdown represents document structure, not just formatting, such as books, essays, documentation, or long-form reading experiences.
