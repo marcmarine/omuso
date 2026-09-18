@@ -23,7 +23,7 @@
 		display: flex;
 		align-items: center;
 		justify-content: center;
-		padding: 0.75rem 0.5rem 0.75rem 0.375rem;
+		padding: 0.5rem;
 		border-bottom: 1px solid var(--or-dividers);
 
 		@media (min-width: 48rem) {
@@ -70,8 +70,7 @@
 	}
 
 	& .or-layout__footer {
-		padding: 0.75rem;
-		padding-bottom: calc(0.75rem + env(safe-area-inset-bottom));
+		padding: 0.75rem 0.75rem calc(0.75rem + env(safe-area-inset-bottom));
 		border-top: 1px solid var(--or-dividers);
 
 		@media (min-width: 48rem) {
