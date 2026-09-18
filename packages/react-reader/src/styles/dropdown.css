@@ -1,0 +1,23 @@
+.or-dropdown__content {
+	display: none;
+	position: fixed;
+	inset: auto;
+	z-index: 100;
+	margin: 0;
+	padding: 0;
+	border: 0;
+	background: transparent;
+	color: inherit;
+}
+
+.or-dropdown__content:popover-open {
+	display: flex;
+}
+
+.or-dropdown__menu {
+	flex-direction: column;
+	padding: 0.25rem;
+	border: 1px solid var(--or-dividers);
+	border-radius: 0.5rem;
+	background: var(--or-background);
+}

@@ -9,9 +9,11 @@
 	},
 	"license": "MIT",
 	"workspaces": [
-		"packages/*"
+		"packages/*",
+		"apps/*"
 	],
 	"scripts": {
+		"dev": "bun --filter omuso dev & bun --filter @omuso/react-reader dev & bun --filter app-example dev",
 		"build": "bun --filter '*' build",
 		"test": "bun --filter '*' test",
 		"lint": "biome check .",
@@ -23,6 +25,8 @@
 		"typescript": "^5"
 	},
 	"overrides": {
-		"typescript": "^5"
+		"typescript": "^5",
+		"react": "^19.3.0",
+		"react-dom": "^19.3.0"
 	}
 }

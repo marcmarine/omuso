@@ -8,7 +8,8 @@
 			"import": "./dist/index.js",
 			"require": "./dist/index.js",
 			"types": "./dist/index.d.ts"
-		}
+		},
+		"./styles.css": "./dist/index.css"
 	},
 	"types": "dist/index.d.ts",
 	"type": "module",
@@ -21,14 +22,17 @@
 	"author": "Marc Mariné <shenobi@gmail.com>",
 	"license": "MIT",
 	"scripts": {
+		"dev": "bun build ./src/index.ts --outdir ./dist --target browser --minify --packages external --watch",
 		"build:types": "tsc --emitDeclarationOnly",
-		"build": "bun build ./src/index.ts --outdir ./dist --target browser --minify && bun run build:types"
+		"build": "bun build ./src/index.ts --outdir ./dist --target browser --minify --packages external && bun run build:types"
 	},
 	"dependencies": {
 		"omuso": "workspace:*"
 	},
 	"devDependencies": {
-		"@types/react": "^19"
+		"@types/react": "^19",
+		"react": "^19.3.0",
+		"react-dom": "^19.3.0"
 	},
 	"peerDependencies": {
 		"react": "^18 || ^19",

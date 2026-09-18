@@ -1,0 +1,26 @@
+.or-lang__trigger {
+	display: flex;
+	align-items: center;
+	gap: 0.25rem;
+	font-size: 0.875rem;
+	line-height: 1.25rem;
+}
+
+.or-lang__option {
+	padding-inline: 0.5rem;
+	border-radius: 0.25rem;
+	color: var(--or-foreground);
+	text-align: left;
+
+	&:hover {
+		background-color: color-mix(in oklab, var(--or-foreground) 5%, transparent);
+	}
+
+	&:active {
+		transform: translateY(1px);
+	}
+}
+
+.or-lang__option--selected {
+	background-color: color-mix(in oklab, var(--or-foreground) 10%, transparent);
+}

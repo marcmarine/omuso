@@ -1,0 +1,17 @@
+.or-nav {
+	display: flex;
+	gap: 0.125rem;
+
+	& .or-nav__button--prev:active > svg {
+		transform: translate(-1px, 0);
+	}
+
+	& .or-nav__button--next:active > svg {
+		transform: translate(1px, 0);
+	}
+
+	& .or-nav__button--disabled {
+		pointer-events: none;
+		opacity: 0.6;
+	}
+}

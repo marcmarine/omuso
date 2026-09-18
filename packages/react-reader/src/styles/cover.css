@@ -1,0 +1,49 @@
+.or-cover {
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+	height: 100%;
+	text-align: center;
+	background-size: cover;
+
+	& .or-cover__header {
+		padding-block: 4rem;
+	}
+
+	& .or-cover__author {
+		margin-bottom: 0.75rem;
+	}
+
+	& .or-cover__title {
+		margin-bottom: 2rem;
+		font-size: 1.875rem;
+		line-height: 2.25rem;
+	}
+
+	& .or-cover__start {
+		display: inline-block;
+		padding: 0.125rem 0.5rem;
+		border-radius: 0.25rem;
+	}
+
+	& .or-cover__footer {
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		gap: 0.5rem;
+		padding-block: 2rem;
+	}
+
+	& .or-cover__translator {
+		padding-block: 0.5rem;
+	}
+
+	& .or-cover__translator-name {
+		font-size: 0.875rem;
+		line-height: 1.25rem;
+	}
+
+	& .or-cover__theme {
+		padding-block: 0.5rem;
+	}
+}

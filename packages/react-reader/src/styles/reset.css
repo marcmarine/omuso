@@ -1,0 +1,61 @@
+.omuso-reader {
+	& :where(*, *::before, *::after) {
+		box-sizing: border-box;
+	}
+
+	& :where(h1, h2, h3, h4, h5, h6) {
+		margin: 0;
+		font-size: inherit;
+		font-weight: inherit;
+	}
+
+	&
+		:where(
+			p,
+			figure,
+			figcaption,
+			blockquote,
+			pre,
+			hr,
+			dl,
+			dd,
+			dt,
+			table,
+			caption
+		) {
+		margin: 0;
+	}
+
+	& :where(ul, ol) {
+		margin: 0;
+		padding: 0;
+		list-style: none;
+	}
+
+	& :where(a) {
+		color: inherit;
+		text-decoration: inherit;
+	}
+
+	& :where(button, input, select, textarea) {
+		margin: 0;
+		font: inherit;
+		color: inherit;
+	}
+
+	& :where(button) {
+		padding: 0;
+		border: 0;
+		background: transparent;
+	}
+
+	& :where(svg, img, video, canvas, audio, iframe, embed, object) {
+		display: block;
+		vertical-align: middle;
+	}
+
+	& :where(img) {
+		max-width: 100%;
+		height: auto;
+	}
+}

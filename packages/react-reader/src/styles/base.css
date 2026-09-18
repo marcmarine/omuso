@@ -1,0 +1,50 @@
+.or-interactive {
+	&:active:not(:has(.or-interactive:active)) {
+		background-color: color-mix(in oklab, var(--or-foreground) 8%, transparent);
+		transform: translateY(1px);
+	}
+
+	&:hover:not(:has(.or-interactive:hover)) {
+		background-color: color-mix(in oklab, var(--or-foreground) 5%, transparent);
+	}
+}
+
+.or-icon {
+	width: 0.875rem;
+	height: 0.875rem;
+
+	&.or-icon--sm {
+		width: 0.5rem;
+		height: 0.5rem;
+	}
+}
+
+.or-icon-button {
+	position: relative;
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	padding: 0.25rem;
+	border: 0;
+	border-radius: 0.375rem;
+	background: transparent;
+	color: inherit;
+	cursor: pointer;
+
+	& .or-icon-button__badge {
+		position: absolute;
+		top: 0;
+		right: 0;
+		width: 0.5rem;
+		height: 0.5rem;
+		border-radius: 9999px;
+		background: var(--or-text-highlight);
+		outline: 2px solid var(--or-background);
+		transform: translate(50%, -33.3333%) scale(0);
+		transition: all 150ms cubic-bezier(0.4, 0, 0.2, 1);
+
+		&.or-icon-button__badge--visible {
+			transform: translate(50%, -33.3333%) scale(1);
+		}
+	}
+}
