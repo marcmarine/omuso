@@ -30,12 +30,14 @@ function findMatchesInSection(
 	for (const item of section.content) {
 		if (item.type === 'paragraph') {
 			const matchCount = countOccurrences(item.value, query)
-			paragraphs.push({
-				path: item.path,
-				value: item.value,
-				matchCount,
-				hasMatch: matchCount > 0,
-			})
+			if (matchCount > 0) {
+				paragraphs.push({
+					path: item.path,
+					value: item.value,
+					matchCount,
+					hasMatch: true,
+				})
+			}
 			totalMatchCount += matchCount
 		}
 	}
@@ -65,7 +67,7 @@ function findMatchesInContent(
 	for (const node of content) {
 		if (node.type === 'paragraph') {
 			const matchCount = countOccurrences(node.value, query)
-			if (matchCount > 0) {
+			if (matchCount > 0 && parent === null) {
 				results.push({
 					path: node.path,
 					type: 'paragraph',

@@ -326,22 +326,15 @@ describe('context', () => {
 				},
 			])
 
-			// Nested matching paragraphs also surface as standalone results
-			// (current behavior: duplicated with parentSection null)
+			// Nested matching paragraphs are represented by their section result only,
+			// so counts match what the reader renders.
 			const paragraphResults = session.search.results.filter(
 				(r) => r.type === 'paragraph',
 			)
-			expect(paragraphResults.map((p) => p.path).sort()).toEqual([
-				'1.1.1_1',
-				'1.1_1',
-				'1.2_1',
-			])
-			for (const paragraph of paragraphResults) {
-				expect(paragraph.parentSection).toBeNull()
-			}
+			expect(paragraphResults).toEqual([])
 
 			// totalMatches is the sum across all results
-			expect(session.search.totalMatches).toBe(6)
+			expect(session.search.totalMatches).toBe(3)
 			expect(session.search.totalMatches).toBe(
 				getTotalMatches(session.search.results),
 			)

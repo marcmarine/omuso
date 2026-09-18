@@ -25,6 +25,7 @@
 	"author": "Marc Mariné <shenobi@gmail.com>",
 	"license": "MIT",
 	"scripts": {
+		"dev": "bun build ./src/index.ts ./src/parser/index.ts --outdir ./dist --target node --minify --watch",
 		"build:types": "dts-bundle-generator -o ./dist/types.d.ts ./src/index.ts --no-banner --project tsconfig.build.json && dts-bundle-generator -o ./dist/parser.d.ts ./src/parser/index.ts --no-banner --project tsconfig.build.json",
 		"build": "bun build ./src/index.ts ./src/parser/index.ts --outdir ./dist --target node --minify && bun run build:types",
 		"test": "bun test"
