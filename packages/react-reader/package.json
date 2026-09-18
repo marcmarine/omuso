@@ -1,7 +1,8 @@
 {
 	"name": "@omuso/react-reader",
 	"version": "0.2.0",
-	"description": "React components and hooks for building reading experiences on top of OMUSO.",
+	"description": "A markdown-reader for React powered by OMUSO.",
+
 	"exports": {
 		".": {
 			"import": "./dist/index.js",
