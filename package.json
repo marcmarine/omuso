@@ -16,8 +16,8 @@
 		"dev": "bun --filter omuso dev & bun --filter @omuso/react-reader dev & bun --filter app-example dev",
 		"build": "bun --filter '*' build",
 		"test": "bun --filter '*' test",
-		"lint": "biome check .",
-		"lint:fix": "biome check --write ."
+		"lint": "biome check packages/*/src",
+		"lint:fix": "biome check --write packages/*/src"
 	},
 	"devDependencies": {
 		"@biomejs/biome": "2.2.5",
