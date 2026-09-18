@@ -11,7 +11,7 @@
 		},
 		"packages/react-reader": {
 			"release-type": "node",
-			"package-name": "react-reader",
+			"package-name": "@omuso/react-reader",
 			"changelog-path": "CHANGELOG.md"
 		}
 	}

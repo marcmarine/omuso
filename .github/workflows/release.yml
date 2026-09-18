@@ -17,6 +17,8 @@ jobs:
     outputs:
       omuso-release-created: ${{ steps.release.outputs['packages/omuso--release_created'] }}
       omuso-tag-name: ${{ steps.release.outputs['packages/omuso--tag_name'] }}
+      react-reader-release-created: ${{ steps.release.outputs['packages/react-reader--release_created'] }}
+      react-reader-tag-name: ${{ steps.release.outputs['packages/react-reader--tag_name'] }}
     steps:
       - name: Release Please
         id: release
@@ -59,6 +61,43 @@ jobs:
 
       - name: Publish
         working-directory: packages/omuso
+        run: npm publish --access public --provenance
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+
+  publish-react-reader:
+    name: Publish @omuso/react-reader to npm
+    needs: release-please
+    if: ${{ needs.release-please.outputs.react-reader-release-created == 'true' }}
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      id-token: write
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ needs.release-please.outputs.react-reader-tag-name }}
+
+      - name: Setup Bun
+        uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: latest
+
+      - name: Setup Node (for npm publish with provenance)
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          registry-url: https://registry.npmjs.org
+
+      - name: Install dependencies
+        run: bun install --frozen-lockfile
+
+      - name: Build
+        run: bun --filter omuso build && bun --filter @omuso/react-reader build
+
+      - name: Publish
+        working-directory: packages/react-reader
         run: npm publish --access public --provenance
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
