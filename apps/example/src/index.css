@@ -5,11 +5,11 @@ body {
 	padding: 0;
 	background-color: var(--background);
 
-	[data-theme="dark"] & {
+	&:has(.omuso-reader.dark) {
 		--background: #0b0a09;
 	}
 }
 
-[data-theme="dark"] .omuso-reader {
+[data-theme="dark"] .omuso-reader.dark {
 	--or-background: var(--background);
 }

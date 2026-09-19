@@ -25,7 +25,12 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
 	useEffect(() => {
 		if (typeof window !== 'undefined') {
 			localStorage.setItem('theme', theme)
-			document.documentElement.setAttribute('data-theme', theme)
+
+			const readerElement = document.querySelector('.omuso-reader')
+			if (readerElement) {
+				readerElement.classList.remove('light', 'dark')
+				readerElement.classList.add(theme)
+			}
 		}
 	}, [theme])
 

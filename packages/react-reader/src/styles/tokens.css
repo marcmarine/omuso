@@ -9,7 +9,7 @@
 	background: var(--or-background);
 	color: var(--or-foreground);
 
-	[data-theme="dark"] & {
+	&.dark {
 		--or-background: #0b0a09;
 		--or-foreground: #dad5d2;
 		--or-dividers: #1f1f1f;
