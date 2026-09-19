@@ -27,7 +27,7 @@
 		"build": "bun build ./src/index.ts --outdir ./dist --target browser --minify --packages external && bun run build:types"
 	},
 	"dependencies": {
-		"omuso": "workspace:*"
+		"omuso": "^1.6.0"
 	},
 	"devDependencies": {
 		"@types/react": "^19",
