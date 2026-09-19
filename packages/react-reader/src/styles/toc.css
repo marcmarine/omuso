@@ -92,7 +92,7 @@
 			top: 0;
 			height: calc(100% + 1px);
 			margin-left: 13.5px;
-			border-left: 1px solid var(--or-dividers);
+			border-left: var(--or-dividers-width) solid var(--or-dividers);
 
 			@media (min-width: 48rem) {
 				margin-left: 11.5px;
@@ -120,7 +120,7 @@
 			left: 0.125rem;
 			height: 83.3333%;
 			margin-left: 12px;
-			border-left: 1px solid var(--or-dividers);
+			border-left: var(--or-dividers-width) solid var(--or-dividers);
 			transform: translate(-50%, -50%);
 
 			@media (min-width: 48rem) {

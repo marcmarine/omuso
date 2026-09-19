@@ -5,6 +5,10 @@
 	--or-text-highlight: #ffe0cc;
 	--or-background-selected: #d5d6d9;
 	--or-input-background: #fffaf3;
+	--or-resizer-color: color-mix(in oklab, var(--or-foreground) 5%, transparent);
+
+	--or-dividers-width: 1px;
+	--or-resizer-width: 0.5rem;
 
 	background: var(--or-background);
 	color: var(--or-foreground);

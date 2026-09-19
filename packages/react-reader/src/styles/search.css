@@ -6,7 +6,7 @@
 		position: sticky;
 		top: 0;
 		padding: 0.5rem;
-		border-bottom: 1px solid var(--or-dividers);
+		border-bottom: var(--or-dividers-width) solid var(--or-dividers);
 		background: var(--or-background);
 		backdrop-filter: blur(40px);
 	}
@@ -39,7 +39,7 @@
 		width: 100%;
 		margin-bottom: 0.125rem;
 		padding-bottom: 0.25rem;
-		border-bottom: 1px solid var(--or-dividers);
+		border-bottom: var(--or-dividers-width) solid var(--or-dividers);
 		text-align: left;
 	}
 
@@ -56,7 +56,7 @@
 	& .or-search__paragraph-body {
 		margin-bottom: 0.25rem;
 		padding-block: 0.125rem;
-		border-bottom: 1px solid var(--or-dividers);
+		border-bottom: var(--or-dividers-width) solid var(--or-dividers);
 	}
 
 	& .or-search__paragraph {
@@ -125,7 +125,7 @@
 	& .or-search__input {
 		width: 100%;
 		padding: 0.5rem 0.5rem 0.5rem 1.75rem;
-		border: 1px solid var(--or-dividers);
+		border: var(--or-dividers-width) solid var(--or-dividers);
 		border-radius: 0.5rem;
 		background: var(--or-input-background);
 		box-shadow:

@@ -12,7 +12,7 @@
 		position: absolute;
 		top: 0;
 		z-index: 20;
-		width: 0.5rem;
+		width: var(--or-resizer-width);
 		height: 100%;
 		cursor: ew-resize;
 		opacity: 0;
@@ -20,20 +20,22 @@
 
 		&:hover {
 			opacity: 1;
-			background-color: color-mix(
-				in oklab,
-				var(--or-foreground) 5%,
-				transparent
-			);
+			background-color: var(--or-resizer-color);
 		}
 	}
 
 	& .or-panel__resizer--left {
-		right: -0.25rem;
+		right: calc(
+			-1 *
+			var(--or-resizer-width) /
+			2 -
+			var(--or-dividers-width) /
+			2
+		);
 	}
 
 	& .or-panel__resizer--right {
-		left: -0.25rem;
+		left: calc(-1 * var(--or-resizer-width) / 2 - var(--or-dividers-width) / 2);
 	}
 
 	& .or-panel__resizer--active {

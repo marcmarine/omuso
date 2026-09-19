@@ -17,7 +17,7 @@
 .or-dropdown__menu {
 	flex-direction: column;
 	padding: 0.25rem;
-	border: 1px solid var(--or-dividers);
+	border: var(--or-dividers-width) solid var(--or-dividers);
 	border-radius: 0.5rem;
 	background: var(--or-background);
 }
