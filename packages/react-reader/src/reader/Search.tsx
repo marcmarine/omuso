@@ -21,7 +21,7 @@ export function Search() {
 				<SearchInput />
 				<div className="or-search__meta">
 					{totalMatches > 0 && (
-						<p className="or-search__meta-text">{`${totalMatches} ${i18n.t('resultsIn')} ${results.length} ${i18n.t('sayings')} ${i18n.t('forWord')} "${query}"`}</p>
+						<p className="or-search__meta-text">{`${totalMatches} ${i18n.t('resultsIn')} ${results.length} ${i18n.t(results.length === 1 ? 'chapter' : 'chapters')} ${i18n.t('forWord')} "${query}"`}</p>
 					)}
 				</div>
 			</div>

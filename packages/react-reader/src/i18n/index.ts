@@ -6,7 +6,8 @@ const translations = {
 		translations: 'Translations',
 		translatedBy: 'Translated by',
 		resultsIn: 'Results In',
-		sayings: 'Sayings',
+		chapter: 'Chapter',
+		chapters: 'Chapters',
 		forWord: 'For The Word',
 	},
 	es: {
@@ -16,7 +17,8 @@ const translations = {
 		translations: 'Traducciones',
 		translatedBy: 'Traducido por',
 		resultsIn: 'Resultados en',
-		sayings: 'Apartados',
+		chapter: 'Apartado',
+		chapters: 'Apartados',
 		forWord: 'Para la palabra',
 	},
 	ca: {
@@ -26,7 +28,8 @@ const translations = {
 		translations: 'Traduccions',
 		translatedBy: 'Traduït per',
 		resultsIn: 'Resultats en',
-		sayings: 'Dites',
+		chapter: 'Apartat',
+		chapters: 'Apartats',
 		forWord: 'Per a la paraula',
 	},
 	ru: {
@@ -36,7 +39,8 @@ const translations = {
 		translations: 'Переводы',
 		translatedBy: 'Переведено',
 		resultsIn: 'Результаты в',
-		sayings: 'Поговорки',
+		chapter: 'Глава',
+		chapters: 'Главы',
 		forWord: 'Для слова',
 	},
 } as const
