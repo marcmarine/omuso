@@ -12,7 +12,7 @@ export default function Cover() {
 	const { i18n } = useLayout()
 
 	return (
-		<div className="omuso-reader or-cover">
+		<div className="or-cover">
 			<div className="or-cover__header">
 				<h2 className="or-cover__author">{metadata.author}</h2>
 				<h1 className="or-cover__title">{metadata.title}</h1>
