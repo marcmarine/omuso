@@ -1,21 +1,47 @@
-# bun-react-template
+# app-example
 
-To install dependencies:
+Example app for `@omuso/react-reader`.
+
+## Install
+
+From the monorepo root:
 
 ```bash
 bun install
 ```
 
-To start a development server:
+## Development
+
+Run only the example app:
 
 ```bash
-bun dev
+bun --filter app-example dev
 ```
 
-To run for production:
+Or run full workspace watch mode (`omuso`, `react-reader`, and `example`):
 
 ```bash
-bun start
+bun run dev
 ```
 
-This project was created using `bun init` in bun v1.4.0. [Bun](https://bun.com) is a fast all-in-one JavaScript runtime.
+### Mobile / LAN access
+
+The dev server binds to `0.0.0.0` and prints a LAN URL in the terminal:
+
+- `Local: http://localhost:<port>`
+- `Mobile/LAN: http://<your-lan-ip>:<port>`
+
+By default it tries `3000` and, if occupied, keeps trying up to `3019`.
+
+You can force a port:
+
+```bash
+PORT=5173 bun --filter app-example dev
+```
+
+## Production
+
+```bash
+bun --filter app-example build
+bun --filter app-example start
+```
