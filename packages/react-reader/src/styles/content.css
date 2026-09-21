@@ -1,81 +1,81 @@
 .or-content {
 	width: 100%;
+}
 
-	& .or-content__header {
-		display: flex;
-		align-items: center;
-		justify-content: center;
-		padding-inline: 0.375rem;
+.or-content__header {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	padding-inline: 0.375rem;
+}
+
+.or-content__crumbs {
+	display: flex;
+	align-items: center;
+	gap: 0.25rem;
+}
+
+.or-content__crumb {
+	line-height: 1;
+
+	&:hover {
+		text-decoration: underline;
+	}
+}
+
+.or-content__crumb-title {
+	padding: 2.5rem 0.375rem 0 0.375rem;
+}
+
+.or-content__body {
+	max-width: 36rem;
+	margin-inline: auto;
+	padding: 1rem 2rem;
+	text-align: center;
+}
+
+.or-content__subchapter {
+	display: inline-block;
+
+	&:hover {
+		text-decoration: underline;
 	}
 
-	& .or-content__crumbs {
-		display: flex;
-		align-items: center;
-		gap: 0.25rem;
-	}
-
-	& .or-content__crumb {
-		line-height: 1;
-
-		&:hover {
-			text-decoration: underline;
-		}
-	}
-
-	& .or-content__crumb-title {
-		padding: 2.5rem 0.375rem 0 0.375rem;
-	}
-
-	& .or-content__body {
-		max-width: 36rem;
-		margin-inline: auto;
-		padding: 1rem 2rem;
-		text-align: center;
-	}
-
-	& .or-content__subchapter {
-		display: inline-block;
-
-		&:hover {
-			text-decoration: underline;
-		}
-
-		& + :is(h1, h2, h3, h4, h5, h6) {
-			margin-top: 0;
-		}
-	}
-
-	& .or-content__section-link {
-		display: inline-block;
-
-		&:hover {
-			text-decoration: underline;
-		}
-
-		& + section > a > :is(h1, h2, h3, h4, h5, h6) {
-			margin-top: 0;
-		}
-	}
-
-	& .or-content__index {
-		& > li + li {
-			margin-top: 1rem;
-
-			@media (min-width: 48rem) {
-				margin-top: 0.5rem;
-			}
-		}
-	}
-
-	& .or-content__index-item :is(h3, h4) {
-		margin: 0;
-		font-size: 1rem;
-		line-height: 1.5rem;
-	}
-
-	& .or-content__body .or-heading + section > a > :is(h1, h2, h3, h4, h5, h6) {
+	& + :is(h1, h2, h3, h4, h5, h6) {
 		margin-top: 0;
 	}
+}
+
+.or-content__section-link {
+	display: inline-block;
+
+	&:hover {
+		text-decoration: underline;
+	}
+
+	& + section > a > :is(h1, h2, h3, h4, h5, h6) {
+		margin-top: 0;
+	}
+}
+
+.or-content__index {
+	& > li + li {
+		margin-top: 1rem;
+
+		@media (min-width: 48rem) {
+			margin-top: 0.5rem;
+		}
+	}
+}
+
+.or-content__index-item :is(h3, h4) {
+	margin: 0;
+	font-size: 1rem;
+	line-height: 1.5rem;
+}
+
+.or-content__body .or-heading + section > a > :is(h1, h2, h3, h4, h5, h6) {
+	margin-top: 0;
 }
 
 .or-heading {

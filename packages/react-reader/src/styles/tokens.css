@@ -4,7 +4,7 @@
 	--or-dividers: #f1ded5;
 	--or-text-highlight: #ffe0cc;
 	--or-background-selected: #d5d6d9;
-	--or-input-background: #fffaf3;
+	--or-input-background: transparent;
 	--or-resizer-color: color-mix(in oklab, var(--or-foreground) 5%, transparent);
 
 	--or-dividers-width: 1px;
@@ -19,6 +19,5 @@
 		--or-dividers: #1f1f1f;
 		--or-text-highlight: #2e2824;
 		--or-background-selected: #21242b;
-		--or-input-background: #171512;
 	}
 }

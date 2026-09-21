@@ -7,39 +7,33 @@
 	&.or-panel--collapsed {
 		display: none;
 	}
+}
 
-	& .or-panel__resizer {
-		position: absolute;
-		top: 0;
-		z-index: 20;
-		width: var(--or-resizer-width);
-		height: 100%;
-		cursor: ew-resize;
-		opacity: 0;
-		transition: opacity 200ms cubic-bezier(0.4, 0, 0.2, 1);
+.or-panel__resizer {
+	position: absolute;
+	top: 0;
+	z-index: 20;
+	width: var(--or-resizer-width);
+	height: 100%;
+	cursor: ew-resize;
+	opacity: 0;
+	transition: opacity 200ms cubic-bezier(0.4, 0, 0.2, 1);
 
-		&:hover {
-			opacity: 1;
-			background-color: var(--or-resizer-color);
-		}
-	}
-
-	& .or-panel__resizer--left {
-		right: calc(
-			-1 *
-			var(--or-resizer-width) /
-			2 -
-			var(--or-dividers-width) /
-			2
-		);
-	}
-
-	& .or-panel__resizer--right {
-		left: calc(-1 * var(--or-resizer-width) / 2 - var(--or-dividers-width) / 2);
-	}
-
-	& .or-panel__resizer--active {
+	&:hover {
 		opacity: 1;
-		background-color: color-mix(in oklab, var(--or-foreground) 5%, transparent);
+		background-color: var(--or-resizer-color);
 	}
+}
+
+.or-panel__resizer--left {
+	right: calc(-1 * var(--or-resizer-width) / 2 - var(--or-dividers-width) / 2);
+}
+
+.or-panel__resizer--right {
+	left: calc(-1 * var(--or-resizer-width) / 2 - var(--or-dividers-width) / 2);
+}
+
+.or-panel__resizer--active {
+	opacity: 1;
+	background-color: color-mix(in oklab, var(--or-foreground) 5%, transparent);
 }
