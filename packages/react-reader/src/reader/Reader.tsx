@@ -1,6 +1,5 @@
 import type { BookContext } from 'omuso'
 import { useLayoutEffect } from 'react'
-import SectionContent from '../content/ReaderContent'
 import {
 	BookContextProvider,
 	type Context,
@@ -9,6 +8,7 @@ import {
 import { LayoutProvider } from '../providers/LayoutProvider'
 import { RoutingProvider } from '../providers/RoutingProvider'
 import { ThemeProvider } from '../providers/ThemeProvider'
+import SectionContent from './Content'
 import Cover from './Cover'
 import Layout from './Layout'
 import Search from './Search'
