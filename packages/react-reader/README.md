@@ -4,8 +4,21 @@ React components and hooks for building reading experiences on top of [OMUSO](..
 
 [![NPM Version](https://img.shields.io/npm/v/@omuso/react-reader)](https://www.npmjs.com/package/@omuso/react-reader)
 [![GitHub License](https://img.shields.io/github/license/marcmarine/omuso)](LICENSE)
-[![View Changelog](https://img.shields.io/badge/view-CHANGELOG.md-red.svg)](https://github.com/marcmarine/omuso/blob/main/packages/react-reader/CHANGELOG.md)
+[![View Changelog](https://img.shields.io/badge/view-CHANGELOG.md-white.svg)](https://github.com/marcmarine/omuso/blob/main/packages/react-reader/CHANGELOG.md)
 ![NPM Unpacked Size](https://img.shields.io/npm/unpacked-size/@omuso/react-reader)
+
+## Highlights
+
+- **Reader UI ready to use**: includes cover, table of contents, content view, in-reader search, and previous/next chapter navigation out of the box.
+- **Router-agnostic navigation**: works with native anchors by default and supports custom routing via the `linkComponent` prop (e.g. React Router / Next-style links).
+- **Search with URL persistence**: search queries are reflected in `?query=...`, preserved across links, and highlighted in titles and paragraph excerpts.
+- **Multi-language reading flow**: built-in language switcher (when multiple manifests are available) with translation-aware navigation and localized UI labels.
+- **Configurable content depth**: control how deeply nested sections are rendered with `maxDepth`, while deeper nodes can be shown as a compact section index.
+- **Section-level curation**: hide specific entries from the table of contents with `omitSections`.
+- **Resizable side panels**: TOC and search panels can be resized and toggled, with panel width/open state persisted in local storage.
+- **Theme support**: built-in light/dark mode toggle with `prefers-color-scheme` initialization and persisted theme preference.
+- **Keyboard shortcuts**: quick toggles for navigation panels (`Cmd/Ctrl + M` for TOC, `Cmd/Ctrl + K` for search/focus).
+- **Composable API**: besides `Reader`, the package exports lower-level building blocks (`ReaderContent`, `ReaderContentHeader`, `ReaderHeading`, `ReaderParagraph`) for custom layouts.
 
 ## Setup
 
@@ -15,7 +28,7 @@ Create a module that builds your reading context — e.g. `src/omuso.config.ts`:
 
 ```ts
 import { createContext } from 'omuso'
-import en from './content/en.md'
+import en from './content/en.md' with { type: 'text' }
 
 export default createContext().init({
   markdowns: { en },
@@ -23,7 +36,7 @@ export default createContext().init({
 })
 ```
 
-The module must export a `BookContext` created via `createContext().init({...})` from the `omuso` package. How markdown is imported as text depends on your bundler: Bun uses `[loader]` in `bunfig.toml` (`[loader]` → `".md" = "text"`, plain import as above — note the top-level section, the legacy `[bundle] loader` spelling is silently ignored) or `with { type: "text" }` import attributes; Vite needs a `?raw` suffix (`import en from './content/en.md?raw'`); and so on.
+The module must export a `BookContext` created via `createContext().init({...})` from the `omuso` package. How markdown is imported as text depends on your bundler: Bun uses `with { type: "text" }` import attributes; Vite needs a `?raw` suffix (`import en from './content/en.md?raw'`); and so on.
 
 ### 2. Pass it to the reader
 
@@ -36,7 +49,7 @@ import omuso from './omuso.config'
 import '@omuso/react-reader/styles.css'
 
 export function App() {
-  return <Reader context={omuso} language="en" location={{ pathname: '/' }} />
+  return <Reader context={omuso} language="en" location={location} />
 }
 ```
 
