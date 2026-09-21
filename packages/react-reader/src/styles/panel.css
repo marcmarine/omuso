@@ -16,11 +16,9 @@
 	width: var(--or-resizer-width);
 	height: 100%;
 	cursor: ew-resize;
-	opacity: 0;
-	transition: opacity 200ms cubic-bezier(0.4, 0, 0.2, 1);
+	transition: background 400ms cubic-bezier(0.4, 0, 0.2, 1) 200ms;
 
 	&:hover {
-		opacity: 1;
 		background-color: var(--or-resizer-color);
 	}
 }
@@ -34,6 +32,5 @@
 }
 
 .or-panel__resizer--active {
-	opacity: 1;
-	background-color: color-mix(in oklab, var(--or-foreground) 5%, transparent);
+	background-color: var(--or-resizer-color);
 }
