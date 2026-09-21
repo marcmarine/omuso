@@ -58,6 +58,8 @@
 	padding: 0.375rem 1.25rem 0.375rem 2rem;
 	overflow: hidden;
 	text-align: left;
+	white-space: nowrap;
+	text-overflow: ellipsis;
 
 	@media (min-width: 48rem) {
 		padding-block: 0.125rem;
@@ -67,12 +69,6 @@
 	&.or-toc__link--indented {
 		padding-left: 0.25rem;
 	}
-}
-
-.or-toc__link-title {
-	overflow: hidden;
-	white-space: nowrap;
-	text-overflow: ellipsis;
 }
 
 .or-toc__sub {

@@ -99,7 +99,7 @@ function BookTableOfContents() {
 										)}
 										onClick={closePanel}
 									>
-										<h2 className="or-toc__link-title">{section.title}</h2>
+										{section.title}
 									</Link>
 								</div>
 								{shouldShowChildren && isExpanded && (
