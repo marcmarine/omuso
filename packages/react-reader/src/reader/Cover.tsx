@@ -1,6 +1,4 @@
 import { Link } from '../components/Link'
-import ThemeToggle from '../components/ThemeToggle'
-import TranslationSelector from '../components/TranslationSelector'
 import { useBookContext } from '../providers/BookContextProvider'
 import { useLayout } from '../providers/LayoutProvider'
 
@@ -26,16 +24,12 @@ export default function Cover() {
 				)}
 			</div>
 			<div className="or-cover__footer">
-				<TranslationSelector />
 				{metadata.translator && (
 					<div className="or-cover__translator">
 						<p>{i18n.t('translatedBy')}</p>
 						<h4 className="or-cover__translator-name">{metadata.translator}</h4>
 					</div>
 				)}
-				<div className="or-cover__theme">
-					<ThemeToggle />
-				</div>
 			</div>
 		</div>
 	)
