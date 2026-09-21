@@ -4,9 +4,11 @@ import { ContentNode } from './ContentNode'
 export function ContentRenderer({
 	content,
 	query,
+	baseDepth,
 }: {
 	content: omuso.Content
 	query?: string
+	baseDepth: number
 }) {
 	return (
 		<>
@@ -15,8 +17,13 @@ export function ContentRenderer({
 					key={node.path}
 					node={node}
 					query={query}
+					baseDepth={baseDepth}
 					renderSectionContent={(section) => (
-						<ContentRenderer content={section.content} query={query} />
+						<ContentRenderer
+							content={section.content}
+							query={query}
+							baseDepth={baseDepth}
+						/>
 					)}
 				/>
 			))}

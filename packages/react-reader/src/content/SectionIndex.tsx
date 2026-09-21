@@ -1,5 +1,6 @@
 import type * as omuso from 'omuso'
-import { SectionLink } from './SectionLink'
+import { Link } from '../components/Link'
+import { highlightMatches } from '../utils/dom'
 
 export function SectionIndex({
 	sections,
@@ -13,7 +14,13 @@ export function SectionIndex({
 			<ul className="or-content__index">
 				{sections.map((section) => (
 					<li key={section.path} className="or-content__index-item">
-						<SectionLink section={section} query={query} />
+						<Link
+							to={section.slug}
+							query={query}
+							className="or-content__section-link"
+						>
+							{highlightMatches(section.title, query)}
+						</Link>
 					</li>
 				))}
 			</ul>

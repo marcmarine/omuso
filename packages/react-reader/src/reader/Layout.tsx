@@ -58,7 +58,7 @@ function Header({ title, author }: { title: string; author?: string }) {
 	return (
 		<header className="or-layout__header">
 			<Link to="/" className="or-layout__title or-interactive">
-				<h1>{title}</h1>
+				{title}
 			</Link>
 			{author && <p className="or-layout__author">{author}</p>}
 		</header>
