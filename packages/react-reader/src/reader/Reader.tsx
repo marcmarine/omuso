@@ -1,5 +1,4 @@
 import type { BookContext } from 'omuso'
-import { useLayoutEffect } from 'react'
 import {
 	BookContextProvider,
 	type Context,
@@ -15,7 +14,7 @@ import Search from './Search'
 import TableOfContents from './TableOfContents'
 
 export interface ReaderProps {
-	location: Partial<Location>
+	location?: Partial<Location>
 	language: string
 	linkComponent?: React.ElementType
 	maxDepth?: number
@@ -28,14 +27,10 @@ export interface ReaderProps {
 	context: BookContext
 }
 
-function Reader({ location, contentComponent: ContentComponent }: ReaderProps) {
+function Reader({ contentComponent: ContentComponent }: ReaderProps) {
 	const context = useBookContext()
-	const { session, navigate } = context
+	const { session } = context
 	const { currentSection } = session
-
-	useLayoutEffect(() => {
-		navigate(location.pathname as string)
-	}, [location.pathname, navigate])
 
 	const mainContent = !currentSection ? (
 		<Cover />
@@ -62,6 +57,7 @@ function withProviders<P extends ReaderProps>(
 			<BookContextProvider
 				defaultLanguage={props.language}
 				context={props.context}
+				location={props.location}
 			>
 				<RoutingProvider linkComponent={props.linkComponent}>
 					<LayoutProvider
