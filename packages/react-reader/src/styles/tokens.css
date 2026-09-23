@@ -12,12 +12,12 @@
 
 	background: var(--or-background);
 	color: var(--or-foreground);
+}
 
-	&.dark {
-		--or-background: #0b0a09;
-		--or-foreground: #dad5d2;
-		--or-dividers: #1f1f1f;
-		--or-text-highlight: #2e2824;
-		--or-background-selected: #21242b;
-	}
+html[data-omuso-theme='dark'] .omuso-reader {
+	--or-background: #0b0a09;
+	--or-foreground: #dad5d2;
+	--or-dividers: #1f1f1f;
+	--or-text-highlight: #2e2824;
+	--or-background-selected: #21242b;
 }

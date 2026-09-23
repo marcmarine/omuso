@@ -1,6 +1,14 @@
 import { createContext, useContext, useEffect, useState } from 'react'
 
 type Theme = 'light' | 'dark'
+
+const STORAGE_KEY = 'theme'
+const THEME_ATTRIBUTE = 'data-omuso-theme'
+
+
+function isTheme(value: string | null): value is Theme {
+	return value === 'light' || value === 'dark'
+}
 type ThemeContextType = {
 	theme: Theme
 	setTheme: (theme: Theme) => void
@@ -12,8 +20,8 @@ const ThemeContext = createContext<ThemeContextType | undefined>(undefined)
 export function ThemeProvider({ children }: { children: React.ReactNode }) {
 	const [theme, setTheme] = useState<Theme>(() => {
 		if (typeof window !== 'undefined') {
-			const savedTheme = localStorage.getItem('theme') as Theme | null
-			if (savedTheme) return savedTheme
+			const savedTheme = localStorage.getItem(STORAGE_KEY)
+			if (isTheme(savedTheme)) return savedTheme
 
 			if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
 				return 'dark'
@@ -24,13 +32,8 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
 
 	useEffect(() => {
 		if (typeof window !== 'undefined') {
-			localStorage.setItem('theme', theme)
-
-			const readerElement = document.querySelector('.omuso-reader')
-			if (readerElement) {
-				readerElement.classList.remove('light', 'dark')
-				readerElement.classList.add(theme)
-			}
+			localStorage.setItem(STORAGE_KEY, theme)
+			document.documentElement.setAttribute(THEME_ATTRIBUTE, theme)
 		}
 	}, [theme])
 

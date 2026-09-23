@@ -9,8 +9,8 @@ body {
 	margin: 0;
 	padding: 0;
 	background-color: var(--background);
+}
 
-	&:has(.omuso-reader.dark) {
-		--background: #0b0a09;
-	}
+html[data-omuso-theme='dark'] body {
+	--background: #0b0a09;
 }
