@@ -1,4 +1,4 @@
-# @omuso/react-reader
+# OMUSO React Reader
 
 React components and hooks for building reading experiences on top of [OMUSO](../omuso).
 
