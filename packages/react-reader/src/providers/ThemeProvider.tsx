@@ -5,7 +5,6 @@ type Theme = 'light' | 'dark'
 const STORAGE_KEY = 'theme'
 const THEME_ATTRIBUTE = 'data-omuso-theme'
 
-
 function isTheme(value: string | null): value is Theme {
 	return value === 'light' || value === 'dark'
 }

@@ -32,7 +32,7 @@
 		background-color: var(--or-background-selected);
 
 		&:hover {
-			background-color: var(--or-background-selected) !important;
+			background-color: var(--or-background-selected);
 		}
 	}
 }
@@ -130,11 +130,15 @@
 		border-color: color-mix(in oklab, var(--or-foreground) 20%, transparent);
 	}
 
+	&:active::after {
+		border-color: color-mix(in oklab, var(--or-foreground) 40%, transparent);
+	}
+
 	&.or-toc__sublink--active {
 		background-color: var(--or-background-selected);
 
 		&:hover {
-			background-color: var(--or-background-selected) !important;
+			background-color: var(--or-background-selected);
 		}
 
 		&::after {
@@ -144,9 +148,5 @@
 		&:active::after {
 			border-color: color-mix(in oklab, var(--or-foreground) 40%, transparent);
 		}
-	}
-
-	&:active::after {
-		border-color: color-mix(in oklab, var(--or-foreground) 40%, transparent);
 	}
 }

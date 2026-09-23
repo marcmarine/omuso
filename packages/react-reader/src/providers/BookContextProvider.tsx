@@ -174,9 +174,8 @@ export function BookContextProvider({
 			manifestMap,
 		) ?? storedLocation
 
-	const [location, setLocationState] = React.useState<ReaderLocation>(
-		initialLocation,
-	)
+	const [location, setLocationState] =
+		React.useState<ReaderLocation>(initialLocation)
 	const [searchQuery, setSearchQuery] = React.useState<string | undefined>(
 		getSearchQuery(initialRoute),
 	)
