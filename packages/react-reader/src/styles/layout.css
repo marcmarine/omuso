@@ -25,13 +25,12 @@
 	display: flex;
 	align-items: center;
 	justify-content: center;
-	padding-bottom: 0.5rem;
+	padding-block: 0.5rem;
 	padding-inline: calc(0.5rem + env(safe-area-inset-left))
 		calc(0.5rem + env(safe-area-inset-right));
 	border-bottom: var(--or-dividers-width) solid var(--or-dividers);
 
 	@media (min-width: 48rem) {
-		padding-top: calc(0.5rem + env(safe-area-inset-top));
 		justify-content: space-between;
 	}
 }
@@ -111,7 +110,7 @@
 	backdrop-filter: blur(40px);
 
 	@media (max-width: 639px) {
-		width: 100vw;
+		width: 100vw !important;
 	}
 }
 

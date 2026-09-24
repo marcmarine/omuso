@@ -18,6 +18,7 @@
 .or-content__crumb {
 	line-height: 1;
 	padding: 2.5rem 0.375rem 0 0.375rem;
+	text-align: center;
 
 	&:hover {
 		text-decoration: underline;
