@@ -115,7 +115,18 @@ function resolvePathInLanguage(
 	manifestMap: Record<string, Manifest>,
 ): string | undefined {
 	const manifest = manifestMap[language]
-	return manifest?.pathBySlug?.[pathname]
+	if (!manifest?.pathBySlug) return undefined
+
+	const directMatch = manifest.pathBySlug[pathname]
+	if (directMatch !== undefined) return directMatch
+
+	try {
+		const decodedPathname = decodeURIComponent(pathname)
+		if (decodedPathname === pathname) return undefined
+		return manifest.pathBySlug[decodedPathname]
+	} catch {
+		return undefined
+	}
 }
 
 function resolveReaderLocation(
