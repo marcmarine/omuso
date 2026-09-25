@@ -7,15 +7,12 @@
 
 import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
-import { Route, Router } from 'wouter'
 import { App } from './App'
 
 const elem = document.getElementById('root')!
 const app = (
 	<StrictMode>
-		<Router>
-			<Route path="*" component={App} />
-		</Router>
+		<App />
 	</StrictMode>
 )
 

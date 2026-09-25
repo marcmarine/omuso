@@ -11,6 +11,10 @@ body {
 	background-color: var(--background);
 }
 
-html[data-omuso-theme='dark'] body {
+#root {
+	height: 100dvh;
+}
+
+html[data-omuso-theme="dark"] body {
 	--background: #0b0a09;
 }

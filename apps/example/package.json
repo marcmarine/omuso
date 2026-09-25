@@ -12,8 +12,7 @@
 		"@omuso/react-reader": "workspace:*",
 		"omuso": "workspace:*",
 		"react": "^19",
-		"react-dom": "^19",
-		"wouter": "^3.11.0"
+		"react-dom": "^19"
 	},
 	"devDependencies": {
 		"@types/react": "^19",
