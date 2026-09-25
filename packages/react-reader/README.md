@@ -10,7 +10,6 @@ React components and hooks for building reading experiences on top of [OMUSO](..
 ## Highlights
 
 - **Reader UI ready to use**: includes cover, table of contents, content view, in-reader search, and previous/next chapter navigation out of the box.
-- **Router-agnostic navigation**: works with native anchors by default and supports custom routing via the `linkComponent` prop (e.g. React Router / Next-style links).
 - **Search with URL persistence**: search queries are reflected in `?query=...`, preserved across links, and highlighted in titles and paragraph excerpts.
 - **Multi-language reading flow**: built-in language switcher (when multiple manifests are available) with translation-aware navigation and localized UI labels.
 - **Configurable content depth**: control how deeply nested sections are rendered with `maxDepth`, while deeper nodes can be shown as a compact section index.
@@ -18,7 +17,7 @@ React components and hooks for building reading experiences on top of [OMUSO](..
 - **Resizable side panels**: TOC and search panels can be resized and toggled, with panel width/open state persisted in local storage.
 - **Theme support**: built-in light/dark mode toggle with `prefers-color-scheme` initialization and persisted theme preference.
 - **Keyboard shortcuts**: quick toggles for navigation panels (`Cmd/Ctrl + M` for TOC, `Cmd/Ctrl + K` for search/focus).
-- **Composable API**: besides `Reader`, the package exports lower-level building blocks (`ReaderContent`, `ReaderContentHeader`, `ReaderHeading`, `ReaderParagraph`) for custom layouts.
+- **Composable API**: besides `Reader`, the package exports lower-level building blocks (`ReaderContent`, `ReaderContentHeader`, `ReaderHeading`, `ReaderParagraph` , `ReaderLink`) for custom layouts.
 
 ## Setup
 
@@ -36,7 +35,10 @@ export default createContext().init({
 })
 ```
 
-The module must export a `BookContext` created via `createContext().init({...})` from the `omuso` package. How markdown is imported as text depends on your bundler: Bun uses `with { type: "text" }` import attributes; Vite needs a `?raw` suffix (`import en from './content/en.md?raw'`); and so on.
+The module must export a `BookContext` created via `createContext().init({...})` from the `omuso` package.
+
+> [!NOTE]
+> How markdown is imported as text depends on your bundler: Bun uses `with { type: "text" }` import attributes; Vite needs a `?raw` suffix (`import en from './content/en.md?raw'`); and so on.
 
 ### 2. Pass it to the reader
 
@@ -49,7 +51,7 @@ import omuso from './omuso.config'
 import '@omuso/react-reader/styles.css'
 
 export function App() {
-  return <Reader context={omuso} language="en" location={location} />
+  return <Reader context={omuso} language="en" />
 }
 ```
 
