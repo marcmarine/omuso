@@ -14,7 +14,7 @@
 	],
 	"scripts": {
 		"dev": "bun --filter omuso dev & bun --filter @omuso/react-reader dev & bun --filter app-example dev",
-		"build": "bun --filter '*' build",
+		"build": "bun run lint && bun --filter '*' build",
 		"test": "bun --filter '*' test",
 		"lint": "biome check packages/*/src",
 		"lint:fix": "biome check --write packages/*/src"
