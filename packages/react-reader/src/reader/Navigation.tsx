@@ -5,20 +5,23 @@ import { classes } from '../utils'
 export default function Navigation() {
 	const context = useBookContext()
 	const {
-		session: { search, nextSection, prevSection },
+		session: { search, nextSection, prevSection, currentSection },
+		manifest: { slugs },
 	} = context
+
+	const { 1: firstSectionSlug } = slugs
 
 	return (
 		<div className="or-nav">
 			<Link
-				to={prevSection?.slug || ''}
+				to={prevSection?.slug || '/'}
 				query={search.query}
 				className={classes(
 					'or-icon-button',
 					'or-interactive',
 					'or-nav__button',
 					'or-nav__button--prev',
-					!prevSection && 'or-nav__button--disabled',
+					!currentSection && 'or-nav__button--disabled',
 				)}
 			>
 				<svg
@@ -39,14 +42,14 @@ export default function Navigation() {
 				</svg>
 			</Link>
 			<Link
-				to={nextSection?.slug || ''}
+				to={String(nextSection?.slug || firstSectionSlug)}
 				query={search.query}
 				className={classes(
 					'or-icon-button',
 					'or-interactive',
 					'or-nav__button',
 					'or-nav__button--next',
-					!nextSection && 'or-nav__button--disabled',
+					currentSection && !nextSection && 'or-nav__button--disabled',
 				)}
 			>
 				<svg
