@@ -42,4 +42,5 @@
 .or-cover__header,
 .or-cover__footer {
 	padding-block: 4rem;
+	padding-inline: 1rem;
 }
