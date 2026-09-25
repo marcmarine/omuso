@@ -1,5 +1,18 @@
 # Changelog
 
+## [0.2.3](https://github.com/marcmarine/omuso/compare/react-reader-v0.2.2...react-reader-v0.2.3) (2026-09-25)
+
+
+### Bug Fixes
+
+* Add fallback navigation routes ([b0ee58b](https://github.com/marcmarine/omuso/commit/b0ee58b8fb471622292dfa9377747a0bc6d9557a))
+* Add horizontal padding to cover sections ([8a895bf](https://github.com/marcmarine/omuso/commit/8a895bf1dc115603f935b90d934a198033d96527))
+* Export ReaderLink component ([b633e45](https://github.com/marcmarine/omuso/commit/b633e45018aa6a64f1fa875b90aa7adde3c00803))
+* Improve reader layout spacing and alignment ([a8aba1b](https://github.com/marcmarine/omuso/commit/a8aba1b0c1f5a7cf7afdddf89c4105d463ee40a1))
+* Reorder ReaderLink export alphabetically ([34b16eb](https://github.com/marcmarine/omuso/commit/34b16eb11c6967ae7ffb2898e9f9bce7aa425ba1))
+* Support encoded paths in language resolution ([3105950](https://github.com/marcmarine/omuso/commit/3105950a5bf94071358947dea0ab23bbc444b168))
+* Use percentage height for reader layout ([50b4d49](https://github.com/marcmarine/omuso/commit/50b4d49d6db8de9652be505780b75ec3af0e3199))
+
 ## [0.2.2](https://github.com/marcmarine/omuso/compare/react-reader-v0.2.1...react-reader-v0.2.2) (2026-09-23)
 
 
