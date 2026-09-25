@@ -8,4 +8,5 @@ export {
 } from './reader/Content'
 export type { ReaderProps } from './reader/Reader'
 export { default as Reader } from './reader/Reader'
+export { Link as ReaderLink } from './components/Link'
 export { applyMarks, highlightMatches } from './utils/dom'
