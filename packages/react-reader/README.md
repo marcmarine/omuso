@@ -53,7 +53,13 @@ export function App() {
 }
 ```
 
-The reader's stylesheet is loaded automatically by the package entry point. The compiled stylesheet is also exposed at `@omuso/react-reader/styles.css` for tooling that needs to reference it directly.
+If your app is mounted under a URL prefix, pass `basePath` so links and history updates stay inside that prefix:
+
+```tsx
+<Reader context={omuso} language="en" basePath="/reader" />
+```
+
+With `basePath="/reader"`, the reader keeps internal slugs unchanged (for example `/book/ch1`) but exposes them in the browser as `/reader/book/ch1`.
 
 ### 3. Customize the styles
 
