@@ -48,22 +48,30 @@ The module must export a `BookContext` created via `createContext().init({...})`
 import { Reader } from '@omuso/react-reader'
 import omuso from './omuso.config'
 
-import '@omuso/react-reader/styles.css'
-
 export function App() {
   return <Reader context={omuso} language="en" />
 }
 ```
 
-### 3. Import the styles
+The reader's stylesheet is loaded automatically by the package entry point. The compiled stylesheet is also exposed at `@omuso/react-reader/styles.css` for tooling that needs to reference it directly.
 
-The reader's styles are distributed as a standalone CSS file:
+### 3. Customize the styles
 
-```tsx
-import '@omuso/react-reader/styles.css'
+The default styles can be customized with CSS variables and the reader's `.or-*` classes. For example, wrap the reader and set theme tokens on that wrapper:
+
+```css
+.my-reader {
+  --or-background: #fff;
+  --or-foreground: #222;
+  --or-dividers: #ddd;
+}
 ```
 
-You only need to import it once, at your app's entry point. The bundler packs it along with the rest of your CSS.
+```tsx
+<div className="my-reader">
+  <Reader context={omuso} language="en" />
+</div>
+```
 
 ### 4. Recommended viewport setting (mobile)
 
@@ -74,6 +82,31 @@ When using the reader in mobile/full-screen layouts, include `viewport-fit=cover
 ```
 
 See [`apps/example`](../../apps/example) for a complete working setup.
+
+### Preventing a theme flash
+
+The reader applies the saved theme after React mounts. To avoid briefly showing the default theme first, set `data-omuso-theme` synchronously in the document `<head>`, before the app renders:
+
+```html
+<script>
+  (() => {
+    try {
+      const storedTheme = localStorage.getItem('theme')
+      const isDark =
+        storedTheme === 'dark' ||
+        (storedTheme !== 'light' &&
+          window.matchMedia('(prefers-color-scheme: dark)').matches)
+
+      document.documentElement.setAttribute(
+        'data-omuso-theme',
+        isDark ? 'dark' : 'light',
+      )
+    } catch {}
+  })()
+</script>
+```
+
+Place this inline script in your HTML `<head>` before the app bundle. It uses the same `theme` local-storage key as the reader, falls back to the system color-scheme preference, and sets the attribute on `<html>` before the first paint.
 
 ## Errors
 
