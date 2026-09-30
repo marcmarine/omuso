@@ -4,17 +4,14 @@
 }
 
 body {
-	--background: #ffebe0;
-
 	margin: 0;
 	padding: 0;
-	background-color: var(--background);
+
+	background-color: var(--or-background);
 }
 
-#root {
-	height: 100dvh;
-}
-
-html[data-omuso-theme="dark"] body {
-	--background: #0b0a09;
+.omuso-reader {
+	&.or-layout {
+		height: 100dvh;
+	}
 }
