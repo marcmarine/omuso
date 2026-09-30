@@ -16,6 +16,7 @@ import TableOfContents from './TableOfContents'
 export interface ReaderProps {
 	location?: Partial<Location>
 	language: string
+	basePath?: string
 	linkComponent?: React.ElementType
 	maxDepth?: number
 	contentComponent?: React.ComponentType<{ context: Context }>
@@ -58,6 +59,7 @@ function withProviders<P extends ReaderProps>(
 				defaultLanguage={props.language}
 				context={props.context}
 				location={props.location}
+				basePath={props.basePath}
 			>
 				<RoutingProvider linkComponent={props.linkComponent}>
 					<LayoutProvider

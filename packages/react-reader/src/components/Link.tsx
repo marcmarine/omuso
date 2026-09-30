@@ -1,6 +1,7 @@
 import type React from 'react'
 import { useBookContext } from '../providers/BookContextProvider'
 import { useRoutingStrategy } from '../providers/RoutingProvider'
+import { prependBasePath } from '../utils/routes'
 
 interface Props extends React.HTMLAttributes<HTMLElement> {
 	to: string
@@ -20,13 +21,23 @@ function hasExternalTarget(target?: string) {
 	return Boolean(target && target !== '_self')
 }
 
+function toPublicDestination(destination: string, basePath: string) {
+	const [rawPathname, ...rest] = destination.split('?')
+	const pathname = prependBasePath(rawPathname || '/', basePath)
+	const search = rest.length > 0 ? `?${rest.join('?')}` : ''
+	return `${pathname}${search}`
+}
+
 export function Link({ to, children, query, onClick, ...props }: Props) {
 	const { Component = 'a' } = useRoutingStrategy()
-	const { navigate } = useBookContext()
+	const { navigate, basePath } = useBookContext()
 
 	const destination = query ? `${to}?query=${encodeURIComponent(query)}` : to
+	const publicDestination = isExternalHref(destination)
+		? destination
+		: toPublicDestination(destination, basePath)
 	const linkProps =
-		Component === 'a' ? { href: destination } : { to: destination }
+		Component === 'a' ? { href: publicDestination } : { to: publicDestination }
 
 	const anchorProps = props as React.AnchorHTMLAttributes<HTMLElement>
 

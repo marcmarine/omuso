@@ -1,5 +1,10 @@
 import type { BookContext, Manifest, Session } from 'omuso'
 import React, { useMemo } from 'react'
+import {
+	normalizeBasePath,
+	prependBasePath,
+	stripBasePath,
+} from '../utils/routes'
 
 const DEFAULT_LANGUAGE = 'en'
 const LOCATION_STORAGE_KEY = 'location'
@@ -22,6 +27,7 @@ export type Context = {
 	resetSearch: () => void
 	availableLanguages: Array<string>
 	setLanguage: (newLanguage: string) => void
+	basePath: string
 }
 
 export const BookContextContext = React.createContext<Context | undefined>(
@@ -165,30 +171,46 @@ export function BookContextProvider({
 	defaultLanguage,
 	context,
 	location: externalLocation,
+	basePath,
 }: {
 	children: React.ReactNode
 	defaultLanguage?: string
 	context: BookContext
 	location?: Partial<Location>
+	basePath?: string
 }) {
 	const manifests = React.useMemo(() => context.manifests, [context])
 	const manifestMap = manifests as Record<string, Manifest>
 	const availableLanguages = useMemo(() => Object.keys(manifests), [manifests])
+	const normalizedBasePath = useMemo(
+		() => normalizeBasePath(basePath),
+		[basePath],
+	)
 
-	const initialRoute = parseRoute(externalLocation)
+	const initialPublicRoute = parseRoute(externalLocation)
+	const initialRoutePathname = stripBasePath(
+		initialPublicRoute.pathname,
+		normalizedBasePath,
+	)
+	const initialRoute =
+		initialRoutePathname === undefined
+			? undefined
+			: { pathname: initialRoutePathname, search: initialPublicRoute.search }
 	const storedLocation = readStoredLocation(defaultLanguage)
 	const initialLocation =
-		resolveReaderLocation(
-			initialRoute,
-			storedLocation.language,
-			availableLanguages,
-			manifestMap,
-		) ?? storedLocation
+		(initialRoute
+			? resolveReaderLocation(
+					initialRoute,
+					storedLocation.language,
+					availableLanguages,
+					manifestMap,
+				)
+			: undefined) ?? storedLocation
 
 	const [location, setLocationState] =
 		React.useState<ReaderLocation>(initialLocation)
 	const [searchQuery, setSearchQuery] = React.useState<string | undefined>(
-		getSearchQuery(initialRoute),
+		initialRoute ? getSearchQuery(initialRoute) : undefined,
 	)
 
 	const setLocation = React.useCallback((nextLocation: ReaderLocation) => {
@@ -276,14 +298,25 @@ export function BookContextProvider({
 			return
 		}
 
+		const publicRoute = parseRoute({
+			pathname: externalPathname,
+			search: externalSearch,
+		})
+		const readerPathname = stripBasePath(
+			publicRoute.pathname,
+			normalizedBasePath,
+		)
+		if (readerPathname === undefined) return
+
 		syncFromRoute(
-			parseRoute({ pathname: externalPathname, search: externalSearch }),
+			{ pathname: readerPathname, search: publicRoute.search },
 			validatedLanguage,
 		)
 	}, [
 		hasExternalLocation,
 		externalPathname,
 		externalSearch,
+		normalizedBasePath,
 		syncFromRoute,
 		validatedLanguage,
 	])
@@ -292,19 +325,36 @@ export function BookContextProvider({
 		if (typeof window === 'undefined') return
 
 		const handlePopState = () => {
-			syncFromRoute(getWindowRoute(), validatedLanguage)
+			const publicRoute = getWindowRoute()
+			const readerPathname = stripBasePath(
+				publicRoute.pathname,
+				normalizedBasePath,
+			)
+			if (readerPathname === undefined) return
+
+			syncFromRoute(
+				{ pathname: readerPathname, search: publicRoute.search },
+				validatedLanguage,
+			)
 		}
 
 		window.addEventListener('popstate', handlePopState)
 		return () => window.removeEventListener('popstate', handlePopState)
-	}, [syncFromRoute, validatedLanguage])
+	}, [normalizedBasePath, syncFromRoute, validatedLanguage])
 
 	const navigate = React.useCallback(
 		(currentSlug: string) => {
 			if (!currentSlug) return
 
 			const parsedRoute = parseRoute(currentSlug)
-			const route: RouteState = { ...parsedRoute }
+			const strippedPathname = stripBasePath(
+				parsedRoute.pathname,
+				normalizedBasePath,
+			)
+			const route: RouteState = {
+				...parsedRoute,
+				pathname: strippedPathname ?? parsedRoute.pathname,
+			}
 
 			if (!route.search && typeof window !== 'undefined') {
 				const currentQuery = getSearchQuery(getWindowRoute())
@@ -319,13 +369,14 @@ export function BookContextProvider({
 				return
 			}
 
-			const nextUrl = `${route.pathname}${route.search}`
+			const nextPathname = prependBasePath(route.pathname, normalizedBasePath)
+			const nextUrl = `${nextPathname}${route.search}`
 			const currentUrl = `${window.location.pathname}${window.location.search}`
 			if (nextUrl !== currentUrl) {
 				window.history.pushState({}, '', nextUrl)
 			}
 		},
-		[hasExternalLocation, syncFromRoute, validatedLanguage],
+		[hasExternalLocation, normalizedBasePath, syncFromRoute, validatedLanguage],
 	)
 
 	const search = (value: string) => {
@@ -357,6 +408,7 @@ export function BookContextProvider({
 				resetSearch,
 				availableLanguages,
 				setLanguage,
+				basePath: normalizedBasePath,
 			}}
 		>
 			{children}
