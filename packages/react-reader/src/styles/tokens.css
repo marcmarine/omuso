@@ -1,4 +1,4 @@
-.omuso-reader {
+:root {
 	--or-background: #ffebe0;
 	--or-foreground: #544e45;
 	--or-dividers: #f1ded5;
@@ -9,15 +9,17 @@
 
 	--or-dividers-width: 1px;
 	--or-resizer-width: 0.5rem;
-
-	background: var(--or-background);
-	color: var(--or-foreground);
 }
 
-html[data-omuso-theme="dark"] .omuso-reader {
+[data-omuso-theme="dark"] {
 	--or-background: #0b0a09;
 	--or-foreground: #dad5d2;
 	--or-dividers: #1f1f1f;
 	--or-text-highlight: #2e2824;
 	--or-background-selected: #21242b;
+}
+
+.omuso-reader {
+	background: var(--or-background);
+	color: var(--or-foreground);
 }
