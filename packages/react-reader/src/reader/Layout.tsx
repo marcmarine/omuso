@@ -25,7 +25,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
 					<Header title={title} author={author} />
 					<main className="or-layout__stage">
 						<ResizablePanel
-							maxWidth={300}
+							maxWidth={250}
 							className="or-layout__panel or-layout__panel--left"
 							initialWidth={panel.left.width}
 							collapsed={!panel.left.open}
@@ -39,7 +39,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
 					</main>
 				</div>
 				<ResizablePanel
-					minWidth={250}
+					minWidth={300}
 					className="or-layout__panel or-layout__panel--right"
 					initialWidth={panel.right.width}
 					collapsed={!panel.right.open}
