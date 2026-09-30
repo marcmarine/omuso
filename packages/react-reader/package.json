@@ -7,8 +7,7 @@
 			"import": "./dist/index.js",
 			"require": "./dist/index.js",
 			"types": "./dist/index.d.ts"
-		},
-		"./styles.css": "./dist/index.css"
+		}
 	},
 	"types": "dist/index.d.ts",
 	"type": "module",
@@ -21,9 +20,9 @@
 	"author": "Marc Mariné <shenobi@gmail.com>",
 	"license": "MIT",
 	"scripts": {
-		"dev": "bun build ./src/index.ts --outdir ./dist --target browser --minify --packages external --watch",
+		"dev": "bun build ./src/index.ts --outdir ./dist --target browser --minify --packages external --footer=\"import './index.css';\" --watch",
 		"build:types": "tsc --emitDeclarationOnly",
-		"build": "bun build ./src/index.ts --outdir ./dist --target browser --minify --packages external && bun run build:types"
+		"build": "bun build ./src/index.ts --outdir ./dist --target browser --minify --packages external --footer=\"import './index.css';\" && bun run build:types"
 	},
 	"dependencies": {
 		"omuso": "^1.6.0"
