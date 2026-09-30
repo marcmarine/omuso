@@ -1,5 +1,15 @@
 # Changelog
 
+## [0.2.4](https://github.com/marcmarine/omuso/compare/react-reader-v0.2.3...react-reader-v0.2.4) (2026-09-30)
+
+
+### Bug Fixes
+
+* Add base path support to reader routing ([9733e33](https://github.com/marcmarine/omuso/commit/9733e33bb7041e4eef454dbf1685da38a52a603c))
+* Adjust panel width constraints ([1567796](https://github.com/marcmarine/omuso/commit/1567796eeed9f080f787888d33ba4e151d5e4e99))
+* Bundle reader styles automatically ([1bf5c3d](https://github.com/marcmarine/omuso/commit/1bf5c3deee734e2f3dcdb908c417f0c0c8b4dbc4))
+* Define reader tokens globally ([8a1eada](https://github.com/marcmarine/omuso/commit/8a1eada782b4715a8b4b7ba91195f34bf7243351))
+
 ## [0.2.3](https://github.com/marcmarine/omuso/compare/react-reader-v0.2.2...react-reader-v0.2.3) (2026-09-25)
 
 
