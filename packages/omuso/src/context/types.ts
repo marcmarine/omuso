@@ -63,11 +63,6 @@ export type BookContextConfig = {
 	markdowns: Record<string, string>
 
 	/**
-	 * The default language for the book (optional).
-	 */
-	defaultLanguage?: string
-
-	/**
 	 * The maximum navigation depth (optional).
 	 */
 	maxNavigationDepth?: number
