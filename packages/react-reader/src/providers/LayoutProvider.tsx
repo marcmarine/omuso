@@ -40,8 +40,8 @@ export function LayoutProvider({
 	maxDepth = Infinity,
 	omitSections,
 }: LayoutProviderProps) {
-	const left = usePanelState('leftPanel', false, 300)
-	const right = usePanelState('rightPanel', false, 200)
+	const left = usePanelState('leftPanel', false, 250)
+	const right = usePanelState('rightPanel', false, 300)
 	const panel = useMemo(() => ({ left, right }), [left, right])
 
 	const i18n = useMemo(

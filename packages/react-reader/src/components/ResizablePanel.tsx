@@ -22,12 +22,17 @@ export function ResizablePanel({
 	className,
 	onResizeEnd,
 }: ResizablePanelProps) {
+	const clampedInitialWidth = Math.max(
+		minWidth,
+		Math.min(maxWidth, initialWidth),
+	)
+
 	const panelRef = useRef<HTMLDivElement | null>(null)
 	const startX = useRef(0)
-	const startWidth = useRef(initialWidth)
-	const currentWidth = useRef(initialWidth)
+	const startWidth = useRef(clampedInitialWidth)
+	const currentWidth = useRef(clampedInitialWidth)
 
-	const [width, setWidth] = useState(initialWidth)
+	const [width, setWidth] = useState(clampedInitialWidth)
 	const [isResizing, setIsResizing] = useState(false)
 
 	const handleMouseDown = useCallback(
@@ -36,11 +41,11 @@ export function ResizablePanel({
 			startX.current = e.clientX
 			startWidth.current = panelRef.current
 				? panelRef.current.offsetWidth
-				: initialWidth
+				: clampedInitialWidth
 			currentWidth.current = startWidth.current
 			setIsResizing(true)
 		},
-		[initialWidth],
+		[clampedInitialWidth],
 	)
 
 	const handleMouseMove = useCallback(
