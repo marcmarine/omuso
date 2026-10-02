@@ -33,6 +33,35 @@
 * Add type declarations for Node projects ([aab472e](https://github.com/marcmarine/omuso/commit/aab472e18c5e7913ed4798b5234e626fbecc52bd))
 * Update slugify to handle numbers in section names ([4b3298f](https://github.com/marcmarine/omuso/commit/4b3298fd8db5f81ed7231cacf8c843d6a0caaed5))
 
+## [1.7.0](https://github.com/marcmarine/omuso/compare/omuso-v1.6.0...omuso-v1.7.0) (2026-10-02)
+
+
+### Features
+
+* Add configurable wiki-style section slugs ([f2bcb97](https://github.com/marcmarine/omuso/commit/f2bcb97d5994e5e7b1b8ba94a4610a678023a4b6))
+* Add strong text parsing and rendering support ([b4193d4](https://github.com/marcmarine/omuso/commit/b4193d401caf3b0aa7854465c0d211c3c735a63a))
+* Support slugless parsing with `slugStyle: 'none'` ([b46f805](https://github.com/marcmarine/omuso/commit/b46f805ad2c13d073eb577849be15f499a0cc30f))
+
+
+### Bug Fixes
+
+* Filter omitted sections from search results ([40e7a3c](https://github.com/marcmarine/omuso/commit/40e7a3c11c2681ac045f9444e4f600ba21425b0f))
+* Isolate context state and deprecate singleton use ([3bb5c2b](https://github.com/marcmarine/omuso/commit/3bb5c2be038b7cb57031dc2599ff951a6d80fc33))
+* Move TypeScript to devDependencies ([e156c06](https://github.com/marcmarine/omuso/commit/e156c0614fd72f70d8496692a817fb417bf297d5))
+* Normalize CRLF line endings before parsing ([3885807](https://github.com/marcmarine/omuso/commit/38858075805da7bfc7254ad9e3d54c15f461400a))
+* Normalize dots as slug separators and add tests ([f9c7bbf](https://github.com/marcmarine/omuso/commit/f9c7bbff220a8b375f39d8db85a6829a699c8be6))
+* Preserve frontmatter titles over headings ([87f7dfc](https://github.com/marcmarine/omuso/commit/87f7dfc9ebff82e604799ee83bf3bdcf8075037a))
+* Recognize only valid ATX headings ([ad61e37](https://github.com/marcmarine/omuso/commit/ad61e37a7f476c84b5818cba409f98b03ed96f58))
+* Remove defaultLanguage from BookContextConfig ([f510c07](https://github.com/marcmarine/omuso/commit/f510c07d2c6261587702afd00199f1507dad933e))
+* Remove redundant session content cloning ([2caaff9](https://github.com/marcmarine/omuso/commit/2caaff9ef4054cfdd4f71797a1d26b93edd79f4e))
+* Respect omitted paths in table of contents ([f7eb279](https://github.com/marcmarine/omuso/commit/f7eb2792400460b70d2d8c23670850531a09ff15))
+* Use parser slugs for manifest paths ([e434c63](https://github.com/marcmarine/omuso/commit/e434c63356fa4cd65d313bd551dc9cb8b133e6cd))
+
+
+### Performance Improvements
+
+* Precompute section references and path index in manifest ([a63b31c](https://github.com/marcmarine/omuso/commit/a63b31cd46255de2ba989a9c205781192baed989))
+
 ## [1.6.0](https://github.com/marcmarine/omuso/compare/omuso-v1.5.0...omuso-v1.6.0) (2026-09-18)
 
 
