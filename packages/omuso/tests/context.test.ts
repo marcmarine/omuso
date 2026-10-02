@@ -205,6 +205,17 @@ describe('context', () => {
 			expect(slugs['1.1.1']).toBe('/chapter-1/section-1-1/section-1-1-1')
 		})
 
+		test('manifest slugs match the slugs computed by the parser', async () => {
+			const markdown = await Bun.file('./tests/fixtures/nested.md').text()
+			const root = parse(markdown)
+			const manifest = buildManifest(root)
+
+			for (const path of manifest.paths) {
+				const section = findSection(root.content, path)
+				expect(manifest.slugs[path]).toBe(section?.slug as string)
+			}
+		})
+
 		test('buildTableOfContents returns only sections (no paragraphs)', async () => {
 			const markdown = await Bun.file('./tests/fixtures/nested.md').text()
 			const root = parse(markdown)

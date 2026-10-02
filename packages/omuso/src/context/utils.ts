@@ -1,9 +1,3 @@
-import { slugify } from '../common/utils'
-
-export function convertToSlugFromArray(arr: string[]): string {
-	return `/${arr.map(slugify).join('/')}`
-}
-
 /**
  * A path is omitted if it matches an omitted path or is nested under one.
  */

@@ -1,6 +1,5 @@
 import type { Content, ContentElement, Root, Section } from '../parser/types'
 import type { SectionReference } from './types'
-import { convertToSlugFromArray } from './utils'
 
 export function findSection(content: Content, path: string): Section | null {
 	for (const node of content) {
@@ -89,15 +88,21 @@ export function buildBreadcrumbIndex(
 	return index
 }
 
+/**
+ * Maps each section path to the slug computed by the parser, taken from the
+ * last entry of its breadcrumb trail (the section itself).
+ */
 export function buildSlugs(
-	breadcrumbIndex: Record<string, { title: string; path: string }[]>,
-) {
-	return Object.fromEntries(
-		Object.entries(breadcrumbIndex).map(([key, value]) => [
-			key,
-			convertToSlugFromArray(value.map((b) => b.title)),
-		]),
-	)
+	breadcrumbIndex: Record<string, SectionReference[]>,
+): Record<string, string> {
+	const slugs: Record<string, string> = {}
+
+	for (const [path, trail] of Object.entries(breadcrumbIndex)) {
+		const section = trail[trail.length - 1]
+		if (section) slugs[path] = section.slug
+	}
+
+	return slugs
 }
 
 export function buildTableOfContents(
