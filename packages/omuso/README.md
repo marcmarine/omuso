@@ -125,8 +125,9 @@ Converts a Markdown string into a structured document tree.
 |---|---|
 | `'kebab'` | `/ix-capitulo-primero` |
 | `'wiki'` | `/IX_Capítulo_primero` |
+| `'none'` | — |
 
-`wiki` keeps case and diacritics, so its slugs are case-sensitive and get percent-encoded in URLs.
+`wiki` keeps case and diacritics, so its slugs are case-sensitive and get percent-encoded in URLs. With `none`, sections and paragraphs have no `slug`; use `path` to identify them.
 
 **Returns:**
 - `Root`: The parsed document
@@ -158,7 +159,7 @@ interface Section {
   type: 'section'
   path: string
   title: string
-  slug: string
+  slug?: string // absent with slugStyle: 'none'
   depth: number
   content: (Section | Paragraph)[]
 }
@@ -173,7 +174,7 @@ interface Paragraph {
   type: 'paragraph'
   path: string
   value: string
-  slug: string
+  slug?: string // absent with slugStyle: 'none'
   marks: InlineMark[]
 }
 ```
@@ -360,8 +361,9 @@ interface Manifest {
   }
   tableOfContents: Section[]
   paths: string[]
-  slugs: Record<string, string>
-  pathBySlug: Record<string, string>
+  slugStyle: 'kebab' | 'wiki' | 'none'
+  slugs: Record<string, string> // empty with slugStyle: 'none'
+  pathBySlug: Record<string, string> // empty with slugStyle: 'none'
   breadcrumbIndex: Record<string, SectionReference[]>
   references: Record<string, SectionReference>
   pathIndex: Record<string, number>
@@ -396,7 +398,7 @@ interface SectionReference {
   path: string
   title: string
   depth: number
-  slug: string
+  slug?: string // absent with slugStyle: 'none'
 }
 ```
 

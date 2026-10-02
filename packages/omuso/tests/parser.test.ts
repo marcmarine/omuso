@@ -254,6 +254,23 @@ describe('parser', () => {
 		expect(chapter2.slug).toBe('/chapter-2')
 	})
 
+	test('omits slugs when slugStyle is none', async () => {
+		const markdown = await Bun.file('./tests/fixtures/nested.md').text()
+		const root = parse(markdown, { slugStyle: 'none' })
+
+		const introParagraph = root.content[0] as Paragraph
+		expect('slug' in introParagraph).toBe(false)
+
+		const chapter1 = root.content[1] as Section
+		expect('slug' in chapter1).toBe(false)
+		expect(chapter1.path).toBe('1')
+
+		const section1_1 = chapter1.content[1] as Section
+		const subsection1_1_1 = section1_1.content[1] as Section
+		expect('slug' in subsection1_1_1).toBe(false)
+		expect(subsection1_1_1.path).toBe('1.1.1')
+	})
+
 	test('generates wiki-style slugs when slugStyle is wiki', async () => {
 		const markdown = await Bun.file('./tests/fixtures/nested.md').text()
 		const root = parse(markdown, { slugStyle: 'wiki' })

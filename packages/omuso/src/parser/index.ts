@@ -182,7 +182,6 @@ function createSection(title: string, markdownDepth: number): Section {
 		path: '',
 		type: 'section',
 		title,
-		slug: '',
 		depth: markdownDepth,
 		content: [],
 	}
@@ -198,7 +197,6 @@ function createParagraph(value: string, marks: InlineMark[]): Paragraph {
 		path: '',
 		type: 'paragraph',
 		value,
-		slug: '',
 		marks,
 	}
 }

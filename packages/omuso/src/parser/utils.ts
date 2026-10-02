@@ -23,10 +23,12 @@ export function createSectionBuilder(
 
 		const parent = getCurrentParent()
 		const index = countSectionsIn(parent)
-		const locatedSection = {
+		const locatedSection: Section = {
 			...section,
 			path: buildPath(parent, index, '.'),
-			slug: buildSlug(parent, section.title, index, slugStyle),
+		}
+		if (slugStyle !== 'none') {
+			locatedSection.slug = buildSlug(parent, section.title, index, slugStyle)
 		}
 
 		parent.content.push(locatedSection)
@@ -36,10 +38,12 @@ export function createSectionBuilder(
 	function addContent(paragraph: Paragraph): void {
 		const parent = getCurrentParent()
 		const index = parent.content.length
-		const locatedParagraph = {
+		const locatedParagraph: Paragraph = {
 			...paragraph,
 			path: buildPath(parent, index, '_'),
-			slug: buildSlug(parent, null, index),
+		}
+		if (slugStyle !== 'none') {
+			locatedParagraph.slug = buildSlug(parent, null, index)
 		}
 
 		parent.content.push(locatedParagraph)
@@ -73,7 +77,7 @@ function buildSlug(
 	parent: Section | Root,
 	title: string | null,
 	index: number,
-	slugStyle?: SlugStyle,
+	slugStyle?: Exclude<SlugStyle, 'none'>,
 ): string {
 	const suffix = title ? `/${slugify(title, slugStyle)}` : `#${index + 1}`
 	return parent.type === 'root' ? suffix : `${parent.slug}${suffix}`

@@ -268,6 +268,34 @@ describe('context', () => {
 			expect(manifest.pathBySlug['/Libro/IX_Capítulo_primero']).toBe('1.1')
 		})
 
+		test('createContext().init with slugStyle none leaves slug maps empty', async () => {
+			const markdown = await Bun.file('./tests/fixtures/nested.md').text()
+			const ctx = createContext().init({
+				markdowns: { en: markdown },
+				slugStyle: 'none',
+			})
+			const manifest = ctx.manifest('en')
+
+			expect(manifest.slugStyle).toBe('none')
+			expect(manifest.slugs).toEqual({})
+			expect(manifest.pathBySlug).toEqual({})
+			expect(manifest.paths.length).toBeGreaterThan(0)
+
+			const session = ctx.session('1.1', '', 'en')
+			expect(session.currentSection?.path).toBe('1.1')
+			expect(session.breadcrumbs.every((b) => b.slug === undefined)).toBe(
+				true,
+			)
+		})
+
+		test('manifest exposes kebab as the default slugStyle', () => {
+			const manifest = createContext()
+				.init({ markdowns: { en: '# Title\n\n## Chapter 1' } })
+				.manifest('en')
+
+			expect(manifest.slugStyle).toBe('kebab')
+		})
+
 		test('manifest slugs match the slugs computed by the parser', async () => {
 			const markdown = await Bun.file('./tests/fixtures/nested.md').text()
 			const root = parse(markdown)

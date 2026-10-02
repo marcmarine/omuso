@@ -24,6 +24,7 @@ export const createContext = (): BookContext => {
 
 	const init = (config: BookContextConfig): BookContext => {
 		const markdowns = config.markdowns
+		const slugStyle = config.slugStyle ?? 'kebab'
 		state.languages = Object.keys(markdowns)
 		state.maxNavigationDepth =
 			config?.maxNavigationDepth ?? state.maxNavigationDepth
@@ -32,12 +33,14 @@ export const createContext = (): BookContext => {
 		state.manifests = {}
 
 		for (const lang of state.languages) {
-			const root = parse(markdowns[lang] as string, {
-				slugStyle: config.slugStyle,
-			})
+			const root = parse(markdowns[lang] as string, { slugStyle })
 
 			state.roots[lang] = root
-			state.manifests[lang] = buildManifest(root, state.omittedPaths)
+			state.manifests[lang] = buildManifest(
+				root,
+				state.omittedPaths,
+				slugStyle,
+			)
 		}
 
 		return ctx

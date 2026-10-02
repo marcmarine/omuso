@@ -88,7 +88,10 @@ export interface SectionReference {
 	path: string
 	title: string
 	depth: number
-	slug: string
+	/**
+	 * Absent when the document is parsed with `slugStyle: 'none'`.
+	 */
+	slug?: string
 }
 
 export interface SectionResult extends SectionReference, BaseResult {
@@ -137,12 +140,18 @@ export interface Manifest {
 	paths: Array<string>
 
 	/**
-	 * A record mapping slugs to their corresponding values.
+	 * The slug style the document was parsed with. Use it to tell whether
+	 * slugs are available instead of checking if `slugs` is empty.
+	 */
+	slugStyle: SlugStyle
+
+	/**
+	 * A record mapping paths to their slugs. Empty when `slugStyle` is `none`.
 	 */
 	slugs: Record<string, string>
 
 	/**
-	 * A record mapping slugs to their corresponding paths.
+	 * A record mapping slugs to their corresponding paths. Empty when `slugStyle` is `none`.
 	 */
 	pathBySlug: Record<string, string>
 

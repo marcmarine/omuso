@@ -1,4 +1,4 @@
-import type { Root } from '../parser/types'
+import type { Root, SlugStyle } from '../parser/types'
 import {
 	buildBreadcrumbIndex,
 	buildPathIndex,
@@ -12,6 +12,7 @@ import {
 export const buildManifest = (
 	data: Root,
 	omittedPaths: Array<string> = [],
+	slugStyle: SlugStyle = 'kebab',
 ): Manifest => {
 	const breadcrumbIndex = buildBreadcrumbIndex(data.content)
 	const paths = getAllPaths(data.content)
@@ -34,6 +35,7 @@ export const buildManifest = (
 	}
 
 	return {
+		slugStyle,
 		slugs,
 		breadcrumbIndex,
 		references,

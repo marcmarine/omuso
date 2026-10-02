@@ -1,6 +1,9 @@
 import type { SlugStyle } from '../parser/types'
 
-export function slugify(text: string, style: SlugStyle = 'kebab'): string {
+export function slugify(
+	text: string,
+	style: Exclude<SlugStyle, 'none'> = 'kebab',
+): string {
 	if (style === 'wiki') {
 		return text
 			.normalize('NFC')

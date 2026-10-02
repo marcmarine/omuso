@@ -99,7 +99,7 @@ export function buildSlugs(
 
 	for (const [path, trail] of Object.entries(breadcrumbIndex)) {
 		const section = trail[trail.length - 1]
-		if (section) slugs[path] = section.slug
+		if (section?.slug !== undefined) slugs[path] = section.slug
 	}
 
 	return slugs

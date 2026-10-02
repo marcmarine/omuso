@@ -2,8 +2,9 @@
  * How section titles are turned into slugs:
  * - `kebab`: lowercase, without diacritics, words joined by `-` (`/ix-capitulo-primero`).
  * - `wiki`: keeps case and diacritics, words joined by `_` (`/IX_Capítulo_primero`).
+ * - `none`: no slugs are generated; sections and paragraphs have no `slug`.
  */
-export type SlugStyle = 'kebab' | 'wiki'
+export type SlugStyle = 'kebab' | 'wiki' | 'none'
 
 export interface ParseOptions {
 	/**
@@ -18,7 +19,10 @@ export interface BaseElement {
 
 interface Location {
 	path: string
-	slug: string
+	/**
+	 * Absent when the document is parsed with `slugStyle: 'none'`.
+	 */
+	slug?: string
 }
 
 export type ContentElement = Section | Paragraph
