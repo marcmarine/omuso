@@ -1,5 +1,6 @@
 import type { Content, ContentElement, Root, Section } from '../parser/types'
 import type { SectionReference } from './types'
+import { isPathOmitted } from './utils'
 
 export function findSection(content: Content, path: string): Section | null {
 	for (const node of content) {
@@ -112,11 +113,12 @@ export function buildTableOfContents(
 	const collect = (elements: Array<ContentElement>): Section[] => {
 		const tableOfContents: Section[] = []
 
-		const hasOmit = omittedPaths.length > 0
-		const omitSet = hasOmit ? new Set(omittedPaths) : null
-
 		for (const element of elements) {
-			if (element.type !== 'section' || omitSet?.has(element.path)) continue
+			if (
+				element.type !== 'section' ||
+				isPathOmitted(element.path, omittedPaths)
+			)
+				continue
 
 			tableOfContents.push({
 				...element,
