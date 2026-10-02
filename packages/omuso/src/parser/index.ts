@@ -170,7 +170,7 @@ function processHeading(
 	}
 	const title = line.slice(depth).trim()
 
-	if (depth === 1) {
+	if (depth === 1 && !root.title) {
 		root.title = title
 	}
 

@@ -47,6 +47,20 @@ describe('parser', () => {
 		expect(root.language).toBe('ca')
 	})
 
+	test('keeps the frontmatter title over level-1 headings', () => {
+		const root = parse(
+			'---\ntitle: Libro\n---\n\n# Cap 1\n\nUno.\n\n# Cap 2\n\nDos.',
+		)
+
+		expect(root.title).toBe('Libro')
+	})
+
+	test('uses the first level-1 heading as title when there is no frontmatter title', () => {
+		const root = parse('# Cap 1\n\nUno.\n\n# Cap 2\n\nDos.')
+
+		expect(root.title).toBe('Cap 1')
+	})
+
 	test('parses sections hierarchy', async () => {
 		const markdown = await Bun.file('./tests/fixtures/frontmatter.md').text()
 		const root = parse(markdown)
