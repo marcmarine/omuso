@@ -307,6 +307,24 @@ describe('parser', () => {
 		expect(empty.title).toBe('')
 	})
 
+	test('parses frontmatter and content with CRLF line endings', () => {
+		const root = parse(
+			'---\r\ntitle: My Book\r\nauthor: Jane\r\n---\r\n\r\n## Chapter\r\n\r\nFirst line.\r\nSecond line.\r\n\r\nNext.',
+		)
+
+		expect(root.title).toBe('My Book')
+		expect(root.author).toBe('Jane')
+		expect(root.content.length).toBe(1)
+
+		const section = root.content[0] as Section
+		expect(section.title).toBe('Chapter')
+		expect(section.content.length).toBe(2)
+		expect((section.content[0] as Paragraph).value).toBe(
+			'First line.\nSecond line.',
+		)
+		expect((section.content[1] as Paragraph).value).toBe('Next.')
+	})
+
 	test('keeps inline marks across a multi-line paragraph', () => {
 		const root = parse('Text with *emphasis*\ncontinues here.')
 

@@ -34,7 +34,7 @@ import { createSectionBuilder, type SectionBuilder } from './utils'
  * ```
  */
 export function parse(text: string): Root {
-	const { frontmatter, content } = splitFrontmatter(text)
+	const { frontmatter, content } = splitFrontmatter(text.replace(/\r\n/g, '\n'))
 	const metadata = frontmatter ? parseFrontmatterMetadata(frontmatter) : {}
 
 	const root = createInitialRoot(metadata)
