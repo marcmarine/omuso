@@ -22,7 +22,9 @@ describe('slugify', () => {
 
 	describe('wiki style', () => {
 		test('keeps case and joins words with underscores', () => {
-			expect(slugify('IX. Capítulo primero', 'wiki')).toBe('IX_Capítulo_primero')
+			expect(slugify('IX. Capítulo primero', 'wiki')).toBe(
+				'IX_Capítulo_primero',
+			)
 		})
 
 		test('keeps diacritics as single code points (NFC)', () => {

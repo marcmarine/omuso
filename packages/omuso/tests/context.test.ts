@@ -283,9 +283,7 @@ describe('context', () => {
 
 			const session = ctx.session('1.1', '', 'en')
 			expect(session.currentSection?.path).toBe('1.1')
-			expect(session.breadcrumbs.every((b) => b.slug === undefined)).toBe(
-				true,
-			)
+			expect(session.breadcrumbs.every((b) => b.slug === undefined)).toBe(true)
 		})
 
 		test('manifest exposes kebab as the default slugStyle', () => {
