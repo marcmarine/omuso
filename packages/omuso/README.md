@@ -20,7 +20,7 @@ The parser turns Markdown into a hierarchical, typed JSON structure that mirrors
 ### Key Features
 
 - **Hierarchical structure**: Headings (#, ##, etc.) create nested sections, forming a clear document tree.
-- **Text formatting preservation**: Inline emphasis is preserved as positional marks instead of raw Markdown.
+- **Text formatting preservation**: Inline emphasis and strong text are preserved as positional marks instead of raw Markdown.
 - **Frontmatter support**: YAML frontmatter is extracted and exposed as document metadata.
 - **TypeScript-first**: Fully typed output for a smooth developer experience.
 - **Lightweight**: Zero runtime dependencies.
@@ -176,7 +176,7 @@ Inline text formatting metadata.
 
 ```typescript
 interface InlineMark {
-  type: 'emphasis'
+  type: 'emphasis' | 'strong'
   start: number
   end: number
 }
@@ -222,16 +222,28 @@ console.log(paragraph.marks)   // [
                                // ]
 ```
 
+Strong text uses `**` or `__`:
+
+```typescript
+const result = parse('A **bold** word.')
+const paragraph = result.content[0] as Paragraph
+
+console.log(paragraph.value) // "A bold word."
+console.log(paragraph.marks) // [{ type: 'strong', start: 2, end: 6 }]
+```
+
+Marks don't nest: inside `**…**`, a single `*` is kept as literal text.
+
 ### Supported Markdown Features
 
 - ✅ Headings (H1-H6)
 - ✅ Paragraphs
 - ✅ Emphasis (`*italic*`, `_italic_`)
+- ✅ Strong (`**bold**`, `__bold__`)
 - ✅ YAML frontmatter
 - 
 Planned / not yet supported:
 
-- ❌ Strong text
 - ❌ Lists
 - ❌ Links
 - ❌ Images

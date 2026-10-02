@@ -27,6 +27,7 @@ const markTags: Partial<
 	Record<omuso.InlineMark['type'], keyof React.JSX.IntrinsicElements>
 > = {
 	emphasis: 'i',
+	strong: 'b',
 }
 
 export function applyMarks(

@@ -29,8 +29,10 @@ export interface Section extends Location, ParentNode {
 	depth: number
 }
 
+export type InlineMarkType = 'emphasis' | 'strong'
+
 export interface InlineMark {
-	type: 'emphasis'
+	type: InlineMarkType
 	start: number
 	end: number
 }
@@ -42,6 +44,6 @@ export interface Paragraph extends Location, BaseElement {
 }
 
 export interface InlineMarkRule {
-	type: 'emphasis'
+	type: InlineMarkType
 	delimiter: string
 }

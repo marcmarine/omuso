@@ -201,7 +201,10 @@ function createParagraph(value: string, marks: InlineMark[]): Paragraph {
 	}
 }
 
+// Longer delimiters go first so `**` is read as strong, not as two `*`.
 const INLINE_MARK_RULES: InlineMarkRule[] = [
+	{ type: 'strong', delimiter: '**' },
+	{ type: 'strong', delimiter: '__' },
 	{ type: 'emphasis', delimiter: '*' },
 	{ type: 'emphasis', delimiter: '_' },
 ]

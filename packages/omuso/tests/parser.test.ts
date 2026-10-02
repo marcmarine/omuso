@@ -103,6 +103,53 @@ describe('parser', () => {
 		}
 	})
 
+	test('parses strong markup (** and __)', () => {
+		const root = parse('A **bold** word and a __strong__ one.')
+
+		const paragraph = root.content[0] as Paragraph
+		expect(paragraph.value).toBe('A bold word and a strong one.')
+		expect(paragraph.marks.length).toBe(2)
+
+		const [first, second] = paragraph.marks as [InlineMark, InlineMark]
+		expect(first.type).toBe('strong')
+		expect(paragraph.value.slice(first.start, first.end)).toBe('bold')
+		expect(second.type).toBe('strong')
+		expect(paragraph.value.slice(second.start, second.end)).toBe('strong')
+	})
+
+	test('does not produce empty emphasis marks for strong text', () => {
+		const root = parse('**Bold**')
+
+		const paragraph = root.content[0] as Paragraph
+		expect(paragraph.value).toBe('Bold')
+		expect(paragraph.marks).toEqual([{ type: 'strong', start: 0, end: 4 }])
+	})
+
+	test('parses strong and emphasis in the same paragraph', () => {
+		const root = parse('Mix of **strong** and *emphasis* and _more_.')
+
+		const paragraph = root.content[0] as Paragraph
+		expect(paragraph.value).toBe('Mix of strong and emphasis and more.')
+		expect(
+			paragraph.marks.map((m) => [
+				m.type,
+				paragraph.value.slice(m.start, m.end),
+			]),
+		).toEqual([
+			['strong', 'strong'],
+			['emphasis', 'emphasis'],
+			['emphasis', 'more'],
+		])
+	})
+
+	test('keeps unclosed strong delimiters as text', () => {
+		const root = parse('Text with **unclosed strong')
+
+		const paragraph = root.content[0] as Paragraph
+		expect(paragraph.marks).toEqual([])
+		expect(paragraph.value).toBe('Text with **unclosed strong')
+	})
+
 	test('handles unclosed marks gracefully', async () => {
 		const markdown = await Bun.file('./tests/fixtures/frontmatter.md').text()
 		const root = parse(markdown)
