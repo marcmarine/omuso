@@ -400,38 +400,53 @@ export function BookContextProvider({
 		],
 	)
 
-	const search = (value: string) => {
+	const search = React.useCallback((value: string) => {
 		setSearchQuery((previousValue) =>
 			previousValue === value ? previousValue : value,
 		)
-	}
+	}, [])
 
-	const resetSearch = () => {
+	const resetSearch = React.useCallback(() => {
 		setSearchQuery((previousValue) =>
 			previousValue === undefined ? previousValue : undefined,
 		)
-	}
+	}, [])
 
-	const setLanguage = (newLanguage: string) => {
-		setLocation({
-			language: newLanguage,
-			path: location.path,
-		})
-	}
+	const setLanguage = React.useCallback(
+		(newLanguage: string) => {
+			setLocation({
+				language: newLanguage,
+				path: location.path,
+			})
+		},
+		[location.path, setLocation],
+	)
+
+	const value = React.useMemo<Context>(
+		() => ({
+			manifest,
+			session,
+			navigate,
+			search,
+			resetSearch,
+			availableLanguages,
+			setLanguage,
+			basePath: normalizedBasePath,
+		}),
+		[
+			manifest,
+			session,
+			navigate,
+			search,
+			resetSearch,
+			availableLanguages,
+			setLanguage,
+			normalizedBasePath,
+		],
+	)
 
 	return (
-		<BookContextContext.Provider
-			value={{
-				manifest,
-				session,
-				navigate,
-				search,
-				resetSearch,
-				availableLanguages,
-				setLanguage,
-				basePath: normalizedBasePath,
-			}}
-		>
+		<BookContextContext.Provider value={value}>
 			{children}
 		</BookContextContext.Provider>
 	)

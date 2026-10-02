@@ -1,4 +1,10 @@
-import { createContext, useContext, useState } from 'react'
+import {
+	createContext,
+	useCallback,
+	useContext,
+	useMemo,
+	useState,
+} from 'react'
 import useLocalStorage from '../hooks/useLocalStorage'
 import { type TranslationKey, t } from '../i18n'
 
@@ -36,16 +42,22 @@ export function LayoutProvider({
 }: LayoutProviderProps) {
 	const left = usePanelState('leftPanel', false, 300)
 	const right = usePanelState('rightPanel', false, 200)
-	const panel = { left, right }
+	const panel = useMemo(() => ({ left, right }), [left, right])
 
-	const i18n = {
-		t: (key: TranslationKey) => t(key, language),
-	}
+	const i18n = useMemo(
+		() => ({
+			t: (key: TranslationKey) => t(key, language),
+		}),
+		[language],
+	)
+
+	const value = useMemo(
+		() => ({ panel, i18n, maxDepth, omitSections }),
+		[panel, i18n, maxDepth, omitSections],
+	)
 
 	return (
-		<LayoutContext.Provider value={{ panel, i18n, maxDepth, omitSections }}>
-			{children}
-		</LayoutContext.Provider>
+		<LayoutContext.Provider value={value}>{children}</LayoutContext.Provider>
 	)
 }
 
@@ -56,7 +68,11 @@ export interface PanelState {
 	setPanelWidth: (newWidth: number) => void
 }
 
-function usePanelState(key: string, defaultOpen = false, defaultWidth = 250) {
+function usePanelState(
+	key: string,
+	defaultOpen = false,
+	defaultWidth = 250,
+): PanelState {
 	const [storedOpen, setStoredOpen] = useLocalStorage(`${key}Open`, defaultOpen)
 	const [storedWidth, setStoredWidth] = useLocalStorage(
 		`${key}Width`,
@@ -66,15 +82,21 @@ function usePanelState(key: string, defaultOpen = false, defaultWidth = 250) {
 	const [open, setOpen] = useState(storedOpen)
 	const [width, setWidth] = useState(storedWidth)
 
-	const toggle = () => {
+	const toggle = useCallback(() => {
 		setOpen(!open)
 		setStoredOpen(!open)
-	}
+	}, [open, setStoredOpen])
 
-	const setPanelWidth = (newWidth: number) => {
-		setWidth(newWidth)
-		setStoredWidth(newWidth)
-	}
+	const setPanelWidth = useCallback(
+		(newWidth: number) => {
+			setWidth(newWidth)
+			setStoredWidth(newWidth)
+		},
+		[setStoredWidth],
+	)
 
-	return { open, toggle, width, setPanelWidth }
+	return useMemo(
+		() => ({ open, toggle, width, setPanelWidth }),
+		[open, toggle, width, setPanelWidth],
+	)
 }

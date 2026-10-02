@@ -1,4 +1,4 @@
-import { createContext, type ElementType, useContext } from 'react'
+import { createContext, type ElementType, useContext, useMemo } from 'react'
 
 type RoutingStrategyValue = {
 	Component?: ElementType
@@ -17,9 +17,9 @@ export function RoutingProvider({
 	linkComponent?: ElementType
 	children: React.ReactNode
 }) {
+	const value = useMemo(() => ({ Component: linkComponent }), [linkComponent])
+
 	return (
-		<RoutingContext.Provider value={{ Component: linkComponent }}>
-			{children}
-		</RoutingContext.Provider>
+		<RoutingContext.Provider value={value}>{children}</RoutingContext.Provider>
 	)
 }
