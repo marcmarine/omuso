@@ -2,6 +2,7 @@ import { memo, useCallback, useEffect, useRef, useState } from 'react'
 import { Link } from '../components/Link'
 import { useBookContext } from '../providers/BookContextProvider'
 import { useLayout } from '../providers/LayoutProvider'
+import { isWideViewport } from '../utils'
 import { highlightMatches } from '../utils/dom'
 
 export function Search() {
@@ -11,7 +12,7 @@ export function Search() {
 	const { i18n } = useLayout()
 
 	const closePanel = () => {
-		if (window.innerWidth >= 1024) return
+		if (isWideViewport()) return
 		panel.right.toggle()
 	}
 

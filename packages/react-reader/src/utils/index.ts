@@ -19,6 +19,16 @@ export function classes(...values: ClassValue[]) {
 	return result.join(' ')
 }
 
+/**
+ * Mirrors the `64rem` breakpoint in `styles/layout.css`: from this width up
+ * the panels sit beside the content instead of overlaying it.
+ */
+const WIDE_VIEWPORT_QUERY = '(min-width: 64rem)'
+
+export function isWideViewport() {
+	return window.matchMedia(WIDE_VIEWPORT_QUERY).matches
+}
+
 export const splitContent = (items: omuso.Root['content']) => {
 	const paragraphs: omuso.Paragraph[] = []
 	const sections: omuso.Section[] = []

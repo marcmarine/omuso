@@ -5,7 +5,7 @@ import ThemeToggle from '../components/ThemeToggle'
 import TranslationSelector from '../components/TranslationSelector'
 import { useBookContext } from '../providers/BookContextProvider'
 import { useLayout } from '../providers/LayoutProvider'
-import { classes } from '../utils'
+import { classes, isWideViewport } from '../utils'
 import { COVER_PATH } from '../utils/routes'
 import Navigation from './Navigation'
 
@@ -90,7 +90,7 @@ function SearchToggle() {
 	const { query } = session.search
 
 	const toggle = useCallback(() => {
-		if (panel.left.open && !panel.right.open && window.innerWidth <= 1200) {
+		if (panel.left.open && !panel.right.open && !isWideViewport()) {
 			panel.left.toggle()
 		}
 		panel.right.toggle()
@@ -149,7 +149,7 @@ function TOCToggle() {
 	const { panel } = useLayout()
 
 	const toggle = useCallback(() => {
-		if (panel.right.open && !panel.left.open && window.innerWidth <= 1200) {
+		if (panel.right.open && !panel.left.open && !isWideViewport()) {
 			panel.right.toggle()
 		}
 		panel.left.toggle()

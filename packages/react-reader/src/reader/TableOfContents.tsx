@@ -4,7 +4,7 @@ import { Link } from '../components/Link'
 import useLocalStorage from '../hooks/useLocalStorage'
 import { useBookContext } from '../providers/BookContextProvider'
 import { useLayout } from '../providers/LayoutProvider'
-import { classes } from '../utils'
+import { classes, isWideViewport } from '../utils'
 
 function BookTableOfContents() {
 	const { panel, maxDepth, omitSections } = useLayout()
@@ -23,7 +23,7 @@ function BookTableOfContents() {
 	}
 
 	const closePanel = () => {
-		if (window.innerWidth >= 1024) return
+		if (isWideViewport()) return
 		panel.left.toggle()
 	}
 
