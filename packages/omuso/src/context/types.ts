@@ -1,4 +1,4 @@
-import type { Root, Section } from '../parser/types'
+import type { Root, Section, SlugStyle } from '../parser/types'
 
 /**
  * Represents the context for a book, containing roots, manifests, and session management.
@@ -71,6 +71,11 @@ export type BookContextConfig = {
 	 * An array of section paths to omit from the book context (optional).
 	 */
 	omitPaths?: Array<string>
+
+	/**
+	 * The slug style for sections (optional, defaults to `kebab`).
+	 */
+	slugStyle?: SlugStyle
 }
 
 interface BaseResult {

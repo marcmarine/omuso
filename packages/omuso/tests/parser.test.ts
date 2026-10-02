@@ -254,6 +254,21 @@ describe('parser', () => {
 		expect(chapter2.slug).toBe('/chapter-2')
 	})
 
+	test('generates wiki-style slugs when slugStyle is wiki', async () => {
+		const markdown = await Bun.file('./tests/fixtures/nested.md').text()
+		const root = parse(markdown, { slugStyle: 'wiki' })
+
+		const chapter1 = root.content[1] as Section
+		expect(chapter1.slug).toBe('/Chapter_1')
+
+		const chapter1Intro = chapter1.content[0] as Paragraph
+		expect(chapter1Intro.slug).toBe('/Chapter_1#1')
+
+		const section1_1 = chapter1.content[1] as Section
+		const subsection1_1_1 = section1_1.content[1] as Section
+		expect(subsection1_1_1.slug).toBe('/Chapter_1/Section_1_1/Section_1_1_1')
+	})
+
 	test('keeps a single line break inside a paragraph', () => {
 		const root = parse('First line.\nSecond line.')
 

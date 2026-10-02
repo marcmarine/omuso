@@ -113,12 +113,20 @@ Example output:
 
 ### API Reference
 
-#### `parse(text: string): Root`
+#### `parse(text: string, options?: ParseOptions): Root`
 
 Converts a Markdown string into a structured document tree.
 
 **Parameters:**
 - `text`: Markdown source
+- `options.slugStyle` (optional): How section titles become slugs. Defaults to `'kebab'`.
+
+| `slugStyle` | `IX. Capítulo primero` |
+|---|---|
+| `'kebab'` | `/ix-capitulo-primero` |
+| `'wiki'` | `/IX_Capítulo_primero` |
+
+`wiki` keeps case and diacritics, so its slugs are case-sensitive and get percent-encoded in URLs.
 
 **Returns:**
 - `Root`: The parsed document
@@ -274,6 +282,8 @@ const ctx = createContext().init({
   }
 })
 ```
+
+`init` also accepts `maxNavigationDepth`, `omitPaths` and `slugStyle` (see [`parse`](#parsetext-string-options-parseoptions-root)).
 
 After initialization:
 

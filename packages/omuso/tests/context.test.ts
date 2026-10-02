@@ -257,6 +257,17 @@ describe('context', () => {
 			expect(slugs['1.1.1']).toBe('/chapter-1/section-1-1/section-1-1-1')
 		})
 
+		test('createContext().init applies slugStyle to the manifest', () => {
+			const ctx = createContext().init({
+				markdowns: { es: '# Libro\n\n## IX. Capítulo primero\n\nHola' },
+				slugStyle: 'wiki',
+			})
+			const manifest = ctx.manifest('es')
+
+			expect(manifest.slugs['1.1']).toBe('/Libro/IX_Capítulo_primero')
+			expect(manifest.pathBySlug['/Libro/IX_Capítulo_primero']).toBe('1.1')
+		})
+
 		test('manifest slugs match the slugs computed by the parser', async () => {
 			const markdown = await Bun.file('./tests/fixtures/nested.md').text()
 			const root = parse(markdown)

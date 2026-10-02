@@ -1,3 +1,17 @@
+/**
+ * How section titles are turned into slugs:
+ * - `kebab`: lowercase, without diacritics, words joined by `-` (`/ix-capitulo-primero`).
+ * - `wiki`: keeps case and diacritics, words joined by `_` (`/IX_Capítulo_primero`).
+ */
+export type SlugStyle = 'kebab' | 'wiki'
+
+export interface ParseOptions {
+	/**
+	 * The slug style for sections (optional, defaults to `kebab`).
+	 */
+	slugStyle?: SlugStyle
+}
+
 export interface BaseElement {
 	type: string
 }

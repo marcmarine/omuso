@@ -32,7 +32,9 @@ export const createContext = (): BookContext => {
 		state.manifests = {}
 
 		for (const lang of state.languages) {
-			const root = parse(markdowns[lang] as string)
+			const root = parse(markdowns[lang] as string, {
+				slugStyle: config.slugStyle,
+			})
 
 			state.roots[lang] = root
 			state.manifests[lang] = buildManifest(root, state.omittedPaths)

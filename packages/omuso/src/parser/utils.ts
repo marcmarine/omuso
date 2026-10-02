@@ -1,9 +1,12 @@
 import { slugify } from '../common/utils'
-import type { Paragraph, Root, Section } from './types'
+import type { Paragraph, Root, Section, SlugStyle } from './types'
 
 export type SectionBuilder = ReturnType<typeof createSectionBuilder>
 
-export function createSectionBuilder(root: Root) {
+export function createSectionBuilder(
+	root: Root,
+	slugStyle: SlugStyle = 'kebab',
+) {
 	const sections: Section[] = []
 
 	function getCurrentParent(): Section | Root {
@@ -23,7 +26,7 @@ export function createSectionBuilder(root: Root) {
 		const locatedSection = {
 			...section,
 			path: buildPath(parent, index, '.'),
-			slug: buildSlug(parent, section.title, index),
+			slug: buildSlug(parent, section.title, index, slugStyle),
 		}
 
 		parent.content.push(locatedSection)
@@ -70,7 +73,8 @@ function buildSlug(
 	parent: Section | Root,
 	title: string | null,
 	index: number,
+	slugStyle?: SlugStyle,
 ): string {
-	const suffix = title ? `/${slugify(title)}` : `#${index + 1}`
+	const suffix = title ? `/${slugify(title, slugStyle)}` : `#${index + 1}`
 	return parent.type === 'root' ? suffix : `${parent.slug}${suffix}`
 }

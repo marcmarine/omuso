@@ -2,6 +2,7 @@ import type {
 	InlineMark,
 	InlineMarkRule,
 	Paragraph,
+	ParseOptions,
 	Root,
 	Section,
 } from './types'
@@ -11,6 +12,7 @@ import { createSectionBuilder, type SectionBuilder } from './utils'
  * Parses a Markdown string into a structured document tree.
  *
  * @param {string} text The Markdown text to parse
+ * @param {ParseOptions} options Parsing options, such as the slug style
  * @returns {Root} A Root object representing the parsed document structure
  *
  * @example
@@ -33,12 +35,12 @@ import { createSectionBuilder, type SectionBuilder } from './utils'
  * console.log(JSON.stringify(result, null, 2))
  * ```
  */
-export function parse(text: string): Root {
+export function parse(text: string, options: ParseOptions = {}): Root {
 	const { frontmatter, content } = splitFrontmatter(text.replace(/\r\n/g, '\n'))
 	const metadata = frontmatter ? parseFrontmatterMetadata(frontmatter) : {}
 
 	const root = createInitialRoot(metadata)
-	const builder = createSectionBuilder(root)
+	const builder = createSectionBuilder(root, options.slugStyle)
 
 	for (const block of splitBlocks(content)) {
 		if (isHeading(block)) {
