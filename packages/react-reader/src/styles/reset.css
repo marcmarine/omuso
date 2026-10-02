@@ -37,6 +37,11 @@
 		text-decoration: inherit;
 	}
 
+	/* Section links in books without slugs have no `href`. */
+	& :where(a[role="link"]:not([href])) {
+		cursor: pointer;
+	}
+
 	& :where(button, input, select, textarea) {
 		margin: 0;
 		font: inherit;

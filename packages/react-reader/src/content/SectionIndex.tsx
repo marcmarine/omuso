@@ -15,7 +15,7 @@ export function SectionIndex({
 				{sections.map((section) => (
 					<li key={section.path} className="or-content__index-item">
 						<Link
-							to={section.slug}
+							path={section.path}
 							query={query}
 							className="or-content__section-link"
 						>

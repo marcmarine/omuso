@@ -6,6 +6,7 @@ import TranslationSelector from '../components/TranslationSelector'
 import { useBookContext } from '../providers/BookContextProvider'
 import { useLayout } from '../providers/LayoutProvider'
 import { classes } from '../utils'
+import { COVER_PATH } from '../utils/routes'
 import Navigation from './Navigation'
 
 import '../styles/index.css'
@@ -57,7 +58,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
 function Header({ title, author }: { title: string; author?: string }) {
 	return (
 		<header className="or-layout__header">
-			<Link to="/" className="or-layout__title or-interactive">
+			<Link path={COVER_PATH} className="or-layout__title or-interactive">
 				{title}
 			</Link>
 			{author && <p className="or-layout__author">{author}</p>}

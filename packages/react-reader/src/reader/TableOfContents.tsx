@@ -91,7 +91,7 @@ function BookTableOfContents() {
 										</button>
 									)}
 									<Link
-										to={(section as omuso.Section & { slug: string }).slug}
+										path={section.path}
 										query={search.query}
 										className={classes(
 											'or-toc__link',
@@ -114,7 +114,7 @@ function BookTableOfContents() {
 											return (
 												<li key={item.path} className="or-toc__subitem">
 													<Link
-														to={(item as omuso.Section & { slug: string }).slug}
+														path={item.path}
 														query={search.query}
 														className={classes(
 															'or-toc__sublink',

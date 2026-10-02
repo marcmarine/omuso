@@ -79,7 +79,7 @@ export function ContentHeader({
 				<ol>
 					{parent && (
 						<li className="or-content__crumb">
-							<Link to={parent.slug} query={query}>
+							<Link path={parent.path} query={query}>
 								{parent.title}
 							</Link>
 						</li>

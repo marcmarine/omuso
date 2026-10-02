@@ -1,20 +1,21 @@
 import { Link } from '../components/Link'
 import { useBookContext } from '../providers/BookContextProvider'
 import { classes } from '../utils'
+import { COVER_PATH } from '../utils/routes'
 
 export default function Navigation() {
 	const context = useBookContext()
 	const {
 		session: { search, nextSection, prevSection, currentSection },
-		manifest: { slugs },
+		manifest: { paths },
 	} = context
 
-	const { 1: firstSectionSlug } = slugs
+	const firstSectionPath = paths[0] ?? COVER_PATH
 
 	return (
 		<div className="or-nav">
 			<Link
-				to={prevSection?.slug || '/'}
+				path={prevSection?.path ?? COVER_PATH}
 				query={search.query}
 				className={classes(
 					'or-icon-button',
@@ -42,7 +43,7 @@ export default function Navigation() {
 				</svg>
 			</Link>
 			<Link
-				to={String(nextSection?.slug || firstSectionSlug)}
+				path={nextSection?.path ?? firstSectionPath}
 				query={search.query}
 				className={classes(
 					'or-icon-button',

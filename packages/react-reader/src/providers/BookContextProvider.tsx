@@ -1,8 +1,10 @@
 import type { BookContext, Manifest, Session } from 'omuso'
 import React, { useMemo } from 'react'
 import {
+	COVER_PATH,
 	normalizeBasePath,
 	prependBasePath,
+	slugForPath,
 	stripBasePath,
 } from '../utils/routes'
 
@@ -22,7 +24,11 @@ type ReaderLocation = {
 export type Context = {
 	manifest: Manifest
 	session: Session
-	navigate: (currentSlug: string) => void
+	/**
+	 * Navigates to a URL (slug) or to a section `path`. Paths go through
+	 * their slug when the book has one, so the URL stays in sync.
+	 */
+	navigate: (target: string | { path: string }) => void
 	search: (value: string) => void
 	resetSearch: () => void
 	availableLanguages: Array<string>
@@ -87,7 +93,7 @@ function getSearchQuery(route: RouteState): string | undefined {
 function readStoredLocation(defaultLanguage?: string): ReaderLocation {
 	const fallback = {
 		language: defaultLanguage || DEFAULT_LANGUAGE,
-		path: '0',
+		path: COVER_PATH,
 	}
 
 	if (typeof window === 'undefined') return fallback
@@ -143,7 +149,7 @@ function resolveReaderLocation(
 ): ReaderLocation | undefined {
 	const pathname = route.pathname || '/'
 	if (pathname === '/') {
-		return { language: preferredLanguage, path: '0' }
+		return { language: preferredLanguage, path: COVER_PATH }
 	}
 
 	const preferredPath = resolvePathInLanguage(
@@ -343,7 +349,15 @@ export function BookContextProvider({
 	}, [normalizedBasePath, syncFromRoute, validatedLanguage])
 
 	const navigate = React.useCallback(
-		(currentSlug: string) => {
+		(target: string | { path: string }) => {
+			const currentSlug =
+				typeof target === 'string' ? target : slugForPath(target.path, manifest)
+
+			if (currentSlug === undefined && typeof target !== 'string') {
+				setLocation({ language: validatedLanguage, path: target.path })
+				return
+			}
+
 			if (!currentSlug) return
 
 			const parsedRoute = parseRoute(currentSlug)
@@ -376,7 +390,14 @@ export function BookContextProvider({
 				window.history.pushState({}, '', nextUrl)
 			}
 		},
-		[hasExternalLocation, normalizedBasePath, syncFromRoute, validatedLanguage],
+		[
+			hasExternalLocation,
+			manifest,
+			normalizedBasePath,
+			setLocation,
+			syncFromRoute,
+			validatedLanguage,
+		],
 	)
 
 	const search = (value: string) => {

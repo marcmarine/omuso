@@ -6,7 +6,7 @@ export default function Cover() {
 	const { manifest } = useBookContext()
 	const { metadata } = manifest
 
-	const firstChapterSlug = manifest.slugs[1]
+	const firstChapterPath = manifest.paths[0]
 	const { i18n } = useLayout()
 
 	return (
@@ -14,9 +14,9 @@ export default function Cover() {
 			<div className="or-cover__header">
 				<h2 className="or-cover__author">{metadata.author}</h2>
 				<h1 className="or-cover__title">{metadata.title}</h1>
-				{firstChapterSlug && (
+				{firstChapterPath && (
 					<Link
-						to={firstChapterSlug}
+						path={firstChapterPath}
 						className="or-cover__start or-interactive"
 					>
 						{i18n.t('startReading')}

@@ -42,7 +42,7 @@ export function Search() {
 									className="or-search__result or-interactive"
 								>
 									<Link
-										to={item.slug}
+										path={item.path}
 										query={query}
 										className="or-search__section-link"
 										onClick={closePanel}
@@ -70,7 +70,7 @@ export function Search() {
 
 									<div className="or-search__paragraph-footer">
 										<Link
-											to={item.slug}
+											path={item.path}
 											query={query}
 											className="or-search__view or-interactive"
 											onClick={closePanel}
@@ -79,7 +79,7 @@ export function Search() {
 										</Link>
 										{item.parentSection && (
 											<Link
-												to={item.parentSection?.slug}
+												path={item.parentSection.path}
 												query={query}
 												className="or-search__parent"
 												onClick={closePanel}

@@ -1,13 +1,20 @@
 import type React from 'react'
 import { useBookContext } from '../providers/BookContextProvider'
 import { useRoutingStrategy } from '../providers/RoutingProvider'
-import { prependBasePath } from '../utils/routes'
+import { prependBasePath, slugForPath } from '../utils/routes'
 
-interface Props extends React.HTMLAttributes<HTMLElement> {
-	to: string
+interface BaseProps extends React.HTMLAttributes<HTMLElement> {
 	query?: string
 	children: React.ReactNode
 }
+
+/**
+ * A link either points to a URL (`to`) or to a section of the book (`path`).
+ * Section links get their URL from the slug, or navigate without one when
+ * the book has no slugs.
+ */
+type Props = BaseProps &
+	({ to: string; path?: never } | { path: string; to?: never })
 
 function isModifiedClick(event: React.MouseEvent<HTMLElement>) {
 	return event.metaKey || event.ctrlKey || event.shiftKey || event.altKey
@@ -28,11 +35,55 @@ function toPublicDestination(destination: string, basePath: string) {
 	return `${pathname}${search}`
 }
 
-export function Link({ to, children, query, onClick, ...props }: Props) {
+export function Link({
+	to,
+	path,
+	children,
+	query,
+	onClick,
+	onKeyDown,
+	...props
+}: Props) {
 	const { Component = 'a' } = useRoutingStrategy()
-	const { navigate, basePath } = useBookContext()
+	const { navigate, basePath, manifest } = useBookContext()
 
-	const destination = query ? `${to}?query=${encodeURIComponent(query)}` : to
+	const slug = to ?? slugForPath(path as string, manifest)
+
+	if (slug === undefined) {
+		const goToPath = () => navigate({ path: path as string })
+
+		const handleClick = (event: React.MouseEvent<HTMLElement>) => {
+			onClick?.(event)
+			if (event.defaultPrevented) return
+			goToPath()
+		}
+
+		const handleKeyDown = (event: React.KeyboardEvent<HTMLElement>) => {
+			onKeyDown?.(event)
+			if (event.defaultPrevented) return
+			if (event.key === 'Enter') goToPath()
+		}
+
+		// Without slugs there is no URL to point to. An anchor without `href`
+		// keeps the link markup (it may wrap headings, which a button can't).
+		return (
+			// biome-ignore lint/a11y/useSemanticElements: there is no `href` to give it
+			<a
+				{...props}
+				role="link"
+				tabIndex={0}
+				// biome-ignore lint/a11y/useValidAnchor: slugless books have no URLs
+				onClick={handleClick}
+				onKeyDown={handleKeyDown}
+			>
+				{children}
+			</a>
+		)
+	}
+
+	const destination = query
+		? `${slug}?query=${encodeURIComponent(query)}`
+		: slug
 	const publicDestination = isExternalHref(destination)
 		? destination
 		: toPublicDestination(destination, basePath)
@@ -57,7 +108,12 @@ export function Link({ to, children, query, onClick, ...props }: Props) {
 	}
 
 	return (
-		<Component {...linkProps} {...props} onClick={handleClick}>
+		<Component
+			{...linkProps}
+			{...props}
+			onClick={handleClick}
+			onKeyDown={onKeyDown}
+		>
 			{children}
 		</Component>
 	)

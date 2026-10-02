@@ -25,7 +25,7 @@ export function SectionNode({
 	return (
 		<section id={section.path}>
 			<Link
-				to={section.slug}
+				path={section.path}
 				query={query}
 				className="or-content__section-link"
 			>
