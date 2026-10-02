@@ -26,33 +26,6 @@ export function getAllPaths(content: Root['content']): string[] {
 	return paths
 }
 
-export type SearchMatchType = 'title' | 'content'
-export type SearchMatch = ContentElement & { matchType: SearchMatchType }
-
-export function searchContent(content: Content, query: string): Content {
-	if (!query.trim()) return []
-	const results: SearchMatch[] = []
-	const q = query.toLowerCase()
-
-	function searchNodes(nodes: Array<ContentElement>) {
-		for (const node of nodes) {
-			if (node.type === 'section') {
-				if (node.title.toLowerCase().includes(q)) {
-					results.push({ ...node, matchType: 'title' })
-				}
-				searchNodes(node.content)
-			} else if (
-				node.type === 'paragraph' &&
-				node.value.toLowerCase().includes(q)
-			) {
-				results.push({ ...node, matchType: 'content' })
-			}
-		}
-	}
-	searchNodes(content)
-	return results
-}
-
 function collectSectionBreadcrumbs(
 	node: Section,
 	ancestorTitles: Array<SectionReference>,

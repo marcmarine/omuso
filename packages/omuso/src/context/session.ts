@@ -1,4 +1,4 @@
-import type { Content, Paragraph, Section } from '../parser/types'
+import type { Content, Section } from '../parser/types'
 import {
 	buildSearchResponse,
 	findSection,
@@ -21,21 +21,9 @@ export const generateReadingSession = (
 	const { breadcrumbIndex, paths } = manifest
 	const currentPath = initialPath
 
-	let currentSection = (
+	const currentSection = (
 		currentPath ? findSection(content, currentPath) : null
 	) as Section
-	if (currentSection?.content) {
-		const collectedChildren = [] as (Section | Paragraph)[]
-
-		for (const child of currentSection.content) {
-			collectedChildren.push(child)
-		}
-
-		currentSection = {
-			...currentSection,
-			content: collectedChildren,
-		}
-	}
 
 	const searchResults = query
 		? buildSearchResponse(content, query, omittedPaths)
