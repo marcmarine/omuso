@@ -31,9 +31,7 @@
 		"test": "bun test"
 	},
 	"devDependencies": {
-		"dts-bundle-generator": "^9.5.1"
-	},
-	"peerDependencies": {
+		"dts-bundle-generator": "^9.5.1",
 		"typescript": "^5"
 	},
 	"files": [
