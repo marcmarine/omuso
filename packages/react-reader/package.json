@@ -25,7 +25,7 @@
 		"build": "bun build ./src/index.ts --outdir ./dist --target browser --minify --packages external --footer=\"import './index.css';\" && bun run build:types"
 	},
 	"dependencies": {
-		"omuso": "^1.7.0"
+		"omuso": "^1.6.0"
 	},
 	"devDependencies": {
 		"@types/react": "^19",
