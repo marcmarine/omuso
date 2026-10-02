@@ -172,6 +172,36 @@ function resolveReaderLocation(
 	return undefined
 }
 
+function getInitialState(
+	externalLocation: Partial<Location> | undefined,
+	basePath: string,
+	defaultLanguage: string | undefined,
+	availableLanguages: string[],
+	manifestMap: Record<string, Manifest>,
+): { location: ReaderLocation; searchQuery: string | undefined } {
+	const publicRoute = parseRoute(externalLocation)
+	const routePathname = stripBasePath(publicRoute.pathname, basePath)
+	const route =
+		routePathname === undefined
+			? undefined
+			: { pathname: routePathname, search: publicRoute.search }
+	const storedLocation = readStoredLocation(defaultLanguage)
+	const location =
+		(route
+			? resolveReaderLocation(
+					route,
+					storedLocation.language,
+					availableLanguages,
+					manifestMap,
+				)
+			: undefined) ?? storedLocation
+
+	return {
+		location,
+		searchQuery: route ? getSearchQuery(route) : undefined,
+	}
+}
+
 export function BookContextProvider({
 	children,
 	defaultLanguage,
@@ -193,30 +223,21 @@ export function BookContextProvider({
 		[basePath],
 	)
 
-	const initialPublicRoute = parseRoute(externalLocation)
-	const initialRoutePathname = stripBasePath(
-		initialPublicRoute.pathname,
-		normalizedBasePath,
+	const [initialState] = React.useState(() =>
+		getInitialState(
+			externalLocation,
+			normalizedBasePath,
+			defaultLanguage,
+			availableLanguages,
+			manifestMap,
+		),
 	)
-	const initialRoute =
-		initialRoutePathname === undefined
-			? undefined
-			: { pathname: initialRoutePathname, search: initialPublicRoute.search }
-	const storedLocation = readStoredLocation(defaultLanguage)
-	const initialLocation =
-		(initialRoute
-			? resolveReaderLocation(
-					initialRoute,
-					storedLocation.language,
-					availableLanguages,
-					manifestMap,
-				)
-			: undefined) ?? storedLocation
 
-	const [location, setLocationState] =
-		React.useState<ReaderLocation>(initialLocation)
+	const [location, setLocationState] = React.useState<ReaderLocation>(
+		initialState.location,
+	)
 	const [searchQuery, setSearchQuery] = React.useState<string | undefined>(
-		initialRoute ? getSearchQuery(initialRoute) : undefined,
+		initialState.searchQuery,
 	)
 
 	const setLocation = React.useCallback((nextLocation: ReaderLocation) => {
