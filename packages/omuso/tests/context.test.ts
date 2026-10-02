@@ -52,6 +52,49 @@ describe('context', () => {
 			expect(ctx.session('1', '', 'en').currentSection?.title).toBe('Chapter 1')
 		})
 	})
+	describe('isolation', () => {
+		test('methods work when destructured', async () => {
+			const markdown = await Bun.file('./tests/fixtures/nested.md').text()
+
+			const { init } = createContext()
+			const { manifest, session, languages } = init({
+				markdowns: { en: markdown },
+			})
+
+			expect(languages).toEqual(['en'])
+			expect(manifest('en').paths).toEqual(['1', '1.1', '1.1.1', '1.2', '2'])
+			expect(session('1.1', '', 'en').currentSection?.title).toBe('Section 1.1')
+		})
+
+		test('separate contexts do not share state', () => {
+			const a = createContext().init({
+				markdowns: { en: '## Book A' },
+				omitPaths: ['1'],
+			})
+			const b = createContext().init({
+				markdowns: { ca: '## Book B' },
+			})
+
+			expect(a.languages).toEqual(['en'])
+			expect(b.languages).toEqual(['ca'])
+			expect(a.omittedPaths).toEqual(['1'])
+			expect(b.omittedPaths).toEqual([])
+			expect(a.roots.ca).toBeUndefined()
+			expect(a.session('1', '', 'en').currentSection?.title).toBe('Book A')
+			expect(b.session('1', '', 'ca').currentSection?.title).toBe('Book B')
+		})
+
+		test('re-initializing drops languages from the previous init', () => {
+			const ctx = createContext()
+			ctx.init({ markdowns: { en: '## One' } })
+			ctx.init({ markdowns: { ca: '## Dos' } })
+
+			expect(ctx.languages).toEqual(['ca'])
+			expect(ctx.roots.en).toBeUndefined()
+			expect(ctx.manifests.en).toBeUndefined()
+		})
+	})
+
 	describe('omitPaths', () => {
 		const collectTocPaths = (
 			sections: Array<{ path: string; content?: any[] }>,

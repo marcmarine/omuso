@@ -297,9 +297,16 @@ A session includes:
 - Previous / Next section
 - Search state
 
-### Singleton `context`
+Each instance keeps its own state, so you can load several books in the same process. Methods don’t depend on `this`, so they can be destructured:
 
-If you don’t need multiple contexts, OMUSO exports a singleton:
+```javascript
+const { session, manifest } = createContext().init({ markdowns })
+```
+
+### Singleton `context` (deprecated)
+
+> [!WARNING]
+> The singleton is shared by every module in the process: initializing it for a second book overwrites the first. Use `createContext()` instead. The singleton will be removed in the next major version.
 
 ```javascript
 import { context } from 'omuso'
