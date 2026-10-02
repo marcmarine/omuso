@@ -267,6 +267,46 @@ describe('parser', () => {
 		expect((section.content[0] as Paragraph).value).toBe('More text.')
 	})
 
+	test('does not treat # without a following space as a heading', () => {
+		const root = parse('#hashtag\n#1 en ventas')
+
+		expect(root.content.length).toBe(1)
+		const paragraph = root.content[0] as Paragraph
+		expect(paragraph.type).toBe('paragraph')
+		expect(paragraph.value).toBe('#hashtag\n#1 en ventas')
+		expect(root.title).toBeUndefined()
+	})
+
+	test('does not treat more than six # as a heading', () => {
+		const root = parse('####### Not a heading')
+
+		expect(root.content.length).toBe(1)
+		const paragraph = root.content[0] as Paragraph
+		expect(paragraph.type).toBe('paragraph')
+		expect(paragraph.value).toBe('####### Not a heading')
+	})
+
+	test('#hashtag lines do not interrupt a paragraph', () => {
+		const root = parse('Intro text.\n#hashtag')
+
+		expect(root.content.length).toBe(1)
+		expect((root.content[0] as Paragraph).value).toBe('Intro text.\n#hashtag')
+	})
+
+	test('parses headings of depth 6 and empty headings', () => {
+		const root = parse('###### Deep\n\n#')
+
+		const deep = root.content[0] as Section
+		expect(deep.type).toBe('section')
+		expect(deep.depth).toBe(6)
+		expect(deep.title).toBe('Deep')
+
+		const empty = root.content[1] as Section
+		expect(empty.type).toBe('section')
+		expect(empty.depth).toBe(1)
+		expect(empty.title).toBe('')
+	})
+
 	test('keeps inline marks across a multi-line paragraph', () => {
 		const root = parse('Text with *emphasis*\ncontinues here.')
 

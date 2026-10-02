@@ -41,7 +41,7 @@ export function parse(text: string): Root {
 	const builder = createSectionBuilder(root)
 
 	for (const block of splitBlocks(content)) {
-		if (block.startsWith('#')) {
+		if (isHeading(block)) {
 			processHeading(block, builder, root)
 		} else {
 			processParagraph(block, builder)
@@ -49,6 +49,16 @@ export function parse(text: string): Root {
 	}
 
 	return root
+}
+
+/**
+ * ATX heading per CommonMark: 1–6 `#` followed by whitespace or end of line.
+ * Lines like `#hashtag` or `####### seven` are regular paragraph text.
+ */
+const HEADING_PATTERN = /^#{1,6}(\s|$)/
+
+function isHeading(line: string): boolean {
+	return HEADING_PATTERN.test(line)
 }
 
 /**
@@ -70,7 +80,7 @@ function splitBlocks(content: string): string[] {
 	}
 
 	for (const line of content.split('\n')) {
-		if (line.trim() === '' || line.startsWith('#')) {
+		if (line.trim() === '' || isHeading(line)) {
 			flushParagraph()
 			if (line.trim() !== '') {
 				blocks.push(line)
