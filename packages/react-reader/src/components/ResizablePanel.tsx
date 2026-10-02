@@ -25,6 +25,7 @@ export function ResizablePanel({
 	const panelRef = useRef<HTMLDivElement | null>(null)
 	const startX = useRef(0)
 	const startWidth = useRef(initialWidth)
+	const currentWidth = useRef(initialWidth)
 
 	const [width, setWidth] = useState(initialWidth)
 	const [isResizing, setIsResizing] = useState(false)
@@ -36,6 +37,7 @@ export function ResizablePanel({
 			startWidth.current = panelRef.current
 				? panelRef.current.offsetWidth
 				: initialWidth
+			currentWidth.current = startWidth.current
 			setIsResizing(true)
 		},
 		[initialWidth],
@@ -53,19 +55,21 @@ export function ResizablePanel({
 
 			newWidth = Math.max(minWidth, Math.min(maxWidth, newWidth))
 
+			// Width is applied directly to the DOM while dragging and committed
+			// to state on mouseup, so moving the mouse doesn't re-render.
 			panelRef.current.style.width = `${newWidth}px`
-
-			setWidth(newWidth)
+			currentWidth.current = newWidth
 		},
 		[position, minWidth, maxWidth],
 	)
 
 	const handleMouseUp = useCallback(() => {
 		setIsResizing(false)
+		setWidth(currentWidth.current)
 		if (onResizeEnd) {
-			onResizeEnd(width)
+			onResizeEnd(currentWidth.current)
 		}
-	}, [onResizeEnd, width])
+	}, [onResizeEnd])
 
 	useEffect(() => {
 		if (!isResizing) return
