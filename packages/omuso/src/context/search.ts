@@ -5,6 +5,7 @@ import type {
 	SectionReference,
 	SectionResult,
 } from './types'
+import { isPathOmitted } from './utils'
 
 function countOccurrences(text: string, query: string): number {
 	const lowerText = text.toLowerCase()
@@ -112,10 +113,14 @@ function sortSearchResults(results: SearchResult[]): SearchResult[] {
 export function buildSearchResponse(
 	content: Content,
 	query: string,
+	omittedPaths: Array<string> = [],
 ): SearchResult[] {
 	if (!query.trim()) return []
 
-	const rawResults = findMatchesInContent(content, query)
+	const rawResults = findMatchesInContent(content, query).filter(
+		(result) =>
+			result.type !== 'section' || !isPathOmitted(result.path, omittedPaths),
+	)
 	const sortedResults = sortSearchResults(rawResults)
 
 	return sortedResults

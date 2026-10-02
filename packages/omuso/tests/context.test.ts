@@ -95,6 +95,35 @@ describe('context', () => {
 			const session = ctx.session('1.1', '', 'en')
 			expect(session.nextSection?.path).toBe('1.1.1')
 		})
+
+		test('excludes omitted sections and their descendants from search', async () => {
+			const markdown = await Bun.file('./tests/fixtures/nested.md').text()
+
+			const ctx = createContext().init({
+				markdowns: { en: markdown },
+				omitPaths: ['1.1'],
+			})
+
+			const session = ctx.session('1', 'Subsection', 'en')
+			const paths = session.search.results.map((r) => r.path)
+
+			expect(paths).not.toContain('1.1')
+			expect(paths).not.toContain('1.1.1')
+			expect(paths).toContain('1.2')
+			expect(session.search.totalMatches).toBe(1)
+		})
+
+		test('buildSearchResponse uses prefix matching on path segments', async () => {
+			const markdown = await Bun.file('./tests/fixtures/nested.md').text()
+			const root = parse(markdown)
+
+			// Omitting '1' hides all of Chapter 1 but not Chapter 2 or root paragraphs
+			const results = buildSearchResponse(root.content, 'content', ['1'])
+			expect(results.map((r) => r.path)).toEqual(['2'])
+
+			const intro = buildSearchResponse(root.content, 'Introduction', ['1'])
+			expect(intro.map((r) => r.path)).toEqual(['_1'])
+		})
 	})
 	describe('manifest', () => {
 		test('buildManifest produces expected metadata and indices', async () => {

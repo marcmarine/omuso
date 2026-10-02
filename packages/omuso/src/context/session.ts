@@ -7,7 +7,7 @@ import {
 	type SectionReference,
 	type Session,
 } from '.'
-import { clampPathToDepth } from './utils'
+import { clampPathToDepth, isPathOmitted } from './utils'
 
 export const generateReadingSession = (
 	content: Content,
@@ -37,7 +37,9 @@ export const generateReadingSession = (
 		}
 	}
 
-	const searchResults = query ? buildSearchResponse(content, query) : []
+	const searchResults = query
+		? buildSearchResponse(content, query, omittedPaths)
+		: []
 	const totalMatches = getTotalMatches(searchResults)
 
 	const references: Record<string, SectionReference> = {}
@@ -81,11 +83,6 @@ function createSectionNavigator(
 ) {
 	const { maxNavigationDepth, omittedPaths } = options
 
-	const isOmitted = (path: string): boolean =>
-		omittedPaths?.some(
-			(omitted) => path === omitted || path.startsWith(`${omitted}.`),
-		) ?? false
-
 	const withinDepth = (path: string): boolean =>
 		maxNavigationDepth === undefined || maxNavigationDepth === Infinity
 			? true
@@ -108,7 +105,7 @@ function createSectionNavigator(
 
 		for (let i = index + step; withinBounds(i); i += step) {
 			const path = paths[i] as string
-			if (withinDepth(path) && !isOmitted(path)) {
+			if (withinDepth(path) && !isPathOmitted(path, omittedPaths)) {
 				return references[path] ?? null
 			}
 		}
