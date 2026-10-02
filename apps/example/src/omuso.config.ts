@@ -5,7 +5,6 @@ import grc from './content/grc.md' with { type: 'text' }
 
 const context = createContext().init({
 	markdowns: { en, es, grc },
-	defaultLanguage: 'en',
 })
 
 export { context }
