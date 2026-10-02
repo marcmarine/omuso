@@ -191,6 +191,15 @@ describe('context', () => {
 				expect(slug).toBeDefined()
 				expect(manifest.pathBySlug[slug as string]).toBe(path)
 			}
+
+			for (let i = 0; i < manifest.paths.length; i++) {
+				const path = manifest.paths[i] as string
+				expect(manifest.pathIndex[path]).toBe(i)
+				expect(manifest.references[path]?.path).toBe(path)
+				expect(manifest.references[path]).toEqual(
+					manifest.breadcrumbIndex[path]?.at(-1),
+				)
+			}
 		})
 	})
 
@@ -329,6 +338,24 @@ describe('context', () => {
 
 			expect(session.search.query).toBe('content')
 			expect(session.search.totalMatches).toBeGreaterThan(0)
+		})
+
+		test('unknown paths have no next/prev, even if they match Object.prototype keys', async () => {
+			const markdown = await Bun.file('./tests/fixtures/nested.md').text()
+			const root = parse(markdown)
+			const manifest = buildManifest(root)
+
+			for (const path of ['9.9', 'constructor', 'toString']) {
+				const session = generateReadingSession(
+					root.content,
+					manifest,
+					path,
+					'',
+					'en',
+				)
+				expect(session.nextSection).toBeNull()
+				expect(session.prevSection).toBeNull()
+			}
 		})
 
 		test('maxNavigationDepth clamps next/prev navigation', async () => {

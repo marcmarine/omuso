@@ -1,6 +1,8 @@
 import type { Root } from '../parser/types'
 import {
 	buildBreadcrumbIndex,
+	buildPathIndex,
+	buildReferences,
 	buildSlugs,
 	buildTableOfContents,
 	getAllPaths,
@@ -13,6 +15,8 @@ export const buildManifest = (
 ): Manifest => {
 	const breadcrumbIndex = buildBreadcrumbIndex(data.content)
 	const paths = getAllPaths(data.content)
+	const references = buildReferences(breadcrumbIndex)
+	const pathIndex = buildPathIndex(paths)
 	const slugs = buildSlugs(breadcrumbIndex)
 	const tableOfContents = buildTableOfContents(data.content, omittedPaths)
 
@@ -32,7 +36,9 @@ export const buildManifest = (
 	return {
 		slugs,
 		breadcrumbIndex,
+		references,
 		paths,
+		pathIndex,
 		pathBySlug,
 		tableOfContents,
 		metadata,

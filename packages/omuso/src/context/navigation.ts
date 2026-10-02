@@ -62,6 +62,33 @@ export function buildBreadcrumbIndex(
 }
 
 /**
+ * Maps each section path to its own SectionReference, the last entry of its
+ * breadcrumb trail.
+ */
+export function buildReferences(
+	breadcrumbIndex: Record<string, SectionReference[]>,
+): Record<string, SectionReference> {
+	const references: Record<string, SectionReference> = {}
+
+	for (const [path, trail] of Object.entries(breadcrumbIndex)) {
+		const section = trail[trail.length - 1]
+		if (section) references[path] = section
+	}
+
+	return references
+}
+
+export function buildPathIndex(paths: string[]): Record<string, number> {
+	const pathIndex: Record<string, number> = {}
+
+	for (let i = 0; i < paths.length; i++) {
+		pathIndex[paths[i] as string] = i
+	}
+
+	return pathIndex
+}
+
+/**
  * Maps each section path to the slug computed by the parser, taken from the
  * last entry of its breadcrumb trail (the section itself).
  */

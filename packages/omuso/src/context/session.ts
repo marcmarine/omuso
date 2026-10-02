@@ -18,7 +18,7 @@ export const generateReadingSession = (
 	maxNavigationDepth?: number,
 	omittedPaths?: Array<string>,
 ): Session => {
-	const { breadcrumbIndex, paths } = manifest
+	const { breadcrumbIndex, paths, pathIndex, references } = manifest
 	const currentPath = initialPath
 
 	const currentSection = (
@@ -30,17 +30,10 @@ export const generateReadingSession = (
 		: []
 	const totalMatches = getTotalMatches(searchResults)
 
-	const references: Record<string, SectionReference> = {}
-
-	for (const [key, value] of Object.entries(breadcrumbIndex)) {
-		const last = value[value.length - 1]
-		if (last) references[key] = last
-	}
-
 	const breadcrumbs: SectionReference[] =
 		(currentPath ? breadcrumbIndex[currentPath] : undefined) ?? []
 
-	const navigator = createSectionNavigator(paths, references, {
+	const navigator = createSectionNavigator(paths, pathIndex, references, {
 		maxNavigationDepth,
 		omittedPaths,
 	})
@@ -66,6 +59,7 @@ interface SectionNavigatorOptions {
 
 function createSectionNavigator(
 	paths: string[],
+	pathIndex: Record<string, number>,
 	references: Record<string, SectionReference>,
 	options: SectionNavigatorOptions = {},
 ) {
@@ -84,7 +78,9 @@ function createSectionNavigator(
 			maxNavigationDepth === undefined || maxNavigationDepth === Infinity
 				? currentPath
 				: clampPathToDepth(currentPath, maxNavigationDepth)
-		const index = paths.indexOf(effectivePath)
+		const index = Object.hasOwn(pathIndex, effectivePath)
+			? (pathIndex[effectivePath] as number)
+			: -1
 		if (direction === 'next' ? index === -1 : index <= 0) return null
 
 		const step = direction === 'next' ? 1 : -1

@@ -341,6 +341,8 @@ interface Manifest {
   slugs: Record<string, string>
   pathBySlug: Record<string, string>
   breadcrumbIndex: Record<string, SectionReference[]>
+  references: Record<string, SectionReference>
+  pathIndex: Record<string, number>
 }
 ```
 

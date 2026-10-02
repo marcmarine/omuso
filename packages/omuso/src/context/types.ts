@@ -145,6 +145,16 @@ export interface Manifest {
 	 * A record mapping paths to their breadcrumb trail as an array of SectionReference objects.
 	 */
 	breadcrumbIndex: Record<string, Array<SectionReference>>
+
+	/**
+	 * A record mapping paths to the SectionReference of the section itself.
+	 */
+	references: Record<string, SectionReference>
+
+	/**
+	 * A record mapping paths to their position in `paths`.
+	 */
+	pathIndex: Record<string, number>
 }
 
 /**
