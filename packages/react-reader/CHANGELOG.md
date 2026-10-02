@@ -1,5 +1,22 @@
 # Changelog
 
+## [0.3.0](https://github.com/marcmarine/omuso/compare/react-reader-v0.2.4...react-reader-v0.3.0) (2026-10-02)
+
+
+### Features
+
+* Add strong text parsing and rendering support ([b4193d4](https://github.com/marcmarine/omuso/commit/b4193d401caf3b0aa7854465c0d211c3c735a63a))
+* Support path-based navigation without slugs ([70f0c21](https://github.com/marcmarine/omuso/commit/70f0c218f873de8346a898f49ff8938f7ffd65cc))
+
+
+### Bug Fixes
+
+* Clamp panel widths and adjust default sizes ([e3fbc88](https://github.com/marcmarine/omuso/commit/e3fbc88bb8fce5a49a04fc9d0f3240760b03dce8))
+* Memoize provider values and callbacks ([dd08dab](https://github.com/marcmarine/omuso/commit/dd08dab27a84d019fa1b4c1833dbd6b39c8ddca9))
+* Move TypeScript to devDependencies ([5077c5c](https://github.com/marcmarine/omuso/commit/5077c5cefa5721bf013236afd3afee681f9fa78f))
+* Optimize panel resizing without re-renders during drag ([aba3eca](https://github.com/marcmarine/omuso/commit/aba3eca6ce3e1dc8cdad983cd10a15bd1e9d44fa))
+* Use a shared wide viewport check ([351673a](https://github.com/marcmarine/omuso/commit/351673a42f1269eae676eaa22e5fec5887089c2a))
+
 ## [0.2.4](https://github.com/marcmarine/omuso/compare/react-reader-v0.2.3...react-reader-v0.2.4) (2026-09-30)
 
 
