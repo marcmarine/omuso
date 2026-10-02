@@ -31,7 +31,6 @@ import en from './content/en.md' with { type: 'text' }
 
 export default createContext().init({
   markdowns: { en },
-  defaultLanguage: 'en',
 })
 ```
 
@@ -52,6 +51,8 @@ export function App() {
   return <Reader context={omuso} language="en" />
 }
 ```
+
+`language` is the default language: it is used when the URL or the stored location don't specify one, or specify one that isn't in `markdowns`.
 
 If your app is mounted under a URL prefix, pass `basePath` so links and history updates stay inside that prefix:
 
