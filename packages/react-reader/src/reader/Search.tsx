@@ -78,18 +78,14 @@ export function Search() {
 										>
 											View
 										</Link>
-										{item.parentSection && (
-											<Link
-												path={item.parentSection.path}
-												query={query}
-												className="or-search__parent"
-												onClick={closePanel}
-											>
-												<h4 className="or-search__parent-title">
-													{item.parentSection.title}
-												</h4>
-											</Link>
-										)}
+										<Link
+											path={item.path}
+											query={query}
+											className="or-search__parent"
+											onClick={closePanel}
+										>
+											<h4 className="or-search__parent-title">{item.title}</h4>
+										</Link>
 									</div>
 								</div>
 							</li>
