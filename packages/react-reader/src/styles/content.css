@@ -1,5 +1,8 @@
 .or-content {
 	width: 100%;
+	font-family: "Lucida Grande", Verdana, Helvetica, Arial, sans-serif;
+	font-size: small;
+	line-height: 1.4;
 }
 
 .or-content__header {
@@ -65,6 +68,8 @@
 .or-heading {
 	margin-top: 1.5rem;
 	margin-bottom: 2rem;
+	font-family: Georgia, Times, serif;
+	font-weight: bold;
 }
 
 .or-heading--1 {
@@ -88,7 +93,7 @@
 }
 
 .or-paragraph {
-	margin-bottom: 0.5rem;
+	margin-bottom: 0.75rem;
 	text-align: left;
 
 	&:last-of-type {
