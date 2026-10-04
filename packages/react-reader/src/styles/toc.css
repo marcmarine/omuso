@@ -53,6 +53,11 @@
 	transform: rotate(90deg);
 }
 
+.or-toc__link,
+.or-toc__sublink {
+	font-family: Georgia, Times, serif;
+}
+
 .or-toc__link {
 	flex: 1;
 	padding: 0.375rem 1.25rem 0.375rem 2rem;

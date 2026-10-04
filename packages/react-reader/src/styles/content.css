@@ -65,11 +65,19 @@
 	margin-top: 0;
 }
 
+.or-content__section-link,
+.or-content__crumb,
+.or-heading {
+	font-family: Georgia, Times, serif;
+}
+.or-content__crumb,
+.or-heading {
+	font-weight: bold;
+}
+
 .or-heading {
 	margin-top: 1.5rem;
 	margin-bottom: 2rem;
-	font-family: Georgia, Times, serif;
-	font-weight: bold;
 }
 
 .or-heading--1 {
