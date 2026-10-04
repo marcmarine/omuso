@@ -1,5 +1,26 @@
 # Changelog
 
+## [0.3.0](https://github.com/marcmarine/omuso/compare/react-reader-v0.2.4...react-reader-v0.3.0) (2026-10-04)
+
+
+### Features
+
+* Add strong text parsing and rendering support ([b4193d4](https://github.com/marcmarine/omuso/commit/b4193d401caf3b0aa7854465c0d211c3c735a63a))
+* Support path-based navigation without slugs ([70f0c21](https://github.com/marcmarine/omuso/commit/70f0c218f873de8346a898f49ff8938f7ffd65cc))
+
+
+### Bug Fixes
+
+* Clamp panel widths and adjust default sizes ([e3fbc88](https://github.com/marcmarine/omuso/commit/e3fbc88bb8fce5a49a04fc9d0f3240760b03dce8))
+* Link search results to their own titles ([b0177b1](https://github.com/marcmarine/omuso/commit/b0177b1efafb54b92b5e5b21cec7f95134b044eb))
+* Memoize provider values and callbacks ([dd08dab](https://github.com/marcmarine/omuso/commit/dd08dab27a84d019fa1b4c1833dbd6b39c8ddca9))
+* Move TypeScript to devDependencies ([5077c5c](https://github.com/marcmarine/omuso/commit/5077c5cefa5721bf013236afd3afee681f9fa78f))
+* Optimize panel resizing without re-renders during drag ([aba3eca](https://github.com/marcmarine/omuso/commit/aba3eca6ce3e1dc8cdad983cd10a15bd1e9d44fa))
+* Prevent search metadata text overflow ([1de1a9a](https://github.com/marcmarine/omuso/commit/1de1a9aa43be2ddff959c8eed57d9403afca18a3))
+* Refine reader content typography ([e0c2e70](https://github.com/marcmarine/omuso/commit/e0c2e70dbed88fbdc8606ce5cbbf29552efe56bf))
+* Update omuso dependency to 1.7.0 ([f52c91d](https://github.com/marcmarine/omuso/commit/f52c91df1c4b97788996c92ea80ef38d8626d643))
+* Use a shared wide viewport check ([351673a](https://github.com/marcmarine/omuso/commit/351673a42f1269eae676eaa22e5fec5887089c2a))
+
 ## [0.2.4](https://github.com/marcmarine/omuso/compare/react-reader-v0.2.3...react-reader-v0.2.4) (2026-09-30)
 
 
