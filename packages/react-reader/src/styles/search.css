@@ -15,12 +15,15 @@
 .or-search__meta {
 	height: 1.125rem;
 	padding: 0.25rem 0.5rem 0 0.5rem;
+	white-space: nowrap;
 }
 
 .or-search__meta-text {
 	font-size: 0.75rem;
 	line-height: 1rem;
 	text-transform: lowercase;
+	text-overflow: ellipsis;
+	overflow: hidden;
 }
 
 .or-search__results {
