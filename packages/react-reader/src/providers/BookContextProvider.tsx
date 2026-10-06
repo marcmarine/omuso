@@ -439,8 +439,29 @@ export function BookContextProvider({
 				language: newLanguage,
 				path: location.path,
 			})
+
+			if (hasExternalLocation || typeof window === 'undefined') return
+
+			// Keep the URL on the same section, using its slug in the new
+			// language, so a reload does not resolve back to the old one.
+			const newManifest = manifestMap[newLanguage]
+			const slug = newManifest && slugForPath(location.path, newManifest)
+			if (slug === undefined) return
+
+			const nextPathname = prependBasePath(slug, normalizedBasePath)
+			const nextUrl = `${nextPathname}${window.location.search}`
+			const currentUrl = `${window.location.pathname}${window.location.search}`
+			if (nextUrl !== currentUrl) {
+				window.history.replaceState({}, '', nextUrl)
+			}
 		},
-		[location.path, setLocation],
+		[
+			hasExternalLocation,
+			location.path,
+			manifestMap,
+			normalizedBasePath,
+			setLocation,
+		],
 	)
 
 	const value = React.useMemo<Context>(
