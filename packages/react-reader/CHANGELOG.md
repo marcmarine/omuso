@@ -1,5 +1,22 @@
 # Changelog
 
+## [0.3.1](https://github.com/marcmarine/omuso/compare/react-reader-v0.3.0...react-reader-v0.3.1) (2026-10-06)
+
+
+### Bug Fixes
+
+* Adjust reader layout and sidebar sizing on mobile ([cb33fdd](https://github.com/marcmarine/omuso/commit/cb33fdd272e3efe61231f2b998754ae334456931))
+* Follow system theme changes until overridden ([4e231bb](https://github.com/marcmarine/omuso/commit/4e231bb684a4d1f387b845555493ae2ccff665e5))
+* Make reader markup semantic and accessible ([ac7a501](https://github.com/marcmarine/omuso/commit/ac7a50139d589f173b8e8d5de9a90711d1d57af3))
+* Match table of contents sections by path ([86d10eb](https://github.com/marcmarine/omuso/commit/86d10eb220c64bb3772944adad9b1e26235bc965))
+* Namespace reader local storage keys ([672bdef](https://github.com/marcmarine/omuso/commit/672bdefa3ffdc71ddc39506442b32947a08694ce))
+* Refine typography and search styling ([6d60a96](https://github.com/marcmarine/omuso/commit/6d60a9672d19fea7e8979c1a5bf8b50cb9f4f219))
+* Remove unnecessary article layout wrapper ([d3bbb47](https://github.com/marcmarine/omuso/commit/d3bbb47a8fe87f475faf20d9c2f3fe3e89591090))
+* Rename reader classes and reorganize layout styles ([a3dd7a9](https://github.com/marcmarine/omuso/commit/a3dd7a910de28a22fa009ecae173824b56a057f7))
+* Sync search state with URL navigation ([783f575](https://github.com/marcmarine/omuso/commit/783f57538893c6667f9fa36113137e3a3ee9aa55))
+* Update URL when changing book language ([3c463e5](https://github.com/marcmarine/omuso/commit/3c463e5a32345b14d601a2d50e8d7668114c7136))
+* Use serif font for reader title and author ([a45a300](https://github.com/marcmarine/omuso/commit/a45a300908bb95ca54ba455d11e8359ad80709de))
+
 ## [0.3.0](https://github.com/marcmarine/omuso/compare/react-reader-v0.2.4...react-reader-v0.3.0) (2026-10-04)
 
 
