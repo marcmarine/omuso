@@ -98,7 +98,7 @@ The reader applies the saved theme after React mounts. To avoid briefly showing 
 <script>
   (() => {
     try {
-      const storedTheme = localStorage.getItem('theme')
+      const storedTheme = localStorage.getItem('omuso:theme')
       const isDark =
         storedTheme === 'dark' ||
         (storedTheme !== 'light' &&
@@ -113,7 +113,7 @@ The reader applies the saved theme after React mounts. To avoid briefly showing 
 </script>
 ```
 
-Place this inline script in your HTML `<head>` before the app bundle. It uses the same `theme` local-storage key as the reader, falls back to the system color-scheme preference, and sets the attribute on `<html>` before the first paint.
+Place this inline script in your HTML `<head>` before the app bundle. It uses the same `omuso:theme` local-storage key as the reader, falls back to the system color-scheme preference, and sets the attribute on `<html>` before the first paint.
 
 ## Errors
 

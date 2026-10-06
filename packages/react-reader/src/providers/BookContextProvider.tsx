@@ -7,9 +7,10 @@ import {
 	slugForPath,
 	stripBasePath,
 } from '../utils/routes'
+import { storageKey } from '../utils/storage'
 
 const DEFAULT_LANGUAGE = 'en'
-const LOCATION_STORAGE_KEY = 'location'
+const LOCATION_STORAGE_KEY = storageKey('location')
 
 type RouteState = {
 	pathname: string

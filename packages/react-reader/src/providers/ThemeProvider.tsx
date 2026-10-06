@@ -6,10 +6,11 @@ import {
 	useMemo,
 	useState,
 } from 'react'
+import { storageKey } from '../utils/storage'
 
 type Theme = 'light' | 'dark'
 
-const STORAGE_KEY = 'theme'
+const STORAGE_KEY = storageKey('theme')
 const THEME_ATTRIBUTE = 'data-omuso-theme'
 const DARK_SCHEME_QUERY = '(prefers-color-scheme: dark)'
 

@@ -1,9 +1,11 @@
 import React from 'react'
+import { storageKey } from '../utils/storage'
 
 function useLocalStorage<T>(
-	key: string,
+	name: string,
 	initialValue: T,
 ): [T, (value: T) => void] {
+	const key = storageKey(name)
 	const [storedValue, setStoredValue] = React.useState<T>(() => {
 		try {
 			const item = window.localStorage.getItem(key)
