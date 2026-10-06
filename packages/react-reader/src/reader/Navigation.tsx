@@ -1,5 +1,6 @@
 import { Link } from '../components/Link'
 import { useBookContext } from '../providers/BookContextProvider'
+import { useLayout } from '../providers/LayoutProvider'
 import { classes } from '../utils'
 import { COVER_PATH } from '../utils/routes'
 
@@ -9,20 +10,27 @@ export default function Navigation() {
 		session: { search, nextSection, prevSection, currentSection },
 		manifest: { paths },
 	} = context
+	const { i18n } = useLayout()
 
 	const firstSectionPath = paths[0] ?? COVER_PATH
+	const isPrevDisabled = !currentSection
+	const isNextDisabled = Boolean(currentSection && !nextSection)
 
 	return (
-		<div className="or-nav">
+		<nav className="or-nav" aria-label={i18n.t('chapterNavigation')}>
 			<Link
 				path={prevSection?.path ?? COVER_PATH}
 				query={search.query}
+				rel="prev"
+				aria-label={i18n.t('previousChapter')}
+				aria-disabled={isPrevDisabled || undefined}
+				tabIndex={isPrevDisabled ? -1 : undefined}
 				className={classes(
 					'or-icon-button',
 					'or-interactive',
 					'or-nav__button',
 					'or-nav__button--prev',
-					!currentSection && 'or-nav__button--disabled',
+					isPrevDisabled && 'or-nav__button--disabled',
 				)}
 			>
 				<svg
@@ -45,12 +53,16 @@ export default function Navigation() {
 			<Link
 				path={nextSection?.path ?? firstSectionPath}
 				query={search.query}
+				rel="next"
+				aria-label={i18n.t('nextChapter')}
+				aria-disabled={isNextDisabled || undefined}
+				tabIndex={isNextDisabled ? -1 : undefined}
 				className={classes(
 					'or-icon-button',
 					'or-interactive',
 					'or-nav__button',
 					'or-nav__button--next',
-					currentSection && !nextSection && 'or-nav__button--disabled',
+					isNextDisabled && 'or-nav__button--disabled',
 				)}
 			>
 				<svg
@@ -70,6 +82,6 @@ export default function Navigation() {
 					/>
 				</svg>
 			</Link>
-		</div>
+		</nav>
 	)
 }

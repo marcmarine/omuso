@@ -12,7 +12,7 @@ export default function Cover() {
 	return (
 		<div className="or-cover">
 			<div className="or-cover__header">
-				<h2 className="or-cover__author">{metadata.author}</h2>
+				<p className="or-cover__author">{metadata.author}</p>
 				<h1 className="or-cover__title">{metadata.title}</h1>
 				{firstChapterPath && (
 					<Link
@@ -27,7 +27,7 @@ export default function Cover() {
 				{metadata.translator && (
 					<div className="or-cover__translator">
 						<p>{i18n.t('translatedBy')}</p>
-						<h4 className="or-cover__translator-name">{metadata.translator}</h4>
+						<p className="or-cover__translator-name">{metadata.translator}</p>
 					</div>
 				)}
 			</div>

@@ -20,11 +20,11 @@ export default function Layout({ children }: { children: React.ReactNode }) {
 	const [FirstChild, SecondChild, ThirdChild] = childrenArray
 
 	return (
-		<div className="omuso-reader or-layout">
+		<section className="omuso-reader or-layout" aria-label={title}>
 			<div className="or-layout__body">
 				<div className="or-layout__main">
 					<Header title={title} author={author} />
-					<main className="or-layout__stage">
+					<div className="or-layout__stage">
 						<ResizablePanel
 							maxWidth={250}
 							className="or-layout__panel or-layout__panel--left"
@@ -34,10 +34,10 @@ export default function Layout({ children }: { children: React.ReactNode }) {
 						>
 							{FirstChild}
 						</ResizablePanel>
-						<article className="or-layout__article">
+						<div className="or-layout__article">
 							<div className="or-layout__page">{SecondChild}</div>
-						</article>
-					</main>
+						</div>
+					</div>
 				</div>
 				<ResizablePanel
 					minWidth={300}
@@ -51,7 +51,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
 				</ResizablePanel>
 			</div>
 			<Footer />
-		</div>
+		</section>
 	)
 }
 
@@ -85,7 +85,7 @@ function Footer() {
 }
 
 function SearchToggle() {
-	const { panel } = useLayout()
+	const { panel, i18n } = useLayout()
 	const { session } = useBookContext()
 	const { query } = session.search
 
@@ -117,6 +117,8 @@ function SearchToggle() {
 			className="or-icon-button or-interactive"
 			onClick={toggle}
 			type="button"
+			aria-label={i18n.t('search')}
+			aria-expanded={panel.right.open}
 		>
 			<svg
 				xmlns="http://www.w3.org/2000/svg"
@@ -146,7 +148,7 @@ function SearchToggle() {
 }
 
 function TOCToggle() {
-	const { panel } = useLayout()
+	const { panel, i18n } = useLayout()
 
 	const toggle = useCallback(() => {
 		if (panel.right.open && !panel.left.open && !isWideViewport()) {
@@ -177,6 +179,8 @@ function TOCToggle() {
 			type="button"
 			onClick={toggle}
 			className="or-icon-button or-interactive"
+			aria-label={i18n.t('tableOfContents')}
+			aria-expanded={panel.left.open}
 		>
 			<svg
 				aria-hidden="true"

@@ -72,20 +72,21 @@ export function ContentHeader({
 	className?: string
 }) {
 	const parent = breadcrumbs.at(-2)
+	const { i18n } = useLayout()
 
 	return (
 		<div className={classes('or-content__header', className)}>
-			<nav className="or-content__crumbs">
-				<ol>
-					{parent && (
+			{parent && (
+				<nav className="or-content__crumbs" aria-label={i18n.t('breadcrumb')}>
+					<ol>
 						<li className="or-content__crumb">
 							<Link path={parent.path} query={query}>
 								{parent.title}
 							</Link>
 						</li>
-					)}
-				</ol>
-			</nav>
+					</ol>
+				</nav>
+			)}
 		</div>
 	)
 }
@@ -96,7 +97,7 @@ export default function Content() {
 	const {
 		session: { currentSection, breadcrumbs, search },
 	} = context
-	const ref = useRef<HTMLDivElement>(null)
+	const ref = useRef<HTMLElement>(null)
 
 	useEffect(() => {
 		if (!currentSection?.path) return
@@ -106,13 +107,13 @@ export default function Content() {
 	if (!currentSection) return null
 
 	return (
-		<div ref={ref} className="or-content">
+		<article ref={ref} className="or-content">
 			<ContentHeader query={search.query} breadcrumbs={breadcrumbs} />
 			<ContentBody
 				section={currentSection}
 				query={search.query}
 				maxDepth={maxDepth}
 			/>
-		</div>
+		</article>
 	)
 }

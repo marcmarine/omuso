@@ -3,7 +3,8 @@ import { useBookContext } from '../providers/BookContextProvider'
 import { useRoutingStrategy } from '../providers/RoutingProvider'
 import { prependBasePath, slugForPath } from '../utils/routes'
 
-interface BaseProps extends React.HTMLAttributes<HTMLElement> {
+interface BaseProps
+	extends Omit<React.AnchorHTMLAttributes<HTMLElement>, 'href'> {
 	query?: string
 	children: React.ReactNode
 }
@@ -69,9 +70,9 @@ export function Link({
 		return (
 			// biome-ignore lint/a11y/useSemanticElements: there is no `href` to give it
 			<a
+				tabIndex={0}
 				{...props}
 				role="link"
-				tabIndex={0}
 				// biome-ignore lint/a11y/useValidAnchor: slugless books have no URLs
 				onClick={handleClick}
 				onKeyDown={handleKeyDown}
@@ -90,15 +91,13 @@ export function Link({
 	const linkProps =
 		Component === 'a' ? { href: publicDestination } : { to: publicDestination }
 
-	const anchorProps = props as React.AnchorHTMLAttributes<HTMLElement>
-
 	const handleClick = (event: React.MouseEvent<HTMLElement>) => {
 		onClick?.(event)
 		if (event.defaultPrevented) return
 		if (event.button !== 0) return
 		if (isModifiedClick(event)) return
-		if (hasExternalTarget(anchorProps.target)) return
-		if (anchorProps.download) return
+		if (hasExternalTarget(props.target)) return
+		if (props.download) return
 		if (isExternalHref(destination)) return
 
 		if (Component === 'a') {

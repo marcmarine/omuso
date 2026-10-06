@@ -17,14 +17,14 @@ export function Search() {
 	}
 
 	return (
-		<aside className="or-search">
+		<search className="or-search">
 			<div className="or-search__header">
 				<SearchInput />
-				<div className="or-search__meta">
+				<output className="or-search__meta">
 					{totalMatches > 0 && (
-						<p className="or-search__meta-text">{`${totalMatches} ${i18n.t('resultsIn')} ${results.length} ${i18n.t(results.length === 1 ? 'chapter' : 'chapters')} ${i18n.t('forWord')} "${query}"`}</p>
+						<span className="or-search__meta-text">{`${totalMatches} ${i18n.t('resultsIn')} ${results.length} ${i18n.t(results.length === 1 ? 'chapter' : 'chapters')} ${i18n.t('forWord')} "${query}"`}</span>
 					)}
-				</div>
+				</output>
 			</div>
 			<ul className="or-search__results">
 				{query.length > 0 && results.length === 0 && (
@@ -48,12 +48,12 @@ export function Search() {
 										className="or-search__section-link"
 										onClick={closePanel}
 									>
-										<h4 className="or-search__section-parent">
+										<p className="or-search__section-parent">
 											{item.parentSection?.title || ''}
-										</h4>
-										<h3 className="or-search__section-title">
+										</p>
+										<p className="or-search__section-title">
 											{highlightMatches(item.title, query)}
-										</h3>
+										</p>
 									</Link>
 								</li>
 							)
@@ -84,7 +84,7 @@ export function Search() {
 											className="or-search__parent"
 											onClick={closePanel}
 										>
-											<h4 className="or-search__parent-title">{item.title}</h4>
+											<p className="or-search__parent-title">{item.title}</p>
 										</Link>
 									</div>
 								</div>
@@ -94,7 +94,7 @@ export function Search() {
 					return null
 				})}
 			</ul>
-		</aside>
+		</search>
 	)
 }
 
@@ -179,7 +179,8 @@ function SearchInput() {
 			</svg>
 			<input
 				ref={ref}
-				type="text"
+				type="search"
+				aria-label={i18n.t('searchContent')}
 				value={value}
 				onChange={(e) => setValue(e.target.value)}
 				className="or-search__input"
@@ -189,6 +190,7 @@ function SearchInput() {
 				<button
 					onClick={handleReset}
 					type="button"
+					aria-label={i18n.t('clearSearch')}
 					className="or-search__reset or-interactive"
 				>
 					<svg

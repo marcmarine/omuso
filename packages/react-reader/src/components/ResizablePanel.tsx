@@ -103,6 +103,7 @@ export function ResizablePanel({
 			<button
 				type="button"
 				tabIndex={-1}
+				aria-hidden="true"
 				className={classes(
 					'or-panel__resizer',
 					position === 'right'
