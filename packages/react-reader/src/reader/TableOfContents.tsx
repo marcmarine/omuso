@@ -43,7 +43,7 @@ function BookTableOfContents() {
 						const isExpanded = expandedSections[section.path]
 
 						const hasPath = breadcrumbs.length > 0
-						const isAtSection = breadcrumbs[0]?.title === section.title
+						const isAtSection = breadcrumbs[0]?.path === section.path
 						const isCollapsed = breadcrumbs.length >= 2 && isExpanded
 						const shouldShowChildren = hasChildren && maxDepth > 2
 
@@ -107,9 +107,7 @@ function BookTableOfContents() {
 										{withOmittedSections(
 											section.content.filter((item) => item.type === 'section'),
 										).map((item) => {
-											const isActive =
-												breadcrumbs.length &&
-												breadcrumbs[1]?.title === item.title
+											const isActive = breadcrumbs[1]?.path === item.path
 
 											return (
 												<li key={item.path} className="or-toc__subitem">
