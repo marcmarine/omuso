@@ -34,9 +34,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
 						>
 							{FirstChild}
 						</ResizablePanel>
-						<div className="or-layout__article">
-							<div className="or-layout__page">{SecondChild}</div>
-						</div>
+						<div className="or-layout__page">{SecondChild}</div>
 					</div>
 				</div>
 				<ResizablePanel

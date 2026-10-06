@@ -65,11 +65,6 @@
 	overflow: hidden;
 }
 
-.or-layout__article {
-	display: flex;
-	flex: 1;
-}
-
 .or-layout__page {
 	display: flex;
 	flex: 1;
