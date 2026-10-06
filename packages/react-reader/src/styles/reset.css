@@ -56,7 +56,6 @@
 
 	& :where(svg, img, video, canvas, audio, iframe, embed, object) {
 		display: block;
-		vertical-align: middle;
 	}
 
 	& :where(img) {

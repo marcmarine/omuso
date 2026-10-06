@@ -5,7 +5,7 @@
 	backdrop-filter: blur(40px);
 
 	@media (max-width: 639px) {
-		width: 100vw !important;
+		min-width: 100vw;
 	}
 
 	@media (min-width: 64rem) {
