@@ -103,7 +103,16 @@ function SearchInput() {
 	const { session, search, resetSearch } = useBookContext()
 	const { query } = session.search
 	const [value, setValue] = useState(query)
+	const submittedQueryRef = useRef(query)
 	const { i18n } = useLayout()
+
+	// Follow query changes that did not come from this input (e.g. history
+	// navigation). Updating `value` also cancels any pending debounce.
+	useEffect(() => {
+		if (query === submittedQueryRef.current) return
+		submittedQueryRef.current = query
+		setValue(query)
+	}, [query])
 
 	useEffect(() => {
 		if (value) {
@@ -118,7 +127,10 @@ function SearchInput() {
 	}, [value])
 
 	useEffect(() => {
-		const handler = setTimeout(() => search(value), 280)
+		const handler = setTimeout(() => {
+			submittedQueryRef.current = value
+			search(value)
+		}, 280)
 		return () => clearTimeout(handler)
 	}, [value, search])
 

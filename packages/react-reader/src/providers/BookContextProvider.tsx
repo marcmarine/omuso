@@ -270,12 +270,12 @@ export function BookContextProvider({
 
 	const syncFromRoute = React.useCallback(
 		(route: RouteState, preferredLanguage: string) => {
+			// The URL is the source of truth: a route without `?query` clears
+			// the search.
 			const nextQuery = getSearchQuery(route)
-			if (nextQuery !== undefined) {
-				setSearchQuery((previousQuery) =>
-					previousQuery === nextQuery ? previousQuery : nextQuery,
-				)
-			}
+			setSearchQuery((previousQuery) =>
+				previousQuery === nextQuery ? previousQuery : nextQuery,
+			)
 
 			const nextLocation = resolveReaderLocation(
 				route,
