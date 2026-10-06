@@ -34,9 +34,12 @@
 		justify-content: space-between;
 	}
 }
+.or-layout__title,
+.or-layout__author {
+	font-family: Georgia, Times, serif;
+}
 
 .or-layout__title {
-	font-family: Georgia, Times, serif;
 	padding: 0.125rem 0.375rem;
 	border-radius: 0.25rem;
 	font-size: 0.875rem;
@@ -44,7 +47,6 @@
 }
 
 .or-layout__author {
-	font-family: "Lucida Grande", Verdana, Helvetica, Arial, sans-serif;
 	display: none;
 	padding-inline: 0.375rem;
 	opacity: 0.8;
