@@ -4,7 +4,7 @@ import { Link } from '../components/Link'
 import useLocalStorage from '../hooks/useLocalStorage'
 import { useBookContext } from '../providers/BookContextProvider'
 import { useLayout } from '../providers/LayoutProvider'
-import { classes, isWideViewport } from '../utils'
+import { isWideViewport } from '../utils'
 
 function BookTableOfContents() {
 	const { panel, maxDepth, omitSections, i18n } = useLayout()
@@ -39,8 +39,8 @@ function BookTableOfContents() {
 	}
 
 	return (
-		<nav className="or-toc" aria-label={i18n.t('tableOfContents')}>
-			<ul className="or-toc__list">
+		<nav className="om-toc" aria-label={i18n.t('tableOfContents')}>
+			<ul className="om-toc__list" data-depth={1}>
 				{withOmittedSections(tableOfContents).map((section) => {
 					const hasChildren =
 						section.content.length > 0 &&
@@ -55,24 +55,16 @@ function BookTableOfContents() {
 					const shouldShowChildren = hasChildren && maxDepth > 2
 
 					return (
-						<li key={section.path} className="or-toc__item">
+						<li key={section.path} className="om-toc__item">
 							<div
-								className={classes(
-									'or-toc__row',
-									'or-interactive',
-									hasPath &&
-										isAtSection &&
-										!isCollapsed &&
-										'or-toc__row--active',
-								)}
+								className="om-toc__row om-interactive"
+								data-active={
+									(hasPath && isAtSection && !isCollapsed) || undefined
+								}
 							>
 								{shouldShowChildren && (
 									<button
-										className={classes(
-											'or-toc__toggle',
-											'or-interactive',
-											isAtSection && !isCollapsed && 'or-toc__toggle--active',
-										)}
+										className="om-toc__toggle om-interactive"
 										onClick={() => toggleSection(section.path)}
 										type="button"
 										aria-expanded={Boolean(isExpanded)}
@@ -86,10 +78,7 @@ function BookTableOfContents() {
 											viewBox="0 0 24 24"
 											strokeWidth={2}
 											stroke="currentColor"
-											className={classes(
-												'or-icon or-icon--sm or-toc__chevron',
-												isExpanded && 'or-toc__chevron--expanded',
-											)}
+											className="om-icon om-icon--sm om-toc__chevron"
 										>
 											<path
 												strokeLinecap="round"
@@ -103,33 +92,24 @@ function BookTableOfContents() {
 									path={section.path}
 									query={search.query}
 									aria-current={ariaCurrent(section.path)}
-									className={classes(
-										'or-toc__link',
-										shouldShowChildren && 'or-toc__link--indented',
-									)}
+									className="om-toc__link"
 									onClick={closePanel}
 								>
 									{section.title}
 								</Link>
 							</div>
 							{shouldShowChildren && isExpanded && (
-								<ul className="or-toc__sub">
+								<ul className="om-toc__list" data-depth={2}>
 									{withOmittedSections(
 										section.content.filter((item) => item.type === 'section'),
 									).map((item) => {
-										const isActive = breadcrumbs[1]?.path === item.path
-
 										return (
-											<li key={item.path} className="or-toc__subitem">
+											<li key={item.path} className="om-toc__item">
 												<Link
 													path={item.path}
 													query={search.query}
 													aria-current={ariaCurrent(item.path)}
-													className={classes(
-														'or-toc__sublink',
-														'or-interactive',
-														isActive && 'or-toc__sublink--active',
-													)}
+													className="om-toc__link om-interactive"
 													onClick={closePanel}
 												>
 													{item.title}

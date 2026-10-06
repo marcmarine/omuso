@@ -1,25 +1,25 @@
 :root {
-	--or-background: #ffebe0;
-	--or-foreground: #544e45;
-	--or-dividers: #f1ded5;
-	--or-text-highlight: #ffe0cc;
-	--or-background-selected: #d5d6d9;
-	--or-input-background: transparent;
-	--or-resizer-color: color-mix(in oklab, var(--or-foreground) 5%, transparent);
+	--om-background: #ffebe0;
+	--om-foreground: #544e45;
+	--om-dividers: #f1ded5;
+	--om-text-highlight: #ffe0cc;
+	--om-background-selected: #d5d6d9;
+	--om-input-background: transparent;
+	--om-resizer-color: color-mix(in oklab, var(--om-foreground) 5%, transparent);
 
-	--or-dividers-width: 1px;
-	--or-resizer-width: 0.5rem;
+	--om-dividers-width: 1px;
+	--om-resizer-width: 0.5rem;
 }
 
 [data-omuso-theme="dark"] {
-	--or-background: #0b0a09;
-	--or-foreground: #dad5d2;
-	--or-dividers: #1f1f1f;
-	--or-text-highlight: #2e2824;
-	--or-background-selected: #21242b;
+	--om-background: #0b0a09;
+	--om-foreground: #dad5d2;
+	--om-dividers: #1f1f1f;
+	--om-text-highlight: #2e2824;
+	--om-background-selected: #21242b;
 }
 
-.omuso-reader {
-	background: var(--or-background);
-	color: var(--or-foreground);
+.om-reader {
+	background: var(--om-background);
+	color: var(--om-foreground);
 }

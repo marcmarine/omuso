@@ -45,7 +45,7 @@ export function ContentBody({
 	maxDepth: number
 }) {
 	return (
-		<div className="or-content__body">
+		<div className="om-content__body">
 			<HeadingElement
 				id={section.path}
 				value={highlightMatches(section.title, query)}
@@ -75,11 +75,11 @@ export function ContentHeader({
 	const { i18n } = useLayout()
 
 	return (
-		<div className={classes('or-content__header', className)}>
+		<div className={classes('om-content__header', className)}>
 			{parent && (
-				<nav className="or-content__crumbs" aria-label={i18n.t('breadcrumb')}>
+				<nav className="om-breadcrumb" aria-label={i18n.t('breadcrumb')}>
 					<ol>
-						<li className="or-content__crumb">
+						<li className="om-breadcrumb__item">
 							<Link path={parent.path} query={query}>
 								{parent.title}
 							</Link>
@@ -107,7 +107,7 @@ export default function Content() {
 	if (!currentSection) return null
 
 	return (
-		<article ref={ref} className="or-content">
+		<article ref={ref} className="om-content">
 			<ContentHeader query={search.query} breadcrumbs={breadcrumbs} />
 			<ContentBody
 				section={currentSection}

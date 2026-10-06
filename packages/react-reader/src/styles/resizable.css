@@ -1,0 +1,39 @@
+.om-resizable {
+	position: relative;
+	display: flex;
+	flex-direction: column;
+	border-color: var(--om-dividers);
+
+	&[hidden] {
+		display: none;
+	}
+}
+
+.om-resizable__handle {
+	position: absolute;
+	top: 0;
+	z-index: 20;
+	width: var(--om-resizer-width);
+	height: 100%;
+	cursor: ew-resize;
+	transition: background 400ms cubic-bezier(0.4, 0, 0.2, 1) 200ms;
+
+	&:hover,
+	&[data-resizing] {
+		background-color: var(--om-resizer-color);
+	}
+
+	&[data-side="left"] {
+		right: calc(
+			-1 *
+			var(--om-resizer-width) /
+			2 -
+			var(--om-dividers-width) /
+			2
+		);
+	}
+
+	&[data-side="right"] {
+		left: calc(-1 * var(--om-resizer-width) / 2 - var(--om-dividers-width) / 2);
+	}
+}

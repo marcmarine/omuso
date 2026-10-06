@@ -1,42 +1,28 @@
-.or-content {
+.om-content {
 	width: 100%;
 	font-family: "Lucida Grande", Verdana, Helvetica, Arial, sans-serif;
 	font-size: small;
 	line-height: 1.4;
 }
 
-.or-content__header {
+.om-content__header {
 	display: flex;
 	align-items: center;
 	justify-content: center;
 	padding-inline: 0.375rem;
 }
 
-.or-content__crumbs {
-	display: flex;
-	align-items: center;
-	gap: 0.25rem;
-}
-
-.or-content__crumb {
-	line-height: 1;
-	padding: 2.5rem 0.375rem 0 0.375rem;
-	text-align: center;
-
-	&:hover {
-		text-decoration: underline;
-	}
-}
-
-.or-content__body {
+.om-content__body {
 	max-width: 36rem;
 	margin-inline: auto;
 	padding: 1rem 2rem;
 	text-align: center;
 }
 
-.or-content__section-link {
+.om-section__link,
+.om-section-index__link {
 	display: inline-block;
+	font-family: Georgia, Times, serif;
 	font-size: 1rem;
 	line-height: 1.5rem;
 
@@ -45,7 +31,7 @@
 	}
 }
 
-.or-content__index {
+.om-section-index {
 	& > li + li {
 		margin-top: 1rem;
 
@@ -55,52 +41,38 @@
 	}
 }
 
-.or-content__index-item :is(h3, h4) {
-	margin: 0;
-	font-size: 1rem;
-	line-height: 1.5rem;
-}
-
-.or-content__body .or-heading + section > a > :is(h1, h2, h3, h4, h5, h6) {
-	margin-top: 0;
-}
-
-.or-content__section-link,
-.or-content__crumb,
-.or-heading {
+.om-heading {
+	margin-top: 1.5rem;
+	margin-bottom: 2rem;
 	font-family: Georgia, Times, serif;
-}
-.or-content__crumb,
-.or-heading {
 	font-weight: bold;
 }
 
-.or-heading {
-	margin-top: 1.5rem;
-	margin-bottom: 2rem;
+.om-content__body .om-heading + .om-section > .om-section__link > .om-heading {
+	margin-top: 0;
 }
 
-.or-heading--1 {
+.om-heading--1 {
 	font-size: 1.875rem;
 	line-height: 2.25rem;
 }
 
-.or-heading--2 {
+.om-heading--2 {
 	font-size: 1.5rem;
 	line-height: 2rem;
 }
 
-.or-heading--3 {
+.om-heading--3 {
 	font-size: 1.25rem;
 	line-height: 1.75rem;
 }
 
-.or-heading--4 {
+.om-heading--4 {
 	font-size: 1.125rem;
 	line-height: 1.75rem;
 }
 
-.or-paragraph {
+.om-paragraph {
 	margin-bottom: 0.75rem;
 	text-align: left;
 

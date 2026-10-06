@@ -13,7 +13,7 @@ export function ParagraphElement({
 		'p',
 		{
 			...rest,
-			className: classes('or-paragraph', className),
+			className: classes('om-paragraph', className),
 		},
 		value,
 	)

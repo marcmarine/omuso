@@ -1,4 +1,4 @@
-.or-dropdown__content {
+.om-dropdown__content {
 	display: none;
 	position: fixed;
 	inset: auto;
@@ -10,14 +10,14 @@
 	color: inherit;
 }
 
-.or-dropdown__content:popover-open {
+.om-dropdown__content:popover-open {
 	display: flex;
 }
 
-.or-dropdown__menu {
+.om-dropdown__menu {
 	flex-direction: column;
 	padding: 0.25rem;
-	border: var(--or-dividers-width) solid var(--or-dividers);
+	border: var(--om-dividers-width) solid var(--om-dividers);
 	border-radius: 0.5rem;
-	background: var(--or-background);
+	background: var(--om-background);
 }

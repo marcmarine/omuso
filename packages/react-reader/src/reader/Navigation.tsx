@@ -1,7 +1,6 @@
 import { Link } from '../components/Link'
 import { useBookContext } from '../providers/BookContextProvider'
 import { useLayout } from '../providers/LayoutProvider'
-import { classes } from '../utils'
 import { COVER_PATH } from '../utils/routes'
 
 export default function Navigation() {
@@ -17,7 +16,7 @@ export default function Navigation() {
 	const isNextDisabled = Boolean(currentSection && !nextSection)
 
 	return (
-		<nav className="or-nav" aria-label={i18n.t('chapterNavigation')}>
+		<nav className="om-pager" aria-label={i18n.t('chapterNavigation')}>
 			<Link
 				path={prevSection?.path ?? COVER_PATH}
 				query={search.query}
@@ -25,13 +24,7 @@ export default function Navigation() {
 				aria-label={i18n.t('previousChapter')}
 				aria-disabled={isPrevDisabled || undefined}
 				tabIndex={isPrevDisabled ? -1 : undefined}
-				className={classes(
-					'or-icon-button',
-					'or-interactive',
-					'or-nav__button',
-					'or-nav__button--prev',
-					isPrevDisabled && 'or-nav__button--disabled',
-				)}
+				className="om-icon-button om-interactive om-pager__prev"
 			>
 				<svg
 					xmlns="http://www.w3.org/2000/svg"
@@ -41,7 +34,7 @@ export default function Navigation() {
 					viewBox="0 0 24 24"
 					strokeWidth={1.9}
 					stroke="currentColor"
-					className="or-icon"
+					className="om-icon"
 				>
 					<path
 						strokeLinecap="round"
@@ -57,13 +50,7 @@ export default function Navigation() {
 				aria-label={i18n.t('nextChapter')}
 				aria-disabled={isNextDisabled || undefined}
 				tabIndex={isNextDisabled ? -1 : undefined}
-				className={classes(
-					'or-icon-button',
-					'or-interactive',
-					'or-nav__button',
-					'or-nav__button--next',
-					isNextDisabled && 'or-nav__button--disabled',
-				)}
+				className="om-icon-button om-interactive om-pager__next"
 			>
 				<svg
 					xmlns="http://www.w3.org/2000/svg"
@@ -73,7 +60,7 @@ export default function Navigation() {
 					viewBox="0 0 24 24"
 					strokeWidth={1.9}
 					stroke="currentColor"
-					className="or-icon"
+					className="om-icon"
 				>
 					<path
 						strokeLinecap="round"

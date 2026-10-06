@@ -300,7 +300,7 @@ export function Dropdown<TElement extends HTMLElement = HTMLButtonElement>({
 				id={contentId}
 				role="menu"
 				aria-labelledby={triggerId}
-				className={classes('or-dropdown__content', contentClassName)}
+				className={classes('om-dropdown__content', contentClassName)}
 				onKeyDown={handleContentKeyDown}
 			>
 				{typeof children === 'function' ? children(closeDropdown) : children}

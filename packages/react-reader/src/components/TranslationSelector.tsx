@@ -1,5 +1,5 @@
 import { useBookContext } from '../providers/BookContextProvider'
-import { classes, getLanguageNames } from '../utils'
+import { getLanguageNames } from '../utils'
 import { Dropdown } from './Dropdown'
 
 export default function TranslationSelector() {
@@ -12,12 +12,12 @@ export default function TranslationSelector() {
 		<Dropdown
 			side="top"
 			align="start"
-			contentClassName="or-dropdown__menu"
+			contentClassName="om-dropdown__menu"
 			renderTrigger={(triggerProps) => (
 				<button
 					{...triggerProps}
 					aria-label="Change language"
-					className="or-icon-button or-interactive or-lang__trigger"
+					className="om-icon-button om-interactive om-language-menu__trigger"
 					type="button"
 				>
 					<svg
@@ -28,7 +28,7 @@ export default function TranslationSelector() {
 						viewBox="0 0 24 24"
 						strokeWidth={1.5}
 						stroke="currentColor"
-						className="or-icon"
+						className="om-icon"
 					>
 						<path
 							strokeLinecap="round"
@@ -52,10 +52,7 @@ export default function TranslationSelector() {
 								setLanguage(availableLanguage)
 								closeDropdown()
 							}}
-							className={classes(
-								'or-lang__option',
-								isSelected && 'or-lang__option--selected',
-							)}
+							className="om-language-menu__option"
 							type="button"
 						>
 							{languageName}

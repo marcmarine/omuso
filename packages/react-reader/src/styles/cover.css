@@ -1,4 +1,4 @@
-.or-cover {
+.om-cover {
 	display: flex;
 	flex-direction: column;
 	justify-content: space-between;
@@ -7,11 +7,11 @@
 	background-size: cover;
 }
 
-.or-cover__author {
+.om-cover__author {
 	margin-bottom: 0.75rem;
 }
 
-.or-cover__title {
+.om-cover__title {
 	font-family: Georgia, Times, serif;
 	margin-bottom: 2rem;
 	font-size: 1.875rem;
@@ -19,30 +19,30 @@
 	font-weight: bold;
 }
 
-.or-cover__start {
+.om-cover__start {
 	display: inline-block;
 	padding: 0.125rem 0.5rem;
 	border-radius: 0.25rem;
 }
 
-.or-cover__footer {
+.om-cover__footer {
 	display: flex;
 	flex-direction: column;
 	align-items: center;
 	gap: 0.5rem;
 }
 
-.or-cover__translator {
+.om-cover__translator {
 	padding-block: 0.5rem;
 }
 
-.or-cover__translator-name {
+.om-cover__translator-name {
 	font-size: 0.875rem;
 	line-height: 1.25rem;
 }
 
-.or-cover__header,
-.or-cover__footer {
+.om-cover__header,
+.om-cover__footer {
 	padding-block: 4rem;
 	padding-inline: 1rem;
 }

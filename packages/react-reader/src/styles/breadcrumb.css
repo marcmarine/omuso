@@ -1,0 +1,17 @@
+.om-breadcrumb {
+	display: flex;
+	align-items: center;
+	gap: 0.25rem;
+}
+
+.om-breadcrumb__item {
+	padding: 2.5rem 0.375rem 0 0.375rem;
+	font-family: Georgia, Times, serif;
+	font-weight: bold;
+	line-height: 1;
+	text-align: center;
+
+	&:hover {
+		text-decoration: underline;
+	}
+}

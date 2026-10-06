@@ -23,12 +23,8 @@ export function SectionNode({
 	const headingDepth = normalizeHeadingDepth(section.depth, baseDepth)
 
 	return (
-		<section id={section.path}>
-			<Link
-				path={section.path}
-				query={query}
-				className="or-content__section-link"
-			>
+		<section id={section.path} className="om-section">
+			<Link path={section.path} query={query} className="om-section__link">
 				<HeadingElement
 					id={section.slug}
 					value={highlightMatches(section.title, query)}

@@ -1,4 +1,4 @@
-.or-toc {
+.om-toc {
 	width: 100%;
 	overflow: auto;
 	padding: 0.5rem;
@@ -8,7 +8,7 @@
 	}
 }
 
-.or-toc__list {
+.om-toc__list {
 	display: flex;
 	flex-direction: column;
 
@@ -17,48 +17,47 @@
 	}
 }
 
-.or-toc__item {
+.om-toc__item {
 	width: 100%;
 	font-size: 0.875rem;
 	line-height: 1.25rem;
 	text-align: left;
 }
 
-.or-toc__row {
+.om-toc__row {
 	display: flex;
 	border-radius: 0.375rem;
 
-	&.or-toc__row--active {
-		background-color: var(--or-background-selected);
+	&[data-active] {
+		background-color: var(--om-background-selected);
 
 		&:hover {
-			background-color: var(--or-background-selected);
+			background-color: var(--om-background-selected);
 		}
 	}
 }
 
-.or-toc__toggle {
+.om-toc__toggle {
 	padding: 0.5rem;
 	border-radius: 0.375rem;
-
-	&.or-toc__toggle--active {
-		border-start-start-radius: 0.375rem;
-		border-end-start-radius: 0.375rem;
-		border-start-end-radius: 0;
-		border-end-end-radius: 0;
-	}
 }
 
-.or-toc__chevron--expanded {
+.om-toc__row[data-active] > .om-toc__toggle {
+	border-start-end-radius: 0;
+	border-end-end-radius: 0;
+}
+
+.om-toc__toggle[aria-expanded="true"] > .om-toc__chevron {
 	transform: rotate(90deg);
 }
 
-.or-toc__link,
-.or-toc__sublink {
+.om-toc__link {
 	font-family: Georgia, Times, serif;
 }
 
-.or-toc__link {
+/* Top-level entries */
+
+.om-toc__row > .om-toc__link {
 	flex: 1;
 	padding: 0.375rem 1.25rem 0.375rem 2rem;
 	overflow: hidden;
@@ -70,88 +69,94 @@
 		padding-block: 0.125rem;
 		padding-left: 1.75rem;
 	}
-
-	&.or-toc__link--indented {
-		padding-left: 0.25rem;
-	}
 }
 
-.or-toc__sub {
+.om-toc__row > .om-toc__toggle + .om-toc__link {
+	padding-left: 0.25rem;
+}
+
+/* Nested entries, drawn as a tree */
+
+.om-toc__list[data-depth="2"] {
 	position: relative;
 	padding-block: 1px;
 
-	& > li + li {
-		margin-top: 1px;
-	}
-}
+	& > .om-toc__item {
+		position: relative;
 
-.or-toc__subitem {
-	position: relative;
+		&::before {
+			content: "";
+			position: absolute;
+			top: 0;
+			height: calc(100% + 1px);
+			margin-left: 13.5px;
+			border-left: var(--om-dividers-width) solid var(--om-dividers);
 
-	&::before {
-		content: "";
-		position: absolute;
-		top: 0;
-		height: calc(100% + 1px);
-		margin-left: 13.5px;
-		border-left: var(--or-dividers-width) solid var(--or-dividers);
-
-		@media (min-width: 48rem) {
-			margin-left: 11.5px;
-		}
-	}
-}
-
-.or-toc__sublink {
-	display: block;
-	width: 100%;
-	padding: 0.25rem 0.5rem 0.25rem 2.5rem;
-	border-radius: 0.375rem;
-	text-align: left;
-	cursor: pointer;
-
-	@media (min-width: 48rem) {
-		padding-block: 0.125rem;
-		padding-left: 2.375rem;
-	}
-
-	&::after {
-		content: "";
-		position: absolute;
-		top: 50%;
-		left: 0.125rem;
-		height: 83.3333%;
-		margin-left: 12px;
-		border-left: var(--or-dividers-width) solid var(--or-dividers);
-		transform: translate(-50%, -50%);
-
-		@media (min-width: 48rem) {
-			left: 0.25rem;
-			margin-left: 0.5rem;
+			@media (min-width: 48rem) {
+				margin-left: 11.5px;
+			}
 		}
 	}
 
-	&:hover::after {
-		border-color: color-mix(in oklab, var(--or-foreground) 20%, transparent);
-	}
+	& .om-toc__link {
+		display: block;
+		width: 100%;
+		padding: 0.25rem 0.5rem 0.25rem 2.5rem;
+		border-radius: 0.375rem;
+		text-align: left;
+		cursor: pointer;
 
-	&:active::after {
-		border-color: color-mix(in oklab, var(--or-foreground) 40%, transparent);
-	}
-
-	&.or-toc__sublink--active {
-		background-color: var(--or-background-selected);
-
-		&:hover {
-			background-color: var(--or-background-selected);
+		@media (min-width: 48rem) {
+			padding-block: 0.125rem;
+			padding-left: 2.375rem;
 		}
 
 		&::after {
-			border-color: color-mix(in oklab, var(--or-foreground) 80%, transparent);
+			content: "";
+			position: absolute;
+			top: 50%;
+			left: 0.125rem;
+			height: 83.3333%;
+			margin-left: 12px;
+			border-left: var(--om-dividers-width) solid var(--om-dividers);
+			transform: translate(-50%, -50%);
+
+			@media (min-width: 48rem) {
+				left: 0.25rem;
+				margin-left: 0.5rem;
+			}
+		}
+
+		&:hover::after {
+			border-color: color-mix(in oklab, var(--om-foreground) 20%, transparent);
 		}
 
 		&:active::after {
-			border-color: color-mix(in oklab, var(--or-foreground) 40%, transparent);
+			border-color: color-mix(in oklab, var(--om-foreground) 40%, transparent);
+		}
+
+		&[aria-current] {
+			background-color: var(--om-background-selected);
+
+			&:hover {
+				background-color: var(--om-background-selected);
+			}
+
+			&::after {
+				border-color: color-mix(
+					in oklab,
+					var(--om-foreground) 80%,
+					transparent
+				);
+			}
+
+			&:active::after {
+				border-color: color-mix(
+					in oklab,
+					var(--om-foreground) 40%,
+					transparent
+				);
+			}
 		}
 	}
 }

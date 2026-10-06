@@ -64,13 +64,13 @@ With `basePath="/reader"`, the reader keeps internal slugs unchanged (for exampl
 
 ### 3. Customize the styles
 
-The default styles can be customized with CSS variables and the reader's `.or-*` classes. For example, wrap the reader and set theme tokens on that wrapper:
+The default styles can be customized with CSS variables and the reader's `.om-*` classes. For example, wrap the reader and set theme tokens on that wrapper:
 
 ```css
 .my-reader {
-  --or-background: #fff;
-  --or-foreground: #222;
-  --or-dividers: #ddd;
+  --om-background: #fff;
+  --om-foreground: #222;
+  --om-dividers: #ddd;
 }
 ```
 

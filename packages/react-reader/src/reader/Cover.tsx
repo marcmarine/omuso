@@ -10,24 +10,24 @@ export default function Cover() {
 	const { i18n } = useLayout()
 
 	return (
-		<div className="or-cover">
-			<div className="or-cover__header">
-				<p className="or-cover__author">{metadata.author}</p>
-				<h1 className="or-cover__title">{metadata.title}</h1>
+		<div className="om-cover">
+			<div className="om-cover__header">
+				<p className="om-cover__author">{metadata.author}</p>
+				<h1 className="om-cover__title">{metadata.title}</h1>
 				{firstChapterPath && (
 					<Link
 						path={firstChapterPath}
-						className="or-cover__start or-interactive"
+						className="om-cover__start om-interactive"
 					>
 						{i18n.t('startReading')}
 					</Link>
 				)}
 			</div>
-			<div className="or-cover__footer">
+			<div className="om-cover__footer">
 				{metadata.translator && (
-					<div className="or-cover__translator">
+					<div className="om-cover__translator">
 						<p>{i18n.t('translatedBy')}</p>
-						<p className="or-cover__translator-name">{metadata.translator}</p>
+						<p className="om-cover__translator-name">{metadata.translator}</p>
 					</div>
 				)}
 			</div>

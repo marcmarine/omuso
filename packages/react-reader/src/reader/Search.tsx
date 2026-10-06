@@ -17,19 +17,19 @@ export function Search() {
 	}
 
 	return (
-		<search className="or-search">
-			<div className="or-search__header">
+		<search className="om-search">
+			<div className="om-search__header">
 				<SearchInput />
-				<output className="or-search__meta">
+				<output className="om-search__meta">
 					{totalMatches > 0 && (
-						<span className="or-search__meta-text">{`${totalMatches} ${i18n.t('resultsIn')} ${results.length} ${i18n.t(results.length === 1 ? 'chapter' : 'chapters')} ${i18n.t('forWord')} "${query}"`}</span>
+						<span className="om-search__meta-text">{`${totalMatches} ${i18n.t('resultsIn')} ${results.length} ${i18n.t(results.length === 1 ? 'chapter' : 'chapters')} ${i18n.t('forWord')} "${query}"`}</span>
 					)}
 				</output>
 			</div>
-			<ul className="or-search__results">
+			<ul className="om-search__results">
 				{query.length > 0 && results.length === 0 && (
-					<li className="or-search__empty">
-						<p className="or-search__empty-text">
+					<li className="om-search__empty">
+						<p className="om-search__empty-text">
 							{`${i18n.t('noResults')} "${query}"`}
 						</p>
 					</li>
@@ -40,40 +40,37 @@ export function Search() {
 							return (
 								<li
 									key={item.path}
-									className="or-search__result or-interactive"
+									className="om-search__result om-interactive"
 								>
 									<Link
 										path={item.path}
 										query={query}
-										className="or-search__section-link"
+										className="om-search__result-link"
 										onClick={closePanel}
 									>
-										<p className="or-search__section-parent">
+										<p className="om-search__result-context">
 											{item.parentSection?.title || ''}
 										</p>
-										<p className="or-search__section-title">
+										<p className="om-search__result-title">
 											{highlightMatches(item.title, query)}
 										</p>
 									</Link>
 								</li>
 							)
 						return (
-							<li
-								key={item.path}
-								className="or-search__result or-search__result--paragraph"
-							>
-								<div className="or-search__paragraph-body">
+							<li key={item.path} className="om-search__result">
+								<div className="om-search__excerpts">
 									{item.paragraphs.map((paragraph) => (
-										<p key={paragraph.path} className="or-search__paragraph">
+										<p key={paragraph.path} className="om-search__excerpt">
 											{highlightMatches(paragraph.value, query)}
 										</p>
 									))}
 
-									<div className="or-search__paragraph-footer">
+									<div className="om-search__result-footer">
 										<Link
 											path={item.path}
 											query={query}
-											className="or-search__view or-interactive"
+											className="om-search__result-action om-interactive"
 											onClick={closePanel}
 										>
 											View
@@ -81,10 +78,12 @@ export function Search() {
 										<Link
 											path={item.path}
 											query={query}
-											className="or-search__parent"
+											className="om-search__result-source"
 											onClick={closePanel}
 										>
-											<p className="or-search__parent-title">{item.title}</p>
+											<p className="om-search__result-source-title">
+												{item.title}
+											</p>
 										</Link>
 									</div>
 								</div>
@@ -160,7 +159,7 @@ function SearchInput() {
 	}
 
 	return (
-		<div className="or-search__input-wrap">
+		<div className="om-search__field">
 			<svg
 				xmlns="http://www.w3.org/2000/svg"
 				aria-hidden="true"
@@ -169,7 +168,7 @@ function SearchInput() {
 				viewBox="0 0 24 24"
 				strokeWidth={2.2}
 				stroke="currentColor"
-				className="or-search__icon"
+				className="om-search__icon"
 			>
 				<path
 					strokeLinecap="round"
@@ -183,7 +182,7 @@ function SearchInput() {
 				aria-label={i18n.t('searchContent')}
 				value={value}
 				onChange={(e) => setValue(e.target.value)}
-				className="or-search__input"
+				className="om-search__input"
 				placeholder={i18n.t('searchContent')}
 			/>
 			{value && (
@@ -191,7 +190,7 @@ function SearchInput() {
 					onClick={handleReset}
 					type="button"
 					aria-label={i18n.t('clearSearch')}
-					className="or-search__reset or-interactive"
+					className="om-search__reset om-interactive"
 				>
 					<svg
 						xmlns="http://www.w3.org/2000/svg"
@@ -199,7 +198,7 @@ function SearchInput() {
 						focusable="false"
 						viewBox="0 0 20 20"
 						fill="currentColor"
-						className="or-icon"
+						className="om-icon"
 					>
 						<path
 							fillRule="evenodd"

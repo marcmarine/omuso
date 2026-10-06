@@ -92,11 +92,9 @@ export function ResizablePanel({
 		<div
 			ref={panelRef}
 			style={{ width }}
-			className={classes(
-				'or-panel',
-				collapsed && 'or-panel--collapsed',
-				className,
-			)}
+			className={classes('om-resizable', className)}
+			data-side={position}
+			hidden={collapsed}
 		>
 			{children}
 
@@ -104,13 +102,9 @@ export function ResizablePanel({
 				type="button"
 				tabIndex={-1}
 				aria-hidden="true"
-				className={classes(
-					'or-panel__resizer',
-					position === 'right'
-						? 'or-panel__resizer--right'
-						: 'or-panel__resizer--left',
-					isResizing && 'or-panel__resizer--active',
-				)}
+				className="om-resizable__handle"
+				data-side={position}
+				data-resizing={isResizing || undefined}
 				onMouseDown={handleMouseDown}
 			/>
 		</div>

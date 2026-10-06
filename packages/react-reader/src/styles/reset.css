@@ -1,4 +1,4 @@
-.omuso-reader {
+.om-reader {
 	& :where(*, *::before, *::after) {
 		box-sizing: border-box;
 	}

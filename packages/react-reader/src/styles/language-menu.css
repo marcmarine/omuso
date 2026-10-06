@@ -1,0 +1,30 @@
+.om-language-menu__trigger {
+	display: flex;
+	align-items: center;
+	gap: 0.25rem;
+	font-size: 0.875rem;
+	line-height: 1.25rem;
+}
+
+.om-language-menu__option {
+	padding-inline: 0.5rem;
+	border-radius: 0.25rem;
+	color: var(--om-foreground);
+	text-align: left;
+
+	&:hover {
+		background-color: color-mix(in oklab, var(--om-foreground) 5%, transparent);
+	}
+
+	&:active {
+		transform: translateY(1px);
+	}
+
+	&[aria-checked="true"] {
+		background-color: color-mix(
+			in oklab,
+			var(--om-foreground) 10%,
+			transparent
+		);
+	}
+}

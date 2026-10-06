@@ -8,7 +8,7 @@ export default function ThemeToggle() {
 	return (
 		<button
 			type="button"
-			className="or-icon-button or-interactive"
+			className="om-icon-button om-interactive"
 			onClick={toggleTheme}
 			aria-label={isDarkTheme ? 'Switch to light mode' : 'Switch to dark mode'}
 		>
@@ -20,7 +20,7 @@ export default function ThemeToggle() {
 					viewBox="0 0 24 24"
 					xmlns="http://www.w3.org/2000/svg"
 					aria-hidden="true"
-					className="or-icon"
+					className="om-icon"
 				>
 					<path
 						strokeLinecap="round"
@@ -36,7 +36,7 @@ export default function ThemeToggle() {
 					viewBox="0 0 24 24"
 					xmlns="http://www.w3.org/2000/svg"
 					aria-hidden="true"
-					className="or-icon"
+					className="om-icon"
 				>
 					<path
 						strokeLinecap="round"

@@ -1,26 +1,26 @@
-.or-search {
+.om-search {
 	display: block;
 	width: 100%;
 	overflow: auto;
 }
 
-.or-search__header {
+.om-search__header {
 	position: sticky;
 	top: 0;
 	padding: 0.5rem;
-	border-bottom: var(--or-dividers-width) solid var(--or-dividers);
-	background: var(--or-background);
+	border-bottom: var(--om-dividers-width) solid var(--om-dividers);
+	background: var(--om-background);
 	backdrop-filter: blur(40px);
 }
 
-.or-search__meta {
+.om-search__meta {
 	display: block;
 	height: 1.125rem;
 	padding: 0.25rem 0.5rem 0 0.5rem;
 	white-space: nowrap;
 }
 
-.or-search__meta-text {
+.om-search__meta-text {
 	display: block;
 	font-family: "Lucida Grande", Verdana, Helvetica, Arial, sans-serif;
 	font-size: 0.65rem;
@@ -30,55 +30,59 @@
 	overflow: hidden;
 }
 
-.or-search__results {
+.om-search__results {
 	display: flex;
 	flex-direction: column;
 	padding: 0.5rem;
 }
 
-.or-search__result {
+.om-search__result {
 	margin-bottom: 0.5rem;
 	padding: 0.125rem 0.375rem;
 	border-radius: 0.375rem;
 }
 
-.or-search__section-link {
+/* Results matching a section title */
+
+.om-search__result-link {
 	display: block;
 	width: 100%;
 	margin-bottom: 0.125rem;
 	padding-bottom: 0.25rem;
-	border-bottom: var(--or-dividers-width) solid var(--or-dividers);
+	border-bottom: var(--om-dividers-width) solid var(--om-dividers);
 	text-align: left;
 }
 
-.or-search__section-parent {
+.om-search__result-context {
 	font-size: 0.75rem;
 	line-height: 1rem;
 }
 
-.or-search__section-title {
+.om-search__result-title {
 	font-size: 0.875rem;
 	line-height: 1.25rem;
 }
 
-.or-search__paragraph-body {
+/* Results matching paragraphs */
+
+.om-search__excerpts {
 	margin-bottom: 0.25rem;
 	padding-block: 0.125rem;
-	border-bottom: var(--or-dividers-width) solid var(--or-dividers);
+	border-bottom: var(--om-dividers-width) solid var(--om-dividers);
 }
 
-.or-search__input,
-.or-search__paragraph {
+.om-search__input,
+.om-search__excerpt {
 	font-family: "Lucida Grande", Verdana, Helvetica, Arial, sans-serif;
 	font-size: small;
 }
 
-.or-search__paragraph {
+.om-search__excerpt {
 	margin-bottom: 0.75rem;
 	line-height: 1.25rem;
 }
 
-.or-search__paragraph-footer {
+.om-search__result-footer {
 	display: flex;
 	flex-direction: row-reverse;
 	align-items: center;
@@ -87,14 +91,14 @@
 	padding-block: 0.25rem;
 }
 
-.or-search__view {
+.om-search__result-action {
 	padding-inline: 0.375rem;
 	border-radius: 0.5rem;
 	font-size: 0.75rem;
 	line-height: 1rem;
 }
 
-.or-search__parent {
+.om-search__result-source {
 	overflow: hidden;
 	font-size: 0.75rem;
 	line-height: 1rem;
@@ -105,28 +109,30 @@
 	}
 }
 
-.or-search__parent-title {
+.om-search__result-source-title {
 	overflow: hidden;
 	text-overflow: ellipsis;
 	white-space: nowrap;
 }
 
-.or-search__empty {
+.om-search__empty {
 	padding-inline: 0.5rem;
 }
 
-.or-search__empty-text {
+.om-search__empty-text {
 	font-size: 0.875rem;
 	line-height: 1.25rem;
 }
 
-.or-search__input-wrap {
+/* Input */
+
+.om-search__field {
 	position: relative;
 	display: flex;
 	align-items: center;
 }
 
-.or-search__icon {
+.om-search__icon {
 	position: absolute;
 	left: 0.5rem;
 	width: 1rem;
@@ -135,13 +141,13 @@
 	pointer-events: none;
 }
 
-.or-search__input {
+.om-search__input {
 	appearance: none;
 	width: 100%;
 	padding: 0.5rem 0.5rem 0.5rem 1.85rem;
-	border: var(--or-dividers-width) solid var(--or-dividers);
+	border: var(--om-dividers-width) solid var(--om-dividers);
 	border-radius: 0.5rem;
-	background: var(--or-input-background);
+	background: var(--om-input-background);
 	box-shadow:
 		0 1px 3px 0 rgb(0 0 0 / 0.1),
 		0 1px 2px -1px rgb(0 0 0 / 0.1);
@@ -163,15 +169,15 @@
 	}
 }
 
-.or-search__reset {
+.om-search__reset {
 	position: absolute;
 	right: 0.25rem;
 	padding: 0.25rem;
 	border-radius: 0.375rem;
-	color: color-mix(in oklab, var(--or-foreground) 20%, transparent);
+	color: color-mix(in oklab, var(--om-foreground) 20%, transparent);
 
 	&:hover {
-		color: var(--or-foreground);
-		background-color: color-mix(in oklab, var(--or-foreground) 5%, transparent);
+		color: var(--om-foreground);
+		background-color: color-mix(in oklab, var(--om-foreground) 5%, transparent);
 	}
 }

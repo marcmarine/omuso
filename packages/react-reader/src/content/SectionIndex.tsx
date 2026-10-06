@@ -11,13 +11,13 @@ export function SectionIndex({
 }) {
 	return (
 		<nav>
-			<ul className="or-content__index">
+			<ul className="om-section-index">
 				{sections.map((section) => (
-					<li key={section.path} className="or-content__index-item">
+					<li key={section.path} className="om-section-index__item">
 						<Link
 							path={section.path}
 							query={query}
-							className="or-content__section-link"
+							className="om-section-index__link"
 						>
 							{highlightMatches(section.title, query)}
 						</Link>

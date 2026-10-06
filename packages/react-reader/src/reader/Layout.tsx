@@ -5,7 +5,7 @@ import ThemeToggle from '../components/ThemeToggle'
 import TranslationSelector from '../components/TranslationSelector'
 import { useBookContext } from '../providers/BookContextProvider'
 import { useLayout } from '../providers/LayoutProvider'
-import { classes, isWideViewport } from '../utils'
+import { isWideViewport } from '../utils'
 import { COVER_PATH } from '../utils/routes'
 import Navigation from './Navigation'
 
@@ -20,26 +20,26 @@ export default function Layout({ children }: { children: React.ReactNode }) {
 	const [FirstChild, SecondChild, ThirdChild] = childrenArray
 
 	return (
-		<section className="omuso-reader or-layout" aria-label={title}>
-			<div className="or-layout__body">
-				<div className="or-layout__main">
+		<section className="om-reader" aria-label={title}>
+			<div className="om-reader__body">
+				<div className="om-reader__main">
 					<Header title={title} author={author} />
-					<div className="or-layout__stage">
+					<div className="om-reader__stage">
 						<ResizablePanel
 							maxWidth={250}
-							className="or-layout__panel or-layout__panel--left"
+							className="om-sidebar"
 							initialWidth={panel.left.width}
 							collapsed={!panel.left.open}
 							onResizeEnd={panel.left.setPanelWidth}
 						>
 							{FirstChild}
 						</ResizablePanel>
-						<div className="or-layout__page">{SecondChild}</div>
+						<div className="om-reader__page">{SecondChild}</div>
 					</div>
 				</div>
 				<ResizablePanel
 					minWidth={300}
-					className="or-layout__panel or-layout__panel--right"
+					className="om-sidebar"
 					initialWidth={panel.right.width}
 					collapsed={!panel.right.open}
 					onResizeEnd={panel.right.setPanelWidth}
@@ -48,35 +48,33 @@ export default function Layout({ children }: { children: React.ReactNode }) {
 					{ThirdChild}
 				</ResizablePanel>
 			</div>
-			<Footer />
+			<Toolbar />
 		</section>
 	)
 }
 
 function Header({ title, author }: { title: string; author?: string }) {
 	return (
-		<header className="or-layout__header">
-			<Link path={COVER_PATH} className="or-layout__title or-interactive">
+		<header className="om-header">
+			<Link path={COVER_PATH} className="om-header__title om-interactive">
 				{title}
 			</Link>
-			{author && <p className="or-layout__author">{author}</p>}
+			{author && <p className="om-header__author">{author}</p>}
 		</header>
 	)
 }
 
-function Footer() {
+function Toolbar() {
 	return (
-		<footer className="or-layout__footer">
-			<div className="or-layout__bar">
-				<div className="or-layout__group">
-					<TOCToggle />
-					<TranslationSelector />
-				</div>
-				<div className="or-layout__group">
-					<ThemeToggle />
-					<SearchToggle />
-					<Navigation />
-				</div>
+		<footer className="om-toolbar">
+			<div className="om-toolbar__group">
+				<TOCToggle />
+				<TranslationSelector />
+			</div>
+			<div className="om-toolbar__group">
+				<ThemeToggle />
+				<SearchToggle />
+				<Navigation />
 			</div>
 		</footer>
 	)
@@ -112,7 +110,7 @@ function SearchToggle() {
 
 	return (
 		<button
-			className="or-icon-button or-interactive"
+			className="om-icon-button om-interactive"
 			onClick={toggle}
 			type="button"
 			aria-label={i18n.t('search')}
@@ -126,7 +124,7 @@ function SearchToggle() {
 				viewBox="0 0 24 24"
 				strokeWidth={2}
 				stroke="currentColor"
-				className="or-icon"
+				className="om-icon"
 			>
 				<path
 					strokeLinecap="round"
@@ -135,10 +133,8 @@ function SearchToggle() {
 				/>
 			</svg>
 			<span
-				className={classes(
-					'or-icon-button__badge',
-					query && !panel.right.open && 'or-icon-button__badge--visible',
-				)}
+				className="om-icon-button__badge"
+				data-visible={(query && !panel.right.open) || undefined}
 			/>
 			{/* <kbd>⌘K</kbd> */}
 		</button>
@@ -176,13 +172,13 @@ function TOCToggle() {
 		<button
 			type="button"
 			onClick={toggle}
-			className="or-icon-button or-interactive"
+			className="om-icon-button om-interactive"
 			aria-label={i18n.t('tableOfContents')}
 			aria-expanded={panel.left.open}
 		>
 			<svg
 				aria-hidden="true"
-				className="or-icon"
+				className="om-icon"
 				focusable="false"
 				strokeWidth={2}
 				fill="currentColor"

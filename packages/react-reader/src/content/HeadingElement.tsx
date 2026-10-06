@@ -12,17 +12,17 @@ export function HeadingElement({
 	className?: string
 } & React.HTMLAttributes<HTMLHeadingElement>) {
 	const sizeByDepth: Record<number, string> = {
-		1: 'or-heading--1',
-		2: 'or-heading--2',
-		3: 'or-heading--3',
-		4: 'or-heading--4',
+		1: 'om-heading--1',
+		2: 'om-heading--2',
+		3: 'om-heading--3',
+		4: 'om-heading--4',
 	}
 
 	return React.createElement(
 		`h${depth}`,
 		{
 			...rest,
-			className: classes('or-heading', sizeByDepth[depth], className),
+			className: classes('om-heading', sizeByDepth[depth], className),
 		},
 		value,
 	)

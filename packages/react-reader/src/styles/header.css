@@ -1,0 +1,37 @@
+.om-header {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	padding-block: 0.5rem;
+	padding-inline: calc(0.5rem + env(safe-area-inset-left))
+		calc(0.5rem + env(safe-area-inset-right));
+	border-bottom: var(--om-dividers-width) solid var(--om-dividers);
+
+	@media (min-width: 48rem) {
+		justify-content: space-between;
+	}
+}
+
+.om-header__title,
+.om-header__author {
+	font-family: Georgia, Times, serif;
+}
+
+.om-header__title {
+	padding: 0.125rem 0.375rem;
+	border-radius: 0.25rem;
+	font-size: 0.875rem;
+	line-height: 1.25rem;
+}
+
+.om-header__author {
+	display: none;
+	padding-inline: 0.375rem;
+	opacity: 0.8;
+	font-size: small;
+	line-height: 1.25rem;
+
+	@media (min-width: 48rem) {
+		display: block;
+	}
+}

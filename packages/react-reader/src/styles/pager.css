@@ -1,17 +1,17 @@
-.or-nav {
+.om-pager {
 	display: flex;
 	gap: 0.25rem;
 }
 
-.or-nav__button--prev:active > svg {
+.om-pager__prev:active > svg {
 	transform: translate(-1px, 0);
 }
 
-.or-nav__button--next:active > svg {
+.om-pager__next:active > svg {
 	transform: translate(1px, 0);
 }
 
-.or-nav__button--disabled {
+:is(.om-pager__prev, .om-pager__next)[aria-disabled="true"] {
 	pointer-events: none;
 	opacity: 0.6;
 }
