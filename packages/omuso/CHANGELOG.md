@@ -33,6 +33,14 @@
 * Add type declarations for Node projects ([aab472e](https://github.com/marcmarine/omuso/commit/aab472e18c5e7913ed4798b5234e626fbecc52bd))
 * Update slugify to handle numbers in section names ([4b3298f](https://github.com/marcmarine/omuso/commit/4b3298fd8db5f81ed7231cacf8c843d6a0caaed5))
 
+## [1.7.1](https://github.com/marcmarine/omuso/compare/omuso-v1.7.0...omuso-v1.7.1) (2026-10-12)
+
+
+### Bug Fixes
+
+* Order generated slugs before remaining fields ([1dd40e8](https://github.com/marcmarine/omuso/commit/1dd40e8735e34b836801108689a17f5d602872c1))
+* Treat null-like frontmatter values as missing ([32377eb](https://github.com/marcmarine/omuso/commit/32377ebdbd6131396db865d37c4a9e4f9f4d3b29))
+
 ## [1.7.0](https://github.com/marcmarine/omuso/compare/omuso-v1.6.0...omuso-v1.7.0) (2026-10-02)
 
 
