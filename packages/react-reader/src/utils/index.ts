@@ -57,3 +57,23 @@ export function getLanguageNames(languageCode: string) {
 			return languageCode
 	}
 }
+
+/**
+ * Dates are read in UTC: `1919-01-01` is midnight UTC, which is still 1918
+ * in timezones behind UTC. Years before 1 AD are shown with their era.
+ */
+export function formatYear(date: string, language: string): string | null {
+	if (!date) return null
+
+	const parsed = new Date(date)
+	if (Number.isNaN(parsed.getTime())) return null
+
+	const year = parsed.getUTCFullYear()
+	if (year > 0) return String(year)
+
+	return new Intl.DateTimeFormat(language || undefined, {
+		year: 'numeric',
+		era: 'short',
+		timeZone: 'UTC',
+	}).format(parsed)
+}
