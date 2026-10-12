@@ -14,7 +14,7 @@
 
 .om-header__title,
 .om-header__author {
-	font-family: Georgia, Times, serif;
+	font-family: var(--om-font-heading);
 }
 
 .om-header__title {

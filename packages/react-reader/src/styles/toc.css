@@ -52,7 +52,7 @@
 }
 
 .om-toc__link {
-	font-family: Georgia, Times, serif;
+	font-family: var(--om-font-heading);
 }
 
 /* Top-level entries */

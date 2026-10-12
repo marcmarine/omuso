@@ -12,7 +12,7 @@
 }
 
 .om-cover__title {
-	font-family: Georgia, Times, serif;
+	font-family: var(--om-font-heading);
 	margin-bottom: 2rem;
 	font-size: 1.875rem;
 	line-height: 2.25rem;

@@ -71,6 +71,8 @@ The default styles can be customized with CSS variables and the reader's `.om-*`
   --om-background: #fff;
   --om-foreground: #222;
   --om-dividers: #ddd;
+  --om-font-heading: "Iowan Old Style", serif;
+  --om-font-body: system-ui, sans-serif;
 }
 ```
 

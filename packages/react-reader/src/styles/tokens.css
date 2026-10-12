@@ -9,6 +9,9 @@
 
 	--om-dividers-width: 1px;
 	--om-resizer-width: 0.5rem;
+
+	--om-font-heading: Georgia, Times, serif;
+	--om-font-body: "Lucida Grande", Verdana, Helvetica, Arial, sans-serif;
 }
 
 [data-omuso-theme="dark"] {

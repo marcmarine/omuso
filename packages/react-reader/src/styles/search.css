@@ -22,7 +22,7 @@
 
 .om-search__meta-text {
 	display: block;
-	font-family: "Lucida Grande", Verdana, Helvetica, Arial, sans-serif;
+	font-family: var(--om-font-body);
 	font-size: 0.65rem;
 	line-height: 1rem;
 	text-transform: lowercase;
@@ -73,7 +73,7 @@
 
 .om-search__input,
 .om-search__excerpt {
-	font-family: "Lucida Grande", Verdana, Helvetica, Arial, sans-serif;
+	font-family: var(--om-font-body);
 	font-size: small;
 }
 

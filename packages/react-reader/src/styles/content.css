@@ -1,6 +1,6 @@
 .om-content {
 	width: 100%;
-	font-family: "Lucida Grande", Verdana, Helvetica, Arial, sans-serif;
+	font-family: var(--om-font-body);
 	font-size: small;
 	line-height: 1.4;
 }
@@ -22,7 +22,7 @@
 .om-section__link,
 .om-section-index__link {
 	display: inline-block;
-	font-family: Georgia, Times, serif;
+	font-family: var(--om-font-heading);
 	font-size: 1rem;
 	line-height: 1.5rem;
 
@@ -44,7 +44,7 @@
 .om-heading {
 	margin-top: 1.5rem;
 	margin-bottom: 2rem;
-	font-family: Georgia, Times, serif;
+	font-family: var(--om-font-heading);
 	font-weight: bold;
 }
 
