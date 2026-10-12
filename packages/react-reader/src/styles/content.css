@@ -1,7 +1,7 @@
 .om-content {
 	width: 100%;
 	font-family: var(--om-font-body);
-	font-size: small;
+	font-size: var(--om-content-font-size);
 	line-height: 1.4;
 }
 
@@ -19,12 +19,15 @@
 	text-align: center;
 }
 
+.om-section-index__link {
+	font-size: 1.125em;
+}
+
 .om-section__link,
 .om-section-index__link {
 	display: inline-block;
 	font-family: var(--om-font-heading);
-	font-size: 1rem;
-	line-height: 1.5rem;
+	line-height: 1.5;
 
 	&:hover {
 		text-decoration: underline;
@@ -53,30 +56,26 @@
 }
 
 .om-heading--1 {
-	font-size: 1.875rem;
-	line-height: 2.25rem;
+	font-size: 1.875em;
 }
 
 .om-heading--2 {
-	font-size: 1.5rem;
-	line-height: 2rem;
+	font-size: 1.5em;
 }
 
 .om-heading--3 {
-	font-size: 1.25rem;
-	line-height: 1.75rem;
+	font-size: 1.25em;
 }
 
 .om-heading--4 {
-	font-size: 1.125rem;
-	line-height: 1.75rem;
+	font-size: 1.125em;
 }
 
 .om-paragraph {
-	margin-bottom: 0.75rem;
+	margin-bottom: 0.75em;
 	text-align: left;
 
 	&:last-of-type {
-		margin-bottom: 1.5rem;
+		margin-bottom: 1.5em;
 	}
 }

@@ -9,6 +9,7 @@
 	padding-inline: calc(var(--toolbar-padding) + env(safe-area-inset-left))
 		calc(var(--toolbar-padding) + env(safe-area-inset-right));
 	border-top: var(--om-dividers-width) solid var(--om-dividers);
+	font-size: var(--om-ui-font-size);
 
 	@media (min-width: 40rem) {
 		--toolbar-padding: 0.5rem;

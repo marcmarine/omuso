@@ -19,8 +19,7 @@
 
 .om-toc__item {
 	width: 100%;
-	font-size: 0.875rem;
-	line-height: 1.25rem;
+	line-height: calc(1.25 / 0.875);
 	text-align: left;
 }
 

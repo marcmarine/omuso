@@ -73,6 +73,8 @@ The default styles can be customized with CSS variables and the reader's `.om-*`
   --om-dividers: #ddd;
   --om-font-heading: "Iowan Old Style", serif;
   --om-font-body: system-ui, sans-serif;
+  --om-content-font-size: 1.125rem;
+  --om-ui-font-size: 1rem;
 }
 ```
 

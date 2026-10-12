@@ -3,6 +3,7 @@
 	height: 100%;
 	background: var(--om-background);
 	backdrop-filter: blur(40px);
+	font-size: var(--om-ui-font-size);
 
 	@media (max-width: 639px) {
 		min-width: 100vw;

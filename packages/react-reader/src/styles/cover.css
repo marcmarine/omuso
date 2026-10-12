@@ -3,6 +3,7 @@
 	flex-direction: column;
 	justify-content: space-between;
 	height: 100%;
+	font-size: var(--om-content-font-size);
 	text-align: center;
 	background-size: cover;
 }
@@ -14,8 +15,8 @@
 .om-cover__title {
 	font-family: var(--om-font-heading);
 	margin-bottom: 2rem;
-	font-size: 1.875rem;
-	line-height: 2.25rem;
+	font-size: 1.875em;
+	line-height: calc(2.25 / 1.875);
 	font-weight: bold;
 }
 
@@ -37,8 +38,8 @@
 }
 
 .om-cover__translator-name {
-	font-size: 0.875rem;
-	line-height: 1.25rem;
+	font-size: 0.875em;
+	line-height: calc(1.25 / 0.875);
 }
 
 .om-cover__header,

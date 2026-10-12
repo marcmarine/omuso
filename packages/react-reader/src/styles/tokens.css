@@ -11,7 +11,10 @@
 	--om-resizer-width: 0.5rem;
 
 	--om-font-heading: Georgia, Times, serif;
-	--om-font-body: "Lucida Grande", Verdana, Helvetica, Arial, sans-serif;
+	--om-font-body: system-ui, -apple-system, "Segoe UI", sans-serif;
+
+	--om-content-font-size: 1rem;
+	--om-ui-font-size: 0.925rem;
 }
 
 [data-omuso-theme="dark"] {
