@@ -23,12 +23,15 @@ export function createSectionBuilder(
 
 		const parent = getCurrentParent()
 		const index = countSectionsIn(parent)
+		const { type, title, ...rest } = section
 		const locatedSection: Section = {
-			...section,
+			type,
+			title,
+			...(slugStyle !== 'none' && {
+				slug: buildSlug(parent, title, index, slugStyle),
+			}),
+			...rest,
 			path: buildPath(parent, index, '.'),
-		}
-		if (slugStyle !== 'none') {
-			locatedSection.slug = buildSlug(parent, section.title, index, slugStyle)
 		}
 
 		parent.content.push(locatedSection)
@@ -38,12 +41,12 @@ export function createSectionBuilder(
 	function addContent(paragraph: Paragraph): void {
 		const parent = getCurrentParent()
 		const index = parent.content.length
+		const { type, ...rest } = paragraph
 		const locatedParagraph: Paragraph = {
-			...paragraph,
+			type,
+			...(slugStyle !== 'none' && { slug: buildSlug(parent, null, index) }),
+			...rest,
 			path: buildPath(parent, index, '_'),
-		}
-		if (slugStyle !== 'none') {
-			locatedParagraph.slug = buildSlug(parent, null, index)
 		}
 
 		parent.content.push(locatedParagraph)
