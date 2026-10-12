@@ -140,6 +140,8 @@ function splitFrontmatter(text: string): {
 	return { frontmatter, content }
 }
 
+const FRONTMATTER_NULL_VALUES = new Set(['', 'null', '~'])
+
 function parseFrontmatterMetadata(frontmatter: string): Record<string, string> {
 	const metadata: Record<string, string> = {}
 	const lines = frontmatter.split(/\r?\n/)
@@ -151,7 +153,7 @@ function parseFrontmatterMetadata(frontmatter: string): Record<string, string> {
 		const key = line.slice(0, separatorIndex).trim()
 		const value = line.slice(separatorIndex + 1).trim()
 
-		if (key) {
+		if (key && !FRONTMATTER_NULL_VALUES.has(value.toLowerCase())) {
 			metadata[key] = value
 		}
 	}

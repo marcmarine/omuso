@@ -47,6 +47,17 @@ describe('parser', () => {
 		expect(root.language).toBe('ca')
 	})
 
+	test('treats null-like frontmatter values as missing', () => {
+		const root = parse(
+			'---\ntitle: Libro\nauthor: ~\ntranslator: null\ndate: NULL\n---\n\nUno.',
+		)
+
+		expect(root.title).toBe('Libro')
+		expect(root.author).toBeUndefined()
+		expect(root.translator).toBeUndefined()
+		expect(root.date).toBeUndefined()
+	})
+
 	test('keeps the frontmatter title over level-1 headings', () => {
 		const root = parse(
 			'---\ntitle: Libro\n---\n\n# Cap 1\n\nUno.\n\n# Cap 2\n\nDos.',
