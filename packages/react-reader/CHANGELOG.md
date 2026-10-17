@@ -1,5 +1,14 @@
 # Changelog
 
+## [0.3.2](https://github.com/marcmarine/omuso/compare/react-reader-v0.3.1...react-reader-v0.3.2) (2026-10-12)
+
+
+### Bug Fixes
+
+* Add configurable content and UI font sizes ([9813520](https://github.com/marcmarine/omuso/commit/9813520b2f56741bd1cfcaf370d9ab7ddf51afbb))
+* Add customizable heading and body fonts ([ab93dc5](https://github.com/marcmarine/omuso/commit/ab93dc58c0d530c962e967d6387208ccf4c7830c))
+* Remove start reading link from cover ([298a7c1](https://github.com/marcmarine/omuso/commit/298a7c1a37aead3957dcdd2e77d6f71facb03584))
+
 ## [0.3.1](https://github.com/marcmarine/omuso/compare/react-reader-v0.3.0...react-reader-v0.3.1) (2026-10-06)
 
 
