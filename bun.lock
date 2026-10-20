@@ -30,7 +30,7 @@
     },
     "packages/omuso": {
       "name": "omuso",
-      "version": "1.6.0",
+      "version": "1.7.0",
       "devDependencies": {
         "dts-bundle-generator": "^9.5.1",
         "typescript": "^5",
@@ -38,17 +38,16 @@
     },
     "packages/react-reader": {
       "name": "@omuso/react-reader",
-      "version": "0.2.4",
-      "dependencies": {
-        "omuso": "^1.6.0",
-      },
+      "version": "0.3.1",
       "devDependencies": {
         "@types/react": "^19",
+        "omuso": "workspace:*",
         "react": "^19.3.0",
         "react-dom": "^19.3.0",
         "typescript": "^5",
       },
       "peerDependencies": {
+        "omuso": "^1.7.0",
         "react": "^18 || ^19",
       },
     },

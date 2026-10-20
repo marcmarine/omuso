@@ -24,16 +24,15 @@
 		"build:types": "tsc --emitDeclarationOnly",
 		"build": "bun build ./src/index.ts --outdir ./dist --target browser --minify --packages external --footer=\"import './index.css';\" && bun run build:types"
 	},
-	"dependencies": {
-		"omuso": "^1.7.0"
-	},
 	"devDependencies": {
 		"@types/react": "^19",
+		"omuso": "workspace:*",
 		"react": "^19.3.0",
 		"react-dom": "^19.3.0",
 		"typescript": "^5"
 	},
 	"peerDependencies": {
+		"omuso": "^1.7.0",
 		"react": "^18 || ^19"
 	},
 	"files": [

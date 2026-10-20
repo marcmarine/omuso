@@ -19,6 +19,14 @@ React components and hooks for building reading experiences on top of [OMUSO](..
 - **Keyboard shortcuts**: quick toggles for navigation panels (`Cmd/Ctrl + M` for TOC, `Cmd/Ctrl + K` for search/focus).
 - **Composable API**: besides `Reader`, the package exports lower-level building blocks (`ReaderContent`, `ReaderContentHeader`, `ReaderHeading`, `ReaderParagraph` , `ReaderLink`) for custom layouts.
 
+## Installation
+
+`omuso` and `react` are peer dependencies — install them alongside the reader:
+
+```
+npm install @omuso/react-reader omuso
+```
+
 ## Setup
 
 ### 1. Create a `BookContext`
