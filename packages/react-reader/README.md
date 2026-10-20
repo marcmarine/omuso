@@ -44,6 +44,8 @@ export default createContext().init({
 
 The module must export a `BookContext` created via `createContext().init({...})` from the `omuso` package.
 
+Use [BCP 47](https://www.rfc-editor.org/info/bcp47) language codes as the keys of `markdowns` (`en`, `ca`, `pt-BR`, `grc`…). The language switcher shows each language by its own name, worked out from the key with `Intl.DisplayNames` (`ca` → `Català`, `pt-BR` → `Português (Brasil)`).
+
 > [!NOTE]
 > How markdown is imported as text depends on your bundler: Bun uses `with { type: "text" }` import attributes; Vite needs a `?raw` suffix (`import en from './content/en.md?raw'`); and so on.
 

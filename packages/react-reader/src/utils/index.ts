@@ -41,20 +41,34 @@ export const splitContent = (items: omuso.Root['content']) => {
 	return { paragraphs, sections }
 }
 
+/**
+ * Languages the runtime has no locale data for: `Intl.DisplayNames` would
+ * name them in the default locale (`grc` → `Ancient Greek`) instead of in
+ * themselves.
+ */
+const LANGUAGE_NAME_OVERRIDES: Record<string, string> = {
+	grc: 'ελληνικά',
+}
+
+/**
+ * Names a language in itself (`fr` → `Français`) via `Intl.DisplayNames`.
+ * Falls back to the raw code when it isn't a valid BCP 47 tag or the runtime
+ * has no name for it.
+ */
 export function getLanguageNames(languageCode: string) {
-	switch (languageCode) {
-		case 'en':
-			return 'English'
-		case 'es':
-			return 'Español'
-		case 'ca':
-			return 'Català'
-		case 'ru':
-			return 'русский'
-		case 'grc':
-			return 'ελληνικά'
-		default:
-			return languageCode
+	const override = LANGUAGE_NAME_OVERRIDES[languageCode]
+	if (override) return override
+
+	try {
+		const name = new Intl.DisplayNames([languageCode], {
+			type: 'language',
+			fallback: 'code',
+		}).of(languageCode)
+		if (!name || name === languageCode) return languageCode
+
+		return name.charAt(0).toLocaleUpperCase(languageCode) + name.slice(1)
+	} catch {
+		return languageCode
 	}
 }
 
