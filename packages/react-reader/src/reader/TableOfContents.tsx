@@ -4,7 +4,7 @@ import { Link } from '../components/Link'
 import useLocalStorage from '../hooks/useLocalStorage'
 import { useBookContext } from '../providers/BookContextProvider'
 import { useLayout } from '../providers/LayoutProvider'
-import { isWideViewport } from '../utils'
+import { classes, isWideViewport } from '../utils'
 
 function BookTableOfContents() {
 	const { panel, maxDepth, omitSections, i18n } = useLayout()
@@ -57,10 +57,13 @@ function BookTableOfContents() {
 					return (
 						<li key={section.path} className="om-toc__item">
 							<div
-								className="om-toc__row om-interactive"
-								data-active={
-									(hasPath && isAtSection && !isCollapsed) || undefined
-								}
+								className={classes(
+									'om-toc__row om-interactive',
+									hasPath &&
+										isAtSection &&
+										!isCollapsed &&
+										'om-interactive--selected',
+								)}
 							>
 								{shouldShowChildren && (
 									<button

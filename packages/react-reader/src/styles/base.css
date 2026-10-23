@@ -1,4 +1,4 @@
-.om-interactive {
+.om-interactive:where(:not(.om-interactive--selected, [aria-current])) {
 	&:active:not(:has(.om-interactive:active)) {
 		background-color: color-mix(in oklab, var(--om-foreground) 8%, transparent);
 		transform: translateY(1px);

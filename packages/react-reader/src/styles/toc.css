@@ -27,12 +27,8 @@
 	display: flex;
 	border-radius: 0.375rem;
 
-	&[data-active] {
+	&.om-interactive--selected {
 		background-color: var(--om-background-selected);
-
-		&:hover {
-			background-color: var(--om-background-selected);
-		}
 	}
 }
 
@@ -41,7 +37,7 @@
 	border-radius: 0.375rem;
 }
 
-.om-toc__row[data-active] > .om-toc__toggle {
+.om-toc__row.om-interactive--selected > .om-toc__toggle {
 	border-start-end-radius: 0;
 	border-end-end-radius: 0;
 }
@@ -136,10 +132,6 @@
 
 		&[aria-current] {
 			background-color: var(--om-background-selected);
-
-			&:hover {
-				background-color: var(--om-background-selected);
-			}
 
 			&::after {
 				border-color: color-mix(
