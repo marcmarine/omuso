@@ -15,7 +15,7 @@
 .om-content__body {
 	max-width: 36rem;
 	margin-inline: auto;
-	padding: 1rem 2rem;
+	padding: 1rem;
 	text-align: center;
 }
 
@@ -73,6 +73,7 @@
 .om-paragraph {
 	margin-bottom: 0.75em;
 	text-align: left;
+	font-size: 0.87em;
 
 	&:last-of-type {
 		margin-bottom: 1.5em;
