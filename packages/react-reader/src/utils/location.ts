@@ -107,21 +107,33 @@ export function resolveReaderLocation(
 	return undefined
 }
 
-export function getInitialState(
+/**
+ * The reader route for the initial location, or `undefined` when it lies
+ * outside `basePath`.
+ */
+function getInitialRoute(
+	externalLocation: Partial<Location> | undefined,
+	basePath: string,
+): RouteState | undefined {
+	const publicRoute = parseRoute(externalLocation)
+	const routePathname = stripBasePath(publicRoute.pathname, basePath)
+
+	return routePathname === undefined
+		? undefined
+		: { pathname: routePathname, search: publicRoute.search }
+}
+
+export function getInitialLocation(
 	externalLocation: Partial<Location> | undefined,
 	basePath: string,
 	defaultLanguage: string | undefined,
 	availableLanguages: string[],
 	manifestMap: Record<string, Manifest>,
-): { location: ReaderLocation; searchQuery: string | undefined } {
-	const publicRoute = parseRoute(externalLocation)
-	const routePathname = stripBasePath(publicRoute.pathname, basePath)
-	const route =
-		routePathname === undefined
-			? undefined
-			: { pathname: routePathname, search: publicRoute.search }
+): ReaderLocation {
+	const route = getInitialRoute(externalLocation, basePath)
 	const storedLocation = readStoredLocation(defaultLanguage, availableLanguages)
-	const location =
+
+	return (
 		(route
 			? resolveReaderLocation(
 					route,
@@ -130,9 +142,13 @@ export function getInitialState(
 					manifestMap,
 				)
 			: undefined) ?? storedLocation
+	)
+}
 
-	return {
-		location,
-		searchQuery: route ? getSearchQuery(route) : undefined,
-	}
+export function getInitialSearchQuery(
+	externalLocation: Partial<Location> | undefined,
+	basePath: string,
+): string | undefined {
+	const route = getInitialRoute(externalLocation, basePath)
+	return route ? getSearchQuery(route) : undefined
 }

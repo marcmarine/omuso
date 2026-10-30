@@ -3,7 +3,8 @@ import React, { useMemo } from 'react'
 import useReaderSession from '../hooks/useReaderSession'
 import { resolveLanguage } from '../utils'
 import {
-	getInitialState,
+	getInitialLocation,
+	getInitialSearchQuery,
 	type ReaderLocation,
 	resolveReaderLocation,
 	writeStoredLocation,
@@ -61,8 +62,8 @@ export function BookContextProvider({
 		[basePath],
 	)
 
-	const [initialState] = React.useState(() =>
-		getInitialState(
+	const [location, setLocationState] = React.useState<ReaderLocation>(() =>
+		getInitialLocation(
 			externalLocation,
 			normalizedBasePath,
 			defaultLanguage,
@@ -70,12 +71,8 @@ export function BookContextProvider({
 			manifestMap,
 		),
 	)
-
-	const [location, setLocationState] = React.useState<ReaderLocation>(
-		initialState.location,
-	)
-	const [searchQuery, setSearchQuery] = React.useState<string | undefined>(
-		initialState.searchQuery,
+	const [searchQuery, setSearchQuery] = React.useState<string | undefined>(() =>
+		getInitialSearchQuery(externalLocation, normalizedBasePath),
 	)
 
 	const setLocation = React.useCallback((nextLocation: ReaderLocation) => {
