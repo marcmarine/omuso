@@ -1,3 +1,5 @@
+import { resolveLanguage } from '../utils'
+
 const translations = {
 	en: {
 		startReading: 'Start reading',
@@ -75,7 +77,14 @@ const translations = {
 
 export type TranslationKey = keyof typeof translations.en
 
+type TranslationLanguage = keyof typeof translations
+
+const translationLanguages = Object.keys(translations)
+
 export function t(key: TranslationKey, language: string): string {
-	const langTranslations = translations[language as keyof typeof translations]
-	return langTranslations?.[key] || translations.en[key] || key
+	const resolved = resolveLanguage(
+		[language],
+		translationLanguages,
+	) as TranslationLanguage
+	return translations[resolved][key] || translations.en[key] || key
 }

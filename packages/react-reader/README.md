@@ -62,7 +62,9 @@ export function App() {
 }
 ```
 
-`language` is the default language: it is used when the URL or the stored location don't specify one, or specify one that isn't in `markdowns`.
+`language` is the default language: it is used when the URL or the stored location don't specify one, or specify one that isn't in `markdowns`. A language missing from `markdowns` falls back to its base language (`pt-BR` → `pt`), then to `en`, and finally to the first language in `markdowns`.
+
+`language` also sets the language of the UI labels, with the same fallback. Switching the book's language from the language menu doesn't change it.
 
 If your app is mounted under a URL prefix, pass `basePath` so links and history updates stay inside that prefix:
 

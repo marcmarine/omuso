@@ -72,6 +72,29 @@ export function getLanguageNames(languageCode: string) {
 	}
 }
 
+const FALLBACK_LANGUAGE = 'en'
+
+/**
+ * Picks the first candidate in `available`, trying each one as given and
+ * then by its base language (`pt-BR` → `pt`). Falls back to `en` and then to
+ * the first available language, so the result always exists.
+ */
+export function resolveLanguage(
+	candidates: Array<string | undefined>,
+	available: ReadonlyArray<string>,
+): string {
+	for (const candidate of candidates) {
+		if (!candidate) continue
+		if (available.includes(candidate)) return candidate
+
+		const [base] = candidate.split('-')
+		if (base && available.includes(base)) return base
+	}
+
+	if (available.includes(FALLBACK_LANGUAGE)) return FALLBACK_LANGUAGE
+	return available[0] ?? FALLBACK_LANGUAGE
+}
+
 /**
  * Dates are read in UTC: `1919-01-01` is midnight UTC, which is still 1918
  * in timezones behind UTC. Years before 1 AD are shown with their era.

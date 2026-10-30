@@ -1,5 +1,6 @@
 import type { BookContext, Manifest, Session } from 'omuso'
 import React, { useMemo } from 'react'
+import { resolveLanguage } from '../utils'
 import {
 	COVER_PATH,
 	normalizeBasePath,
@@ -9,7 +10,6 @@ import {
 } from '../utils/routes'
 import { storageKey } from '../utils/storage'
 
-const DEFAULT_LANGUAGE = 'en'
 const LOCATION_STORAGE_KEY = storageKey('location')
 
 type RouteState = {
@@ -91,9 +91,12 @@ function getSearchQuery(route: RouteState): string | undefined {
 	return new URLSearchParams(route.search).get('query') || undefined
 }
 
-function readStoredLocation(defaultLanguage?: string): ReaderLocation {
+function readStoredLocation(
+	defaultLanguage: string | undefined,
+	availableLanguages: string[],
+): ReaderLocation {
 	const fallback = {
-		language: defaultLanguage || DEFAULT_LANGUAGE,
+		language: resolveLanguage([defaultLanguage], availableLanguages),
 		path: COVER_PATH,
 	}
 
@@ -108,7 +111,13 @@ function readStoredLocation(defaultLanguage?: string): ReaderLocation {
 			typeof parsed?.language === 'string' &&
 			typeof parsed?.path === 'string'
 		) {
-			return { language: parsed.language, path: parsed.path }
+			return {
+				language: resolveLanguage(
+					[parsed.language, defaultLanguage],
+					availableLanguages,
+				),
+				path: parsed.path,
+			}
 		}
 	} catch {
 		// ignore malformed storage
@@ -186,7 +195,7 @@ function getInitialState(
 		routePathname === undefined
 			? undefined
 			: { pathname: routePathname, search: publicRoute.search }
-	const storedLocation = readStoredLocation(defaultLanguage)
+	const storedLocation = readStoredLocation(defaultLanguage, availableLanguages)
 	const location =
 		(route
 			? resolveReaderLocation(
@@ -253,12 +262,11 @@ export function BookContextProvider({
 		})
 	}, [])
 
-	const validatedLanguage = useMemo(() => {
-		if (availableLanguages.includes(location.language)) {
-			return location.language
-		}
-		return defaultLanguage || DEFAULT_LANGUAGE
-	}, [location.language, availableLanguages, defaultLanguage])
+	const validatedLanguage = useMemo(
+		() =>
+			resolveLanguage([location.language, defaultLanguage], availableLanguages),
+		[location.language, availableLanguages, defaultLanguage],
+	)
 
 	const manifest = React.useMemo(
 		() => context.manifest(validatedLanguage) as Manifest,
