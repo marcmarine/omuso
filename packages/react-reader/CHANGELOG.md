@@ -1,5 +1,34 @@
 # Changelog
 
+## [0.4.0](https://github.com/marcmarine/omuso/compare/react-reader-v0.3.1...react-reader-v0.4.0) (2026-10-30)
+
+
+### Features
+
+* Accept config in createContext and deprecate init ([f70dd1c](https://github.com/marcmarine/omuso/commit/f70dd1c9a51e838727d375ff985c1a4e56da276e))
+* Add search filter prop to reader ([b6d7a7a](https://github.com/marcmarine/omuso/commit/b6d7a7ab6750c32fbf1cfbf0529fc91dc71c9012))
+
+
+### Bug Fixes
+
+* Add configurable content and UI font sizes ([9813520](https://github.com/marcmarine/omuso/commit/9813520b2f56741bd1cfcaf370d9ab7ddf51afbb))
+* Add customizable heading and body fonts ([ab93dc5](https://github.com/marcmarine/omuso/commit/ab93dc58c0d530c962e967d6387208ccf4c7830c))
+* Add language fallback resolution ([2fb6fd0](https://github.com/marcmarine/omuso/commit/2fb6fd048d124297a238d7f1f0f8e9d432bdd42b))
+* Adjust reader content spacing and font size ([a5aa4fa](https://github.com/marcmarine/omuso/commit/a5aa4fa1691dbc748df88bd436bbae6f3f3859d9))
+* Align reader depth with section path levels ([2350059](https://github.com/marcmarine/omuso/commit/23500598707fe6d41d60923688b15e59046f9df2))
+* Display publication year on book covers ([5b6c9e6](https://github.com/marcmarine/omuso/commit/5b6c9e6a663432ab125a5fbaf8770a75abe6e953))
+* Make omuso a peer dependency ([5c7f244](https://github.com/marcmarine/omuso/commit/5c7f2445f29641fceecc6f21608d045f3504bd1c))
+* Name languages with Intl.DisplayNames ([0ff449a](https://github.com/marcmarine/omuso/commit/0ff449a1e1948733d99dd28bc1d5c9edaa4f491f))
+* Refine reader typography styles ([4059c50](https://github.com/marcmarine/omuso/commit/4059c502b0e125304f1367d0a30f0f47ad5a708f))
+* Remove bold font from content styles ([b912194](https://github.com/marcmarine/omuso/commit/b9121943b5552580f64588ac8152694403dbd0e1))
+* Remove links from inline section headings ([8cd3f0a](https://github.com/marcmarine/omuso/commit/8cd3f0a7e819337d7c9a514786a62375536aa8d2))
+* Remove omitSections prop form reader ([cca51f7](https://github.com/marcmarine/omuso/commit/cca51f7c47e476729fc7767d5c923ed573b1b023))
+* Remove start reading link from cover ([298a7c1](https://github.com/marcmarine/omuso/commit/298a7c1a37aead3957dcdd2e77d6f71facb03584))
+* Rename maxDepth to maxPageDepth ([dcd9467](https://github.com/marcmarine/omuso/commit/dcd946753fa2654f6f2ad82be7e48fba682d7394))
+* Show second-level table of contents entries ([58ed645](https://github.com/marcmarine/omuso/commit/58ed6454cb323fed317d2926747286b49a0127ed))
+* Skip hover on selected TOC entries ([ff87eb3](https://github.com/marcmarine/omuso/commit/ff87eb3b4830ed8ac8965d4858d48ec01416cd1a))
+* Use Times New Roman for headings ([2195570](https://github.com/marcmarine/omuso/commit/21955700ad1b1ad047e80e08a2eb3b30e2732552))
+
 ## [0.3.1](https://github.com/marcmarine/omuso/compare/react-reader-v0.3.0...react-reader-v0.3.1) (2026-10-06)
 
 
