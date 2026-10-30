@@ -1,5 +1,6 @@
 import type { BookContext, Manifest, SearchFilter, Session } from 'omuso'
 import React, { useMemo } from 'react'
+import useReaderSession from '../hooks/useReaderSession'
 import { resolveLanguage } from '../utils'
 import {
 	getInitialState,
@@ -95,26 +96,12 @@ export function BookContextProvider({
 		[location.language, availableLanguages, defaultLanguage],
 	)
 
-	const manifest = React.useMemo(
-		() => context.manifest(validatedLanguage) as Manifest,
-		[context, validatedLanguage],
-	)
-	// Search and navigation are memoized apart, so moving between sections
-	// does not repeat the search.
-	const searchState = React.useMemo(
-		() =>
-			context.search(searchQuery || '', validatedLanguage, {
-				filter: searchFilter,
-			}),
-		[context, searchQuery, validatedLanguage, searchFilter],
-	)
-	const navigation = React.useMemo(
-		() => context.session(location.path, '', validatedLanguage),
-		[context, location.path, validatedLanguage],
-	)
-	const session = React.useMemo<Session>(
-		() => ({ ...navigation, search: searchState }),
-		[navigation, searchState],
+	const { manifest, session } = useReaderSession(
+		context,
+		location.path,
+		searchQuery,
+		validatedLanguage,
+		searchFilter,
 	)
 
 	const syncFromRoute = React.useCallback(
