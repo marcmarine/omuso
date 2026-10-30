@@ -1,4 +1,4 @@
-export type { BookContext } from 'omuso'
+export type { BookContext, SearchFilter } from 'omuso'
 export { Link as ReaderLink } from './components/Link'
 export { HeadingElement as ReaderHeading } from './content/HeadingElement'
 export { ParagraphElement as ReaderParagraph } from './content/ParagraphElement'

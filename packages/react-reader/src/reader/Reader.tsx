@@ -1,4 +1,4 @@
-import type { BookContext } from 'omuso'
+import type { BookContext, SearchFilter } from 'omuso'
 import { useEffect } from 'react'
 import {
 	BookContextProvider,
@@ -29,6 +29,13 @@ export interface ReaderProps {
 	maxPageDepth?: number
 	contentComponent?: React.ComponentType<{ context: Context }>
 	omitSections?: Array<string>
+	/**
+	 * Decides which sections are searched (see `SearchFilter` in `omuso`).
+	 * It replaces the exclusion of the context's `omitPaths` in search only.
+	 * Memoize it (e.g. with `useCallback`), or the search reruns on every
+	 * render.
+	 */
+	searchFilter?: SearchFilter
 	/**
 	 * The `BookContext` backing this reader, created via
 	 * `createContext().init({...})` from the `omuso` package.
@@ -81,6 +88,7 @@ function withProviders<P extends ReaderProps>(
 				context={props.context}
 				location={props.location}
 				basePath={props.basePath}
+				searchFilter={props.searchFilter}
 			>
 				<RoutingProvider linkComponent={props.linkComponent}>
 					<LayoutProvider

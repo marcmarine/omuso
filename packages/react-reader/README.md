@@ -74,6 +74,19 @@ If your app is mounted under a URL prefix, pass `basePath` so links and history 
 
 With `basePath="/reader"`, the reader keeps internal slugs unchanged (for example `/book/ch1`) but exposes them in the browser as `/reader/book/ch1`.
 
+To decide at runtime which sections the search covers, pass `searchFilter` (see `SearchFilter` in [`omuso`](../omuso#ctxsearchquery---lang-string-options-searchoptions)). It replaces the exclusion of the context's `omitPaths` in search only; the table of contents and navigation are unchanged. Memoize it, since the search reruns whenever the filter changes:
+
+```tsx
+const searchFilter = useCallback(
+  (path: string, omitted: boolean) => !omitted || visible.has(path),
+  [visible],
+)
+
+<Reader context={omuso} language="en" searchFilter={searchFilter} />
+```
+
+The search is memoized apart from navigation, so moving between sections does not repeat it.
+
 ### 3. Customize the styles
 
 The default styles can be customized with CSS variables and the reader's `.om-*` classes. For example, wrap the reader and set theme tokens on that wrapper:

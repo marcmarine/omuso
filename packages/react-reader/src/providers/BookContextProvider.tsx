@@ -1,4 +1,4 @@
-import type { BookContext, Manifest, Session } from 'omuso'
+import type { BookContext, Manifest, SearchFilter, Session } from 'omuso'
 import React, { useMemo } from 'react'
 import { resolveLanguage } from '../utils'
 import {
@@ -218,12 +218,14 @@ export function BookContextProvider({
 	context,
 	location: externalLocation,
 	basePath,
+	searchFilter,
 }: {
 	children: React.ReactNode
 	defaultLanguage?: string
 	context: BookContext
 	location?: Partial<Location>
 	basePath?: string
+	searchFilter?: SearchFilter
 }) {
 	const manifests = React.useMemo(() => context.manifests, [context])
 	const manifestMap = manifests as Record<string, Manifest>
@@ -272,9 +274,22 @@ export function BookContextProvider({
 		() => context.manifest(validatedLanguage) as Manifest,
 		[context, validatedLanguage],
 	)
-	const session = React.useMemo(
-		() => context.session(location.path, searchQuery || '', validatedLanguage),
-		[context, location.path, validatedLanguage, searchQuery],
+	// Search and navigation are memoized apart, so moving between sections
+	// does not repeat the search.
+	const searchState = React.useMemo(
+		() =>
+			context.search(searchQuery || '', validatedLanguage, {
+				filter: searchFilter,
+			}),
+		[context, searchQuery, validatedLanguage, searchFilter],
+	)
+	const navigation = React.useMemo(
+		() => context.session(location.path, '', validatedLanguage),
+		[context, location.path, validatedLanguage],
+	)
+	const session = React.useMemo<Session>(
+		() => ({ ...navigation, search: searchState }),
+		[navigation, searchState],
 	)
 
 	const syncFromRoute = React.useCallback(
