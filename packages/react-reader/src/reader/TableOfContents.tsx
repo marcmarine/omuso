@@ -52,9 +52,9 @@ function BookTableOfContents() {
 					const hasPath = breadcrumbs.length > 0
 					const isAtSection = breadcrumbs[0]?.path === section.path
 					const isCollapsed = breadcrumbs.length >= 2 && isExpanded
-					// Second-level entries are listed only while they are pages
-					// with an index of their own, i.e. not rendered inline.
-					const shouldShowChildren = hasChildren && maxPageDepth > 2
+					// Second-level entries are listed whenever they are pages,
+					// i.e. not rendered inline within their chapter.
+					const shouldShowChildren = hasChildren && maxPageDepth > 1
 
 					return (
 						<li key={section.path} className="om-toc__item">
