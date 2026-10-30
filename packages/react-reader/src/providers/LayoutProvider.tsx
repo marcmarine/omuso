@@ -14,14 +14,12 @@ type LayoutContextType = {
 	i18n: {
 		t: (_key: TranslationKey) => string
 	}
-	omitSections?: Array<string>
 }
 
 interface LayoutProviderProps {
 	children: React.ReactNode
 	language?: string
 	maxPageDepth?: number
-	omitSections?: Array<string>
 }
 
 const LayoutContext = createContext<LayoutContextType>({
@@ -38,7 +36,6 @@ export function LayoutProvider({
 	children,
 	language = 'en',
 	maxPageDepth = Infinity,
-	omitSections,
 }: LayoutProviderProps) {
 	const left = usePanelState('leftPanel', false, 250)
 	const right = usePanelState('rightPanel', false, 300)
@@ -52,8 +49,8 @@ export function LayoutProvider({
 	)
 
 	const value = useMemo(
-		() => ({ panel, i18n, maxPageDepth, omitSections }),
-		[panel, i18n, maxPageDepth, omitSections],
+		() => ({ panel, i18n, maxPageDepth }),
+		[panel, i18n, maxPageDepth],
 	)
 
 	return (

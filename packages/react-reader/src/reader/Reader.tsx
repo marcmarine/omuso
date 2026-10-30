@@ -28,7 +28,6 @@ export interface ReaderProps {
 	 */
 	maxPageDepth?: number
 	contentComponent?: React.ComponentType<{ context: Context }>
-	omitSections?: Array<string>
 	/**
 	 * Decides which sections are searched (see `SearchFilter` in `omuso`).
 	 * It replaces the exclusion of the context's `omitPaths` in search only.
@@ -94,7 +93,6 @@ function withProviders<P extends ReaderProps>(
 					<LayoutProvider
 						language={props.language}
 						maxPageDepth={props.maxPageDepth}
-						omitSections={props.omitSections}
 					>
 						<ThemeProvider>
 							<WrappedComponent {...props} />

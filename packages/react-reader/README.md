@@ -13,7 +13,7 @@ React components and hooks for building reading experiences on top of [OMUSO](..
 - **Search with URL persistence**: search queries are reflected in `?query=...`, preserved across links, and highlighted in titles and paragraph excerpts.
 - **Multi-language reading flow**: built-in language switcher (when multiple manifests are available) with translation-aware navigation and localized UI labels.
 - **Configurable content depth**: `maxPageDepth` sets the deepest section level shown as a page (counted in path levels, like `maxNavigationDepth` in `omuso`); deeper sections are rendered inline within their page, and shallower ones list their subsections as a compact index.
-- **Section-level curation**: hide specific entries from the table of contents with `omitSections`.
+- **Section-level curation**: sections left out with `omitPaths` in the `omuso` context are hidden from the table of contents, search and prev/next navigation.
 - **Resizable side panels**: TOC and search panels can be resized and toggled, with panel width/open state persisted in local storage.
 - **Theme support**: built-in light/dark mode toggle with `prefers-color-scheme` initialization and persisted theme preference.
 - **Keyboard shortcuts**: quick toggles for navigation panels (`Cmd/Ctrl + M` for TOC, `Cmd/Ctrl + K` for search/focus).

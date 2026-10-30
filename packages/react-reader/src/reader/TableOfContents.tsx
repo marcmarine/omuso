@@ -1,4 +1,3 @@
-import type * as omuso from 'omuso'
 import { memo } from 'react'
 import { Link } from '../components/Link'
 import useLocalStorage from '../hooks/useLocalStorage'
@@ -7,7 +6,7 @@ import { useLayout } from '../providers/LayoutProvider'
 import { classes, isWideViewport } from '../utils'
 
 function BookTableOfContents() {
-	const { panel, maxPageDepth, omitSections, i18n } = useLayout()
+	const { panel, maxPageDepth, i18n } = useLayout()
 	const { manifest, session } = useBookContext()
 	const { tableOfContents } = manifest
 	const { breadcrumbs, search, currentSection } = session
@@ -27,9 +26,6 @@ function BookTableOfContents() {
 		panel.left.toggle()
 	}
 
-	const withOmittedSections = (sections: omuso.Section[]) =>
-		sections.filter((section) => !omitSections?.includes(section.path))
-
 	// The current section is the page; its ancestors are marked as current
 	// within their own list.
 	const ariaCurrent = (path: string) => {
@@ -41,12 +37,10 @@ function BookTableOfContents() {
 	return (
 		<nav className="om-toc" aria-label={i18n.t('tableOfContents')}>
 			<ul className="om-toc__list" data-depth={1}>
-				{withOmittedSections(tableOfContents).map((section) => {
-					const hasChildren =
-						section.content.length > 0 &&
-						withOmittedSections(
-							section.content.filter((item) => item.type === 'section'),
-						).some((item) => item.type === 'section')
+				{tableOfContents.map((section) => {
+					const hasChildren = section.content.some(
+						(item) => item.type === 'section',
+					)
 					const isExpanded = expandedSections[section.path]
 
 					const hasPath = breadcrumbs.length > 0
@@ -105,23 +99,23 @@ function BookTableOfContents() {
 							</div>
 							{shouldShowChildren && isExpanded && (
 								<ul className="om-toc__list" data-depth={2}>
-									{withOmittedSections(
-										section.content.filter((item) => item.type === 'section'),
-									).map((item) => {
-										return (
-											<li key={item.path} className="om-toc__item">
-												<Link
-													path={item.path}
-													query={search.query}
-													aria-current={ariaCurrent(item.path)}
-													className="om-toc__link om-interactive"
-													onClick={closePanel}
-												>
-													{item.title}
-												</Link>
-											</li>
-										)
-									})}
+									{section.content
+										.filter((item) => item.type === 'section')
+										.map((item) => {
+											return (
+												<li key={item.path} className="om-toc__item">
+													<Link
+														path={item.path}
+														query={search.query}
+														aria-current={ariaCurrent(item.path)}
+														className="om-toc__link om-interactive"
+														onClick={closePanel}
+													>
+														{item.title}
+													</Link>
+												</li>
+											)
+										})}
 								</ul>
 							)}
 						</li>
