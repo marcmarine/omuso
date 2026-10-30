@@ -270,23 +270,26 @@ It lets you:
 
 [Go to definitions ↓](#context-types-definitions)
 
-### `createContext()`
+### `createContext(config)`
 
-Creates an isolated context instance.
+Creates an isolated context instance from its configuration.
 
 ```typescript
 import { createContext } from 'omuso'
 
-const ctx = createContext().init({
+const ctx = createContext({
   markdowns: {
     en: '# Title\n\n## Chapter 1\n\nHello'
   }
 })
 ```
 
-`init` also accepts `maxNavigationDepth`, `omitPaths` and `slugStyle` (see [`parse`](#parsetext-string-options-parseoptions-root)).
+The config also accepts `maxNavigationDepth`, `omitPaths` and `slugStyle` (see [`parse`](#parsetext-string-options-parseoptions-root)). It is fixed at creation: to change it, create a new context.
 
-After initialization:
+> [!NOTE]
+> `createContext().init(config)` still works but is deprecated and will be removed in the next major version. Calling `init` again on the same context keeps the same object, so consumers that memoize on it (like `@omuso/react-reader`) keep showing the previous book, and options left out keep their previous values.
+
+Once created:
 
 - `ctx.languages` → Available languages
 - `ctx.roots[lang]` → Parsed document
@@ -341,7 +344,7 @@ The filter decides on each section independently: excluding a section skips its 
 Each instance keeps its own state, so you can load several books in the same process. Methods don’t depend on `this`, so they can be destructured:
 
 ```javascript
-const { session, manifest } = createContext().init({ markdowns })
+const { session, manifest } = createContext({ markdowns })
 ```
 
 ### Singleton `context` (deprecated)

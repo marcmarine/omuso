@@ -12,11 +12,14 @@ import {
 } from '.'
 
 /**
- * Creates an isolated book context. State lives in a closure, so methods
- * work when destructured (`const { session } = ctx`) and each instance is
- * independent from the others.
+ * Creates an isolated book context from `config`. State lives in a closure,
+ * so methods work when destructured (`const { session } = ctx`) and each
+ * instance is independent from the others.
+ *
+ * Without `config` it returns an empty context to be filled with the
+ * deprecated `init()`.
  */
-export const createContext = (): BookContext => {
+export const createContext = (config?: BookContextConfig): BookContext => {
 	const state = {
 		roots: {} as Record<string, Root>,
 		manifests: {} as Record<string, Manifest>,
@@ -101,6 +104,8 @@ export const createContext = (): BookContext => {
 		search,
 	}
 
+	if (config) init(config)
+
 	return ctx
 }
 
@@ -108,6 +113,7 @@ export const createContext = (): BookContext => {
  * Shared singleton context.
  *
  * @deprecated Its state is shared by every module in the process, so two
- * books loaded with it overwrite each other. Use `createContext()` instead.
+ * books loaded with it overwrite each other. Use `createContext(config)`
+ * instead.
  */
 export const context = createContext()

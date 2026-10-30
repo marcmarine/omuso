@@ -37,7 +37,7 @@ export interface ReaderProps {
 	searchFilter?: SearchFilter
 	/**
 	 * The `BookContext` backing this reader, created via
-	 * `createContext().init({...})` from the `omuso` package.
+	 * `createContext({...})` from the `omuso` package.
 	 */
 	context: BookContext
 }

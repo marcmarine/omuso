@@ -17,6 +17,47 @@ import { parse } from '../src/index'
 
 describe('context', () => {
 	describe('creator', () => {
+		test('createContext(config) builds roots/manifests and session works', async () => {
+			const markdown = await Bun.file('./tests/fixtures/nested.md').text()
+
+			const ctx = createContext({ markdowns: { en: markdown } })
+
+			expect(ctx.languages).toEqual(['en'])
+			expect(ctx.manifest('en').paths).toEqual([
+				'1',
+				'1.1',
+				'1.1.1',
+				'1.2',
+				'2',
+			])
+			expect(ctx.session('1.1', '', 'en').currentSection?.title).toBe(
+				'Section 1.1',
+			)
+		})
+
+		test('createContext(config) applies every option', async () => {
+			const markdown = await Bun.file('./tests/fixtures/nested.md').text()
+
+			const ctx = createContext({
+				markdowns: { en: markdown },
+				maxNavigationDepth: 1,
+				omitPaths: ['2'],
+				slugStyle: 'none',
+			})
+
+			expect(ctx.maxNavigationDepth).toBe(1)
+			expect(ctx.omittedPaths).toEqual(['2'])
+			expect(ctx.manifest('en').slugStyle).toBe('none')
+			expect(ctx.session('1', '', 'en').nextSection).toBeNull()
+		})
+
+		test('createContext() without config stays empty', () => {
+			const ctx = createContext()
+
+			expect(ctx.languages).toEqual([])
+			expect(ctx.manifests).toEqual({})
+		})
+
 		test('createContext().init builds roots/manifests and session works', async () => {
 			const markdown = await Bun.file('./tests/fixtures/nested.md').text()
 

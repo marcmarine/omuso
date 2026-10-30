@@ -33,6 +33,11 @@ export type BookContext = {
 	 * Initializes the BookContext with the provided configuration.
 	 * @param config - Configuration object for initialization.
 	 * @returns The initialized BookContext.
+	 * @deprecated Pass the config to `createContext(config)` instead.
+	 * Re-initializing keeps the same object, so consumers that memoize on it
+	 * (like the React reader) keep showing the previous book, and options
+	 * left out keep their previous values. Will be removed in the next major
+	 * version.
 	 */
 	init(config: BookContextConfig): BookContext
 

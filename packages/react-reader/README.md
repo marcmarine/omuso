@@ -37,12 +37,12 @@ Create a module that builds your reading context — e.g. `src/omuso.config.ts`:
 import { createContext } from 'omuso'
 import en from './content/en.md' with { type: 'text' }
 
-export default createContext().init({
+export default createContext({
   markdowns: { en },
 })
 ```
 
-The module must export a `BookContext` created via `createContext().init({...})` from the `omuso` package.
+The module must export a `BookContext` created via `createContext({...})` from the `omuso` package.
 
 Use [BCP 47](https://www.rfc-editor.org/info/bcp47) language codes as the keys of `markdowns` (`en`, `ca`, `pt-BR`, `grc`…). The language switcher shows each language by its own name, worked out from the key with `Intl.DisplayNames` (`ca` → `Català`, `pt-BR` → `Português (Brasil)`).
 
