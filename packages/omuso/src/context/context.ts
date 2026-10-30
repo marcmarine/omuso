@@ -4,8 +4,11 @@ import {
 	type BookContext,
 	type BookContextConfig,
 	buildManifest,
+	buildSearchState,
 	generateReadingSession,
 	type Manifest,
+	type SearchOptions,
+	type SearchState,
 } from '.'
 
 /**
@@ -61,6 +64,21 @@ export const createContext = (): BookContext => {
 		)
 	}
 
+	const search = (
+		query: string = '',
+		lang: string,
+		options?: SearchOptions,
+	): SearchState => {
+		const root = state.roots[lang] as Root
+
+		return buildSearchState(
+			root.content,
+			query,
+			state.omittedPaths,
+			options?.filter,
+		)
+	}
+
 	const ctx: BookContext = {
 		get roots() {
 			return state.roots
@@ -80,6 +98,7 @@ export const createContext = (): BookContext => {
 		init,
 		manifest,
 		session,
+		search,
 	}
 
 	return ctx

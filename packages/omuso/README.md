@@ -320,6 +320,24 @@ A session includes:
 - Previous / Next section
 - Search state
 
+#### `ctx.search(query = '', lang: string, options?: SearchOptions)`
+
+Searches the book in a language without building a session. It returns the same `SearchState` as `session.search`, so you can run the search apart from navigation (e.g. to avoid repeating it on every page change).
+
+```javascript
+const { results, totalMatches } = ctx.search('love', 'en')
+```
+
+By default, sections in `omitPaths` are left out of the results. Pass `filter` to decide yourself which sections are searched; it replaces that exclusion in search only (the table of contents and navigation still use `omitPaths`). It is called once per section with its `path` and whether the path is omitted:
+
+```javascript
+ctx.search(query, lang, {
+  filter: (path, omitted) => !omitted || visible.has(path),
+})
+```
+
+The filter decides on each section independently: excluding a section skips its title and paragraphs, but not its child sections, which are filtered on their own. A child result keeps its `depth` and its `parentSection`, even when that parent is excluded. Root paragraphs are not filtered.
+
 Each instance keeps its own state, so you can load several books in the same process. Methods don’t depend on `this`, so they can be destructured:
 
 ```javascript
@@ -380,13 +398,35 @@ interface Session {
   nextSection: SectionReference | null
   prevSection: SectionReference | null
   breadcrumbs: SectionReference[]
-  search: {
-    query: string
-    results: SearchResult[]
-    totalMatches: number
-  }
+  search: SearchState
   language: string
 }
+```
+
+#### `SearchState`
+
+The result of a search, returned by `ctx.search` and available at `session.search`.
+
+```typescript
+interface SearchState {
+  query: string
+  results: SearchResult[]
+  totalMatches: number
+}
+```
+
+#### `SearchOptions`
+
+Options for `ctx.search`.
+
+```typescript
+interface SearchOptions {
+  // Replaces the default exclusion of `omitPaths`, in search only
+  filter?: SearchFilter
+}
+
+// Decides whether a section is searched; child sections are filtered on their own
+type SearchFilter = (path: string, omitted: boolean) => boolean
 ```
 
 #### `SectionReference`

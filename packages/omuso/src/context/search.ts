@@ -1,7 +1,9 @@
 import type { Content, Section } from '../parser/types'
 import type {
 	ParagraphResult,
+	SearchFilter,
 	SearchResult,
+	SearchState,
 	SectionReference,
 	SectionResult,
 } from './types'
@@ -61,6 +63,8 @@ function findMatchesInSection(
 function findMatchesInContent(
 	content: Content,
 	query: string,
+	omittedPaths: Array<string>,
+	filter: SearchFilter | undefined,
 	parent: SectionReference | null = null,
 ): SearchResult[] {
 	const results: SearchResult[] = []
@@ -81,15 +85,27 @@ function findMatchesInContent(
 		}
 
 		if (node.type === 'section') {
-			const sectionResult = findMatchesInSection(node, query, parent)
-			if (sectionResult) results.push(sectionResult)
+			const omitted = isPathOmitted(node.path, omittedPaths)
+			const included = filter ? filter(node.path, omitted) : !omitted
+			if (included) {
+				const sectionResult = findMatchesInSection(node, query, parent)
+				if (sectionResult) results.push(sectionResult)
+			}
 
-			const childResults = findMatchesInContent(node.content, query, {
-				path: node.path,
-				title: node.title,
-				depth: node.depth,
-				slug: node.slug,
-			})
+			// Children are visited even when this section is excluded: the
+			// filter decides on each section independently.
+			const childResults = findMatchesInContent(
+				node.content,
+				query,
+				omittedPaths,
+				filter,
+				{
+					path: node.path,
+					title: node.title,
+					depth: node.depth,
+					slug: node.slug,
+				},
+			)
 
 			results.push(...childResults)
 		}
@@ -114,16 +130,29 @@ export function buildSearchResponse(
 	content: Content,
 	query: string,
 	omittedPaths: Array<string> = [],
+	filter?: SearchFilter,
 ): SearchResult[] {
 	if (!query.trim()) return []
 
-	const rawResults = findMatchesInContent(content, query).filter(
-		(result) =>
-			result.type !== 'section' || !isPathOmitted(result.path, omittedPaths),
-	)
+	const rawResults = findMatchesInContent(content, query, omittedPaths, filter)
 	const sortedResults = sortSearchResults(rawResults)
 
 	return sortedResults
+}
+
+export function buildSearchState(
+	content: Content,
+	query: string,
+	omittedPaths: Array<string> = [],
+	filter?: SearchFilter,
+): SearchState {
+	const results = buildSearchResponse(content, query, omittedPaths, filter)
+
+	return {
+		query,
+		results,
+		totalMatches: getTotalMatches(results),
+	}
 }
 
 export function getTotalMatches(results: SearchResult[]) {

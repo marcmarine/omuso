@@ -1,8 +1,7 @@
 import type { Content, Section } from '../parser/types'
 import {
-	buildSearchResponse,
+	buildSearchState,
 	findSection,
-	getTotalMatches,
 	type Manifest,
 	type SectionReference,
 	type Session,
@@ -25,11 +24,6 @@ export const generateReadingSession = (
 		currentPath ? findSection(content, currentPath) : null
 	) as Section
 
-	const searchResults = query
-		? buildSearchResponse(content, query, omittedPaths)
-		: []
-	const totalMatches = getTotalMatches(searchResults)
-
 	const breadcrumbs: SectionReference[] =
 		(currentPath ? breadcrumbIndex[currentPath] : undefined) ?? []
 
@@ -43,11 +37,7 @@ export const generateReadingSession = (
 		breadcrumbs,
 		nextSection: currentPath ? navigator.getNext(currentPath) : null,
 		prevSection: currentPath ? navigator.getPrev(currentPath) : null,
-		search: {
-			query,
-			results: searchResults,
-			totalMatches,
-		},
+		search: buildSearchState(content, query, omittedPaths),
 		language,
 	}
 }

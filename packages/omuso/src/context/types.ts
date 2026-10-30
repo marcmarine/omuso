@@ -51,6 +51,15 @@ export type BookContext = {
 	 * @returns A new Session object.
 	 */
 	session(path: string, query: string, lang: string): Session
+
+	/**
+	 * Searches the book in a language without building a session.
+	 * @param query - The search query.
+	 * @param lang - The language code to search in.
+	 * @param options - Search options (optional).
+	 * @returns The search state for the query.
+	 */
+	search(query: string, lang: string, options?: SearchOptions): SearchState
 }
 
 /**
@@ -116,6 +125,27 @@ export interface OrphanParagraphResult extends BaseResult {
 }
 
 export type SearchResult = SectionResult | OrphanParagraphResult
+
+/**
+ * Decides whether a section is searched (its title and direct paragraphs).
+ * Child sections are still visited and filtered on their own. `omitted`
+ * tells whether the path lies within `omitPaths`, so the default behaviour
+ * can be reused. Called once per section, in document order.
+ */
+export type SearchFilter = (path: string, omitted: boolean) => boolean
+
+export interface SearchOptions {
+	/**
+	 * Replaces the default exclusion of `omitPaths`, in search only.
+	 */
+	filter?: SearchFilter
+}
+
+export interface SearchState {
+	query: string
+	results: Array<SearchResult>
+	totalMatches: number
+}
 
 export interface Manifest {
 	/**
@@ -201,17 +231,9 @@ export interface Session {
 
 	/**
 	 * Search-related state.
-	 * @type {{
-	 *   query: string;
-	 *   results: Array<SearchResult>;
-	 *   totalMatches: number;
-	 * }}
+	 * @type {SearchState}
 	 */
-	search: {
-		query: string
-		results: Array<SearchResult>
-		totalMatches: number
-	}
+	search: SearchState
 
 	/**
 	 * The current language setting for the session.

@@ -1,4 +1,4 @@
-import { describe, expect, test } from 'bun:test'
+import { describe, expect, mock, test } from 'bun:test'
 import {
 	buildBreadcrumbIndex,
 	buildManifest,
@@ -12,6 +12,7 @@ import {
 	getAllPaths,
 	getTotalMatches,
 } from '../src/context'
+import { isPathOmitted } from '../src/context/utils'
 import { parse } from '../src/index'
 
 describe('context', () => {
@@ -168,6 +169,123 @@ describe('context', () => {
 			expect(intro.map((r) => r.path)).toEqual(['_1'])
 		})
 	})
+
+	describe('search filter', () => {
+		const queries = ['content', 'Section', 'Introduction', 'sub', 'Chapter']
+
+		const initWith = async (omitPaths: Array<string>) => {
+			const markdown = await Bun.file('./tests/fixtures/nested.md').text()
+			return createContext().init({ markdowns: { en: markdown }, omitPaths })
+		}
+
+		test('without filter, matches filtering omitted sections after the search', async () => {
+			for (const omitPaths of [[], ['1'], ['1.1'], ['1.1.1'], ['1.2', '2']]) {
+				const ctx = await initWith(omitPaths)
+				const content = ctx.roots.en?.content ?? []
+
+				for (const query of queries) {
+					const expected = buildSearchResponse(content, query).filter(
+						(r) => r.type !== 'section' || !isPathOmitted(r.path, omitPaths),
+					)
+
+					const state = ctx.search(query, 'en')
+					expect(state.results).toEqual(expected)
+					expect(state.totalMatches).toBe(getTotalMatches(expected))
+					expect(ctx.session('1', query, 'en').search).toEqual(state)
+				}
+			}
+		})
+
+		test('a filter that keeps everything includes omitted sections', async () => {
+			const ctx = await initWith(['1.1'])
+
+			const paths = ctx
+				.search('content', 'en', { filter: () => true })
+				.results.map((r) => r.path)
+
+			expect(paths).toContain('1.1')
+			expect(paths).toContain('1.1.1')
+		})
+
+		test('passes whether each section is omitted, once per section in document order', async () => {
+			const ctx = await initWith(['1.1'])
+			const filter = mock((_path: string, _omitted: boolean) => true)
+
+			ctx.search('content', 'en', { filter })
+
+			expect(filter.mock.calls).toEqual([
+				['1', false],
+				['1.1', true],
+				['1.1.1', true],
+				['1.2', false],
+				['2', false],
+			])
+		})
+
+		test('an excluded section does not exclude its children', async () => {
+			const ctx = await initWith(['1.1'])
+			const filter = mock((path: string) => path !== '1.1')
+
+			const { results } = ctx.search('content', 'en', { filter })
+			const child = results.find((r) => r.path === '1.1.1')
+
+			expect(results.map((r) => r.path)).not.toContain('1.1')
+			expect(filter).toHaveBeenCalledWith('1.1.1', true)
+			expect(child?.depth).toBe(ctx.manifest('en').references['1.1.1']?.depth)
+			expect(child?.parentSection?.path).toBe('1.1')
+		})
+
+		test('totalMatches only counts included sections', async () => {
+			const ctx = await initWith([])
+
+			const all = ctx.search('content', 'en')
+			const filtered = ctx.search('content', 'en', {
+				filter: (path) => path !== '2',
+			})
+
+			expect(filtered.results.map((r) => r.path)).not.toContain('2')
+			expect(filtered.totalMatches).toBe(getTotalMatches(filtered.results))
+			expect(filtered.totalMatches).toBeLessThan(all.totalMatches)
+		})
+
+		test('keeps sorting by relevance after filtering', async () => {
+			const ctx = await initWith([])
+			const filter = (path: string) => path !== '1.2'
+
+			const { results } = ctx.search('Section', 'en', { filter })
+			const expected = buildSearchResponse(
+				ctx.roots.en?.content ?? [],
+				'Section',
+			).filter((r) => r.path !== '1.2')
+
+			expect(results).toEqual(expected)
+		})
+
+		test('does not call the filter for an empty query', async () => {
+			const ctx = await initWith(['1.1'])
+			const filter = mock(() => true)
+
+			for (const query of ['', '   ']) {
+				expect(ctx.search(query, 'en', { filter })).toEqual({
+					query,
+					results: [],
+					totalMatches: 0,
+				})
+			}
+			expect(filter).not.toHaveBeenCalled()
+		})
+
+		test('root paragraphs are not filtered', async () => {
+			const ctx = await initWith([])
+
+			const { results } = ctx.search('Introduction', 'en', {
+				filter: () => false,
+			})
+
+			expect(results.map((r) => r.path)).toEqual(['_1'])
+		})
+	})
+
 	describe('manifest', () => {
 		test('buildManifest produces expected metadata and indices', async () => {
 			const markdown = await Bun.file('./tests/fixtures/frontmatter.md').text()
