@@ -10,7 +10,7 @@ import { type TranslationKey, t } from '../i18n'
 
 type LayoutContextType = {
 	panel: Record<'left' | 'right', PanelState>
-	maxDepth: number
+	maxPageDepth: number
 	i18n: {
 		t: (_key: TranslationKey) => string
 	}
@@ -20,13 +20,13 @@ type LayoutContextType = {
 interface LayoutProviderProps {
 	children: React.ReactNode
 	language?: string
-	maxDepth?: number
+	maxPageDepth?: number
 	omitSections?: Array<string>
 }
 
 const LayoutContext = createContext<LayoutContextType>({
 	panel: {} as LayoutContextType['panel'],
-	maxDepth: Infinity,
+	maxPageDepth: Infinity,
 	i18n: {
 		t: () => '',
 	},
@@ -37,7 +37,7 @@ export const useLayout = () => useContext(LayoutContext)
 export function LayoutProvider({
 	children,
 	language = 'en',
-	maxDepth = Infinity,
+	maxPageDepth = Infinity,
 	omitSections,
 }: LayoutProviderProps) {
 	const left = usePanelState('leftPanel', false, 250)
@@ -52,8 +52,8 @@ export function LayoutProvider({
 	)
 
 	const value = useMemo(
-		() => ({ panel, i18n, maxDepth, omitSections }),
-		[panel, i18n, maxDepth, omitSections],
+		() => ({ panel, i18n, maxPageDepth, omitSections }),
+		[panel, i18n, maxPageDepth, omitSections],
 	)
 
 	return (

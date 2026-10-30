@@ -26,7 +26,7 @@ export interface ReaderProps {
 	 * `maxNavigationDepth` at or below it, or prev/next lead to sections
 	 * already shown inline.
 	 */
-	maxDepth?: number
+	maxPageDepth?: number
 	contentComponent?: React.ComponentType<{ context: Context }>
 	omitSections?: Array<string>
 	/**
@@ -58,22 +58,22 @@ function Reader({ contentComponent: ContentComponent }: ReaderProps) {
 	)
 }
 
-function useDepthWarning(context: BookContext, maxDepth = Infinity) {
+function useDepthWarning(context: BookContext, maxPageDepth = Infinity) {
 	const navigationDepth = context.maxNavigationDepth ?? Infinity
 
 	useEffect(() => {
-		if (navigationDepth <= maxDepth) return
+		if (navigationDepth <= maxPageDepth) return
 		console.warn(
-			`maxNavigationDepth (${navigationDepth}) is deeper than the reader's maxDepth (${maxDepth}): prev/next will lead to sections already rendered inline.`,
+			`maxNavigationDepth (${navigationDepth}) is deeper than the reader's maxPageDepth (${maxPageDepth}): prev/next will lead to sections already rendered inline.`,
 		)
-	}, [navigationDepth, maxDepth])
+	}, [navigationDepth, maxPageDepth])
 }
 
 function withProviders<P extends ReaderProps>(
 	WrappedComponent: React.ComponentType<P>,
 ) {
 	return (props: P) => {
-		useDepthWarning(props.context, props.maxDepth)
+		useDepthWarning(props.context, props.maxPageDepth)
 
 		return (
 			<BookContextProvider
@@ -85,7 +85,7 @@ function withProviders<P extends ReaderProps>(
 				<RoutingProvider linkComponent={props.linkComponent}>
 					<LayoutProvider
 						language={props.language}
-						maxDepth={props.maxDepth}
+						maxPageDepth={props.maxPageDepth}
 						omitSections={props.omitSections}
 					>
 						<ThemeProvider>

@@ -7,7 +7,7 @@ import { useLayout } from '../providers/LayoutProvider'
 import { classes, isWideViewport } from '../utils'
 
 function BookTableOfContents() {
-	const { panel, maxDepth, omitSections, i18n } = useLayout()
+	const { panel, maxPageDepth, omitSections, i18n } = useLayout()
 	const { manifest, session } = useBookContext()
 	const { tableOfContents } = manifest
 	const { breadcrumbs, search, currentSection } = session
@@ -54,7 +54,7 @@ function BookTableOfContents() {
 					const isCollapsed = breadcrumbs.length >= 2 && isExpanded
 					// Second-level entries are listed only while they are pages
 					// with an index of their own, i.e. not rendered inline.
-					const shouldShowChildren = hasChildren && maxDepth > 2
+					const shouldShowChildren = hasChildren && maxPageDepth > 2
 
 					return (
 						<li key={section.path} className="om-toc__item">

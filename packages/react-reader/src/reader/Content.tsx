@@ -12,18 +12,18 @@ import { highlightMatches } from '../utils/dom'
 function CurrentSectionContent({
 	section,
 	query,
-	maxDepth,
+	maxPageDepth,
 }: {
 	section: omuso.Section
 	query?: string
-	maxDepth: number
+	maxPageDepth: number
 }) {
 	const hasContent = section.content.length > 0
 	if (!hasContent) return null
 
-	// At `maxDepth` a section is the last page level: its subsections belong
-	// to it and are rendered inline instead of linked from an index.
-	const rendersInline = sectionLevel(section.path) >= maxDepth
+	// At `maxPageDepth` a section is the last page level: its subsections
+	// belong to it and are rendered inline instead of linked from an index.
+	const rendersInline = sectionLevel(section.path) >= maxPageDepth
 
 	if (rendersInline)
 		return (
@@ -40,11 +40,11 @@ function CurrentSectionContent({
 export function ContentBody({
 	section,
 	query,
-	maxDepth,
+	maxPageDepth,
 }: {
 	section: omuso.Section
 	query?: string
-	maxDepth: number
+	maxPageDepth: number
 }) {
 	return (
 		<div className="om-content__body">
@@ -58,7 +58,7 @@ export function ContentBody({
 			<CurrentSectionContent
 				section={section}
 				query={query}
-				maxDepth={maxDepth}
+				maxPageDepth={maxPageDepth}
 			/>
 		</div>
 	)
@@ -95,7 +95,7 @@ export function ContentHeader({
 
 export default function Content() {
 	const context = useBookContext()
-	const { maxDepth } = useLayout()
+	const { maxPageDepth } = useLayout()
 	const {
 		session: { currentSection, breadcrumbs, search },
 	} = context
@@ -114,7 +114,7 @@ export default function Content() {
 			<ContentBody
 				section={currentSection}
 				query={search.query}
-				maxDepth={maxDepth}
+				maxPageDepth={maxPageDepth}
 			/>
 		</article>
 	)
