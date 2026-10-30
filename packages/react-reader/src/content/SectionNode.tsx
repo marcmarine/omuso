@@ -1,6 +1,5 @@
 import type * as omuso from 'omuso'
 import type { ReactNode } from 'react'
-import { Link } from '../components/Link'
 import { highlightMatches } from '../utils/dom'
 import { HeadingElement } from './HeadingElement'
 
@@ -22,15 +21,15 @@ export function SectionNode({
 }) {
 	const headingDepth = normalizeHeadingDepth(section.depth, baseDepth)
 
+	// Inline sections are part of the current page, so their titles aren't
+	// links: they would lead to content the reader is already viewing.
 	return (
 		<section id={section.path} className="om-section">
-			<Link path={section.path} query={query} className="om-section__link">
-				<HeadingElement
-					id={section.slug}
-					value={highlightMatches(section.title, query)}
-					depth={headingDepth}
-				/>
-			</Link>
+			<HeadingElement
+				id={section.slug}
+				value={highlightMatches(section.title, query)}
+				depth={headingDepth}
+			/>
 			{children}
 		</section>
 	)
