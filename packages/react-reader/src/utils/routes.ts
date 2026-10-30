@@ -64,3 +64,58 @@ export function stripBasePath(
 
 	return undefined
 }
+
+export type RouteState = {
+	pathname: string
+	search: string
+}
+
+export function getWindowRoute(): RouteState {
+	if (typeof window === 'undefined') {
+		return { pathname: '/', search: '' }
+	}
+
+	return {
+		pathname: window.location.pathname || '/',
+		search: window.location.search || '',
+	}
+}
+
+export function parseRoute(input?: string | Partial<Location>): RouteState {
+	if (typeof input === 'string') {
+		if (!input) return { pathname: '/', search: '' }
+
+		try {
+			const origin =
+				typeof window !== 'undefined'
+					? window.location.origin
+					: 'http://localhost'
+			const parsed = new URL(input, origin)
+			return {
+				pathname: parsed.pathname || '/',
+				search: parsed.search || '',
+			}
+		} catch {
+			const [rawPathname, ...rest] = input.split('?')
+			return {
+				pathname: rawPathname || '/',
+				search: rest.length > 0 ? `?${rest.join('?')}` : '',
+			}
+		}
+	}
+
+	const windowRoute = getWindowRoute()
+
+	if (input) {
+		return {
+			pathname: input.pathname || windowRoute.pathname,
+			search: input.search ?? windowRoute.search,
+		}
+	}
+
+	return windowRoute
+}
+
+export function getSearchQuery(route: RouteState): string | undefined {
+	return new URLSearchParams(route.search).get('query') || undefined
+}

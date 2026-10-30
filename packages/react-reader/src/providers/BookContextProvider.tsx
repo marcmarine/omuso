@@ -2,25 +2,21 @@ import type { BookContext, Manifest, SearchFilter, Session } from 'omuso'
 import React, { useMemo } from 'react'
 import { resolveLanguage } from '../utils'
 import {
-	COVER_PATH,
+	getInitialState,
+	type ReaderLocation,
+	resolveReaderLocation,
+	writeStoredLocation,
+} from '../utils/location'
+import {
+	getSearchQuery,
+	getWindowRoute,
 	normalizeBasePath,
+	parseRoute,
 	prependBasePath,
+	type RouteState,
 	slugForPath,
 	stripBasePath,
 } from '../utils/routes'
-import { storageKey } from '../utils/storage'
-
-const LOCATION_STORAGE_KEY = storageKey('location')
-
-type RouteState = {
-	pathname: string
-	search: string
-}
-
-type ReaderLocation = {
-	language: string
-	path: string
-}
 
 export type Context = {
 	manifest: Manifest
@@ -40,177 +36,6 @@ export type Context = {
 export const BookContextContext = React.createContext<Context | undefined>(
 	undefined,
 )
-
-function getWindowRoute(): RouteState {
-	if (typeof window === 'undefined') {
-		return { pathname: '/', search: '' }
-	}
-
-	return {
-		pathname: window.location.pathname || '/',
-		search: window.location.search || '',
-	}
-}
-
-function parseRoute(input?: string | Partial<Location>): RouteState {
-	if (typeof input === 'string') {
-		if (!input) return { pathname: '/', search: '' }
-
-		try {
-			const origin =
-				typeof window !== 'undefined'
-					? window.location.origin
-					: 'http://localhost'
-			const parsed = new URL(input, origin)
-			return {
-				pathname: parsed.pathname || '/',
-				search: parsed.search || '',
-			}
-		} catch {
-			const [rawPathname, ...rest] = input.split('?')
-			return {
-				pathname: rawPathname || '/',
-				search: rest.length > 0 ? `?${rest.join('?')}` : '',
-			}
-		}
-	}
-
-	const windowRoute = getWindowRoute()
-
-	if (input) {
-		return {
-			pathname: input.pathname || windowRoute.pathname,
-			search: input.search ?? windowRoute.search,
-		}
-	}
-
-	return windowRoute
-}
-
-function getSearchQuery(route: RouteState): string | undefined {
-	return new URLSearchParams(route.search).get('query') || undefined
-}
-
-function readStoredLocation(
-	defaultLanguage: string | undefined,
-	availableLanguages: string[],
-): ReaderLocation {
-	const fallback = {
-		language: resolveLanguage([defaultLanguage], availableLanguages),
-		path: COVER_PATH,
-	}
-
-	if (typeof window === 'undefined') return fallback
-
-	try {
-		const raw = window.localStorage.getItem(LOCATION_STORAGE_KEY)
-		if (!raw) return fallback
-
-		const parsed = JSON.parse(raw) as Partial<ReaderLocation>
-		if (
-			typeof parsed?.language === 'string' &&
-			typeof parsed?.path === 'string'
-		) {
-			return {
-				language: resolveLanguage(
-					[parsed.language, defaultLanguage],
-					availableLanguages,
-				),
-				path: parsed.path,
-			}
-		}
-	} catch {
-		// ignore malformed storage
-	}
-
-	return fallback
-}
-
-function writeStoredLocation(location: ReaderLocation) {
-	if (typeof window === 'undefined') return
-	window.localStorage.setItem(LOCATION_STORAGE_KEY, JSON.stringify(location))
-}
-
-function resolvePathInLanguage(
-	pathname: string,
-	language: string,
-	manifestMap: Record<string, Manifest>,
-): string | undefined {
-	const manifest = manifestMap[language]
-	if (!manifest?.pathBySlug) return undefined
-
-	const directMatch = manifest.pathBySlug[pathname]
-	if (directMatch !== undefined) return directMatch
-
-	try {
-		const decodedPathname = decodeURIComponent(pathname)
-		if (decodedPathname === pathname) return undefined
-		return manifest.pathBySlug[decodedPathname]
-	} catch {
-		return undefined
-	}
-}
-
-function resolveReaderLocation(
-	route: RouteState,
-	preferredLanguage: string,
-	availableLanguages: string[],
-	manifestMap: Record<string, Manifest>,
-): ReaderLocation | undefined {
-	const pathname = route.pathname || '/'
-	if (pathname === '/') {
-		return { language: preferredLanguage, path: COVER_PATH }
-	}
-
-	const preferredPath = resolvePathInLanguage(
-		pathname,
-		preferredLanguage,
-		manifestMap,
-	)
-	if (preferredPath !== undefined) {
-		return { language: preferredLanguage, path: preferredPath }
-	}
-
-	for (const language of availableLanguages) {
-		if (language === preferredLanguage) continue
-		const path = resolvePathInLanguage(pathname, language, manifestMap)
-		if (path !== undefined) {
-			return { language, path }
-		}
-	}
-
-	return undefined
-}
-
-function getInitialState(
-	externalLocation: Partial<Location> | undefined,
-	basePath: string,
-	defaultLanguage: string | undefined,
-	availableLanguages: string[],
-	manifestMap: Record<string, Manifest>,
-): { location: ReaderLocation; searchQuery: string | undefined } {
-	const publicRoute = parseRoute(externalLocation)
-	const routePathname = stripBasePath(publicRoute.pathname, basePath)
-	const route =
-		routePathname === undefined
-			? undefined
-			: { pathname: routePathname, search: publicRoute.search }
-	const storedLocation = readStoredLocation(defaultLanguage, availableLanguages)
-	const location =
-		(route
-			? resolveReaderLocation(
-					route,
-					storedLocation.language,
-					availableLanguages,
-					manifestMap,
-				)
-			: undefined) ?? storedLocation
-
-	return {
-		location,
-		searchQuery: route ? getSearchQuery(route) : undefined,
-	}
-}
 
 export function BookContextProvider({
 	children,
