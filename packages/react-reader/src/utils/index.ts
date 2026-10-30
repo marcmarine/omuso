@@ -29,6 +29,15 @@ export function isWideViewport() {
 	return window.matchMedia(WIDE_VIEWPORT_QUERY).matches
 }
 
+/**
+ * Counts the levels of a section path (`'1.2.3'` → 3), the same measure
+ * `omuso` uses for `maxNavigationDepth`. Unlike `section.depth` (the
+ * markdown heading level), it doesn't change when headings skip levels.
+ */
+export function sectionLevel(path: string): number {
+	return path.split('.').length
+}
+
 export const splitContent = (items: omuso.Root['content']) => {
 	const paragraphs: omuso.Paragraph[] = []
 	const sections: omuso.Section[] = []

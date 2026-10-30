@@ -26,7 +26,7 @@ interface LayoutProviderProps {
 
 const LayoutContext = createContext<LayoutContextType>({
 	panel: {} as LayoutContextType['panel'],
-	maxDepth: 3,
+	maxDepth: Infinity,
 	i18n: {
 		t: () => '',
 	},

@@ -52,6 +52,8 @@ function BookTableOfContents() {
 					const hasPath = breadcrumbs.length > 0
 					const isAtSection = breadcrumbs[0]?.path === section.path
 					const isCollapsed = breadcrumbs.length >= 2 && isExpanded
+					// Second-level entries are listed only while they are pages
+					// with an index of their own, i.e. not rendered inline.
 					const shouldShowChildren = hasChildren && maxDepth > 2
 
 					return (

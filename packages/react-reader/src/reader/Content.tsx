@@ -6,7 +6,7 @@ import { ContentRenderer } from '../content/ContentRenderer'
 import { HeadingElement } from '../content/HeadingElement'
 import { useBookContext } from '../providers/BookContextProvider'
 import { useLayout } from '../providers/LayoutProvider'
-import { classes } from '../utils'
+import { classes, sectionLevel } from '../utils'
 import { highlightMatches } from '../utils/dom'
 
 function CurrentSectionContent({
@@ -21,9 +21,11 @@ function CurrentSectionContent({
 	const hasContent = section.content.length > 0
 	if (!hasContent) return null
 
-	const isExpanded = section.depth > maxDepth
+	// At `maxDepth` a section is the last page level: its subsections belong
+	// to it and are rendered inline instead of linked from an index.
+	const rendersInline = sectionLevel(section.path) >= maxDepth
 
-	if (isExpanded)
+	if (rendersInline)
 		return (
 			<ContentRenderer
 				content={section.content}

@@ -1,4 +1,5 @@
 import type { BookContext } from 'omuso'
+import { useEffect } from 'react'
 import {
 	BookContextProvider,
 	type Context,
@@ -18,6 +19,13 @@ export interface ReaderProps {
 	language: string
 	basePath?: string
 	linkComponent?: React.ElementType
+	/**
+	 * The deepest section level shown as a page, counted in path levels
+	 * (`'1'` → 1, `'1.2'` → 2) like `maxNavigationDepth` in `omuso`. Deeper
+	 * sections are rendered inline within their page. Keep the context's
+	 * `maxNavigationDepth` at or below it, or prev/next lead to sections
+	 * already shown inline.
+	 */
 	maxDepth?: number
 	contentComponent?: React.ComponentType<{ context: Context }>
 	omitSections?: Array<string>
@@ -50,10 +58,23 @@ function Reader({ contentComponent: ContentComponent }: ReaderProps) {
 	)
 }
 
+function useDepthWarning(context: BookContext, maxDepth = Infinity) {
+	const navigationDepth = context.maxNavigationDepth ?? Infinity
+
+	useEffect(() => {
+		if (navigationDepth <= maxDepth) return
+		console.warn(
+			`maxNavigationDepth (${navigationDepth}) is deeper than the reader's maxDepth (${maxDepth}): prev/next will lead to sections already rendered inline.`,
+		)
+	}, [navigationDepth, maxDepth])
+}
+
 function withProviders<P extends ReaderProps>(
 	WrappedComponent: React.ComponentType<P>,
 ) {
 	return (props: P) => {
+		useDepthWarning(props.context, props.maxDepth)
+
 		return (
 			<BookContextProvider
 				defaultLanguage={props.language}
