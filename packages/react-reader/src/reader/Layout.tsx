@@ -35,8 +35,13 @@ export default function Layout({ children }: { children: React.ReactNode }) {
 			<div className="om-reader__body">
 				<div className="om-reader__main">
 					{/* Safari 26 tints its bars from the sticky header but doesn't
-					    notice when its color changes, so a new theme remounts it. */}
-					<Header key={theme} title={title} author={author} />
+					    notice when its color changes, so it's remounted whenever the
+					    color may change: on a new theme or page. */}
+					<Header
+						key={`${theme}:${currentPath ?? ''}`}
+						title={title}
+						author={author}
+					/>
 					<div className="om-reader__stage">
 						<ResizablePanel
 							maxWidth={250}
