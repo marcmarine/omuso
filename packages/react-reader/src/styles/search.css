@@ -152,6 +152,11 @@
 		padding-block: 0.25rem;
 	}
 
+	/* Below 16px, mobile Safari zooms the page in when the input gets focus. */
+	@media (pointer: coarse) {
+		font-size: max(16px, 0.925em);
+	}
+
 	&:focus {
 		box-shadow: 0 0 0 3px rgba(0, 149, 255, 1);
 	}
