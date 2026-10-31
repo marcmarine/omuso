@@ -2,7 +2,7 @@
 	--om-background: #ffebe0;
 	--om-foreground: #544e45;
 	--om-dividers: #f1ded5;
-	--om-text-highlight: #ffe0cc;
+	--om-text-highlight: #bf4505;
 	--om-background-selected: #d5d6d9;
 	--om-input-background: transparent;
 	--om-resizer-color: color-mix(in oklab, var(--om-foreground) 5%, transparent);
@@ -21,7 +21,7 @@
 	--om-background: #0b0a09;
 	--om-foreground: #dad5d2;
 	--om-dividers: #1f1f1f;
-	--om-text-highlight: #2e2824;
+	--om-text-highlight: #ffb41b;
 	--om-background-selected: #21242b;
 }
 

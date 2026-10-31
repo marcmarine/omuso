@@ -9,6 +9,11 @@
 	}
 }
 
+.om-reader mark {
+	background: color-mix(in oklab, var(--om-text-highlight) 6%, transparent);
+	color: var(--om-text-highlight);
+}
+
 .om-icon {
 	width: 1rem;
 	height: 1rem;
