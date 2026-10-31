@@ -5,6 +5,7 @@ import ThemeToggle from '../components/ThemeToggle'
 import TranslationSelector from '../components/TranslationSelector'
 import { useBookContext } from '../providers/BookContextProvider'
 import { useLayout } from '../providers/LayoutProvider'
+import { useTheme } from '../providers/ThemeProvider'
 import { isWideViewport } from '../utils'
 import { COVER_PATH } from '../utils/routes'
 import Navigation from './Navigation'
@@ -14,6 +15,7 @@ import '../styles/index.css'
 export default function Layout({ children }: { children: React.ReactNode }) {
 	const { manifest, session } = useBookContext()
 	const { panel } = useLayout()
+	const { theme } = useTheme()
 	const { title, author } = manifest.metadata
 	const pageRef = useRef<HTMLDivElement>(null)
 	const currentPath = session.currentSection?.path
@@ -32,7 +34,9 @@ export default function Layout({ children }: { children: React.ReactNode }) {
 		<section className="om-reader" aria-label={title}>
 			<div className="om-reader__body">
 				<div className="om-reader__main">
-					<Header title={title} author={author} />
+					{/* Safari 26 tints its bars from the sticky header but doesn't
+					    notice when its color changes, so a new theme remounts it. */}
+					<Header key={theme} title={title} author={author} />
 					<div className="om-reader__stage">
 						<ResizablePanel
 							maxWidth={250}
