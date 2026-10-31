@@ -1,4 +1,4 @@
-import { Children, useCallback, useEffect } from 'react'
+import { Children, useCallback, useEffect, useRef } from 'react'
 import { Link } from '../components/Link'
 import { ResizablePanel } from '../components/ResizablePanel'
 import ThemeToggle from '../components/ThemeToggle'
@@ -12,9 +12,18 @@ import Navigation from './Navigation'
 import '../styles/index.css'
 
 export default function Layout({ children }: { children: React.ReactNode }) {
-	const { manifest } = useBookContext()
+	const { manifest, session } = useBookContext()
 	const { panel } = useLayout()
 	const { title, author } = manifest.metadata
+	const pageRef = useRef<HTMLDivElement>(null)
+	const currentPath = session.currentSection?.path
+
+	// Back to the top on every page change. It lives here, not in the
+	// content, so a custom `contentComponent` keeps it too.
+	// biome-ignore lint/correctness/useExhaustiveDependencies: runs on page change
+	useEffect(() => {
+		pageRef.current?.scrollTo({ top: 0 })
+	}, [currentPath])
 
 	const childrenArray = Children.toArray(children)
 	const [FirstChild, SecondChild, ThirdChild] = childrenArray
@@ -34,7 +43,9 @@ export default function Layout({ children }: { children: React.ReactNode }) {
 						>
 							{FirstChild}
 						</ResizablePanel>
-						<div className="om-reader__page">{SecondChild}</div>
+						<div ref={pageRef} className="om-reader__page">
+							{SecondChild}
+						</div>
 					</div>
 				</div>
 				<ResizablePanel

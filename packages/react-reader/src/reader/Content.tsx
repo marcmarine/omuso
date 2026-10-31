@@ -1,5 +1,4 @@
 import type * as omuso from 'omuso'
-import { useEffect, useRef } from 'react'
 import { Link } from '../components/Link'
 import { CollapsedSectionContent } from '../content/CollapsedSectionContent'
 import { ContentRenderer } from '../content/ContentRenderer'
@@ -99,17 +98,10 @@ export default function Content() {
 	const {
 		session: { currentSection, breadcrumbs, search },
 	} = context
-	const ref = useRef<HTMLElement>(null)
-
-	useEffect(() => {
-		if (!currentSection?.path) return
-		ref.current?.scrollIntoView({ block: 'start' })
-	}, [currentSection?.path])
-
 	if (!currentSection) return null
 
 	return (
-		<article ref={ref} className="om-content">
+		<article className="om-content">
 			<ContentHeader query={search.query} breadcrumbs={breadcrumbs} />
 			<ContentBody
 				section={currentSection}
