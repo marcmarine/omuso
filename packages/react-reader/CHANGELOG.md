@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.4.2](https://github.com/marcmarine/omuso/compare/react-reader-v0.4.1...react-reader-v0.4.2) (2026-10-31)
+
+
+### Bug Fixes
+
+* Refresh Safari bar color on page change ([2f63f8f](https://github.com/marcmarine/omuso/commit/2f63f8f0926b347d539a78911517d778f2a0bbae))
+
 ## [0.4.1](https://github.com/marcmarine/omuso/compare/react-reader-v0.4.0...react-reader-v0.4.1) (2026-10-31)
 
 
