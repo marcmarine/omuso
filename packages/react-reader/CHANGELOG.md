@@ -1,5 +1,16 @@
 # Changelog
 
+## [0.4.1](https://github.com/marcmarine/omuso/compare/react-reader-v0.4.0...react-reader-v0.4.1) (2026-10-31)
+
+
+### Bug Fixes
+
+* Avoid Safari blur on header title ([82340a1](https://github.com/marcmarine/omuso/commit/82340a1fc6417b0758c16f5dd86d57caaba2d951))
+* Keep scroll to top with custom content ([5915b38](https://github.com/marcmarine/omuso/commit/5915b385edce0ef7da4ba0dab04c918056be4f7f))
+* Prevent mobile Safari input zooming ([fe90496](https://github.com/marcmarine/omuso/commit/fe90496d20b1d14094bc892f29cc4abc8b856cf7))
+* Refine search input focus styling ([6423703](https://github.com/marcmarine/omuso/commit/6423703cb90523befe291d14ea55f1f586ff87c8))
+* Use highlight token for search mark ([0ff978e](https://github.com/marcmarine/omuso/commit/0ff978e1ea32b0f6b9c9ed6b005396b6dcafc857))
+
 ## [0.4.0](https://github.com/marcmarine/omuso/compare/react-reader-v0.3.1...react-reader-v0.4.0) (2026-10-30)
 
 
