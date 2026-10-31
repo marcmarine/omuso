@@ -158,7 +158,9 @@
 	}
 
 	&:focus {
-		box-shadow: 0 0 0 3px rgba(0, 149, 255, 1);
+		border-color: color-mix(in oklab, rgba(0, 149, 255, 1) 40%, transparent);
+		box-shadow: 0 0 0 3px
+			color-mix(in oklab, rgba(0, 149, 255, 1) 20%, transparent);
 	}
 
 	/* The reset button already clears the query. */
