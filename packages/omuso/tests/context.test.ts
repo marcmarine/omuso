@@ -328,6 +328,18 @@ describe('context', () => {
 	})
 
 	describe('manifest', () => {
+		test('metadata.extra is empty without extra frontmatter keys', async () => {
+			const markdown = await Bun.file('./tests/fixtures/frontmatter.md').text()
+
+			expect(buildManifest(parse(markdown)).metadata.extra).toEqual({})
+		})
+
+		test('metadata.extra keeps extra frontmatter keys', () => {
+			const root = parse('---\ntitle: Libro\nsubtitle: Uno\n---\n\nTexto.')
+
+			expect(buildManifest(root).metadata.extra).toEqual({ subtitle: 'Uno' })
+		})
+
 		test('buildManifest produces expected metadata and indices', async () => {
 			const markdown = await Bun.file('./tests/fixtures/frontmatter.md').text()
 			const root = parse(markdown)

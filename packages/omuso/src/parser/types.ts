@@ -39,6 +39,11 @@ export interface Root extends ParentNode {
 	language?: string
 	translator?: string
 	date?: string
+	/**
+	 * Frontmatter keys other than the five above, with their values as
+	 * written. Present only when there is at least one.
+	 */
+	extra?: Record<string, string>
 }
 
 export interface Section extends Location, ParentNode {

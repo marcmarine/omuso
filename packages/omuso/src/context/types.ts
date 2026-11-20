@@ -177,6 +177,11 @@ export interface Manifest {
 		language: string
 		translator: string
 		date: string
+		/**
+		 * Frontmatter keys other than the five above, with their values as
+		 * written. Empty when there are none.
+		 */
+		extra: Record<string, string>
 	}
 
 	/**

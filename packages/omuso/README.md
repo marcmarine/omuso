@@ -146,6 +146,7 @@ interface Root {
   language?: string
   translator?: string
   date?: string
+  extra?: Record<string, string> // other frontmatter keys, only if there are any
   content: (Section | Paragraph)[]
 }
 ```
@@ -200,6 +201,7 @@ author: Homer
 language: ca
 translator: Conrad Roure i Bofill
 date: 1879-01-01
+subtitle: Poema èpic
 ---
 
 ## Cant I
@@ -212,7 +214,10 @@ const result = parse(markdown)
 console.log(result.title)      // "La Iliada"
 console.log(result.author)     // "Homer"
 console.log(result.language)   // "ca"
+console.log(result.extra)      // { subtitle: "Poema èpic" }
 ```
+
+Keys other than `title`, `author`, `language`, `translator` and `date` go to `extra`, with their values as written. `extra` is only present when there is at least one such key.
 
 #### Text Formatting
 
@@ -389,6 +394,7 @@ interface Manifest {
     language: string
     translator: string
     date: string
+    extra: Record<string, string> // other frontmatter keys; {} if there are none
   }
   tableOfContents: Section[]
   paths: string[]

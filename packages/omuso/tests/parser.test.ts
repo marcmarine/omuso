@@ -47,6 +47,28 @@ describe('parser', () => {
 		expect(root.language).toBe('ca')
 	})
 
+	test('keeps unknown frontmatter keys in extra', () => {
+		const root = parse(
+			'---\ntitle: Libro\nauthor: Ana\nlanguage: es\ntranslator: Luis\ndate: 2020\nsubtitle: Un subtítulo\ncover: /cover.jpg\n---\n\nUno.',
+		)
+
+		expect(root.extra).toEqual({
+			subtitle: 'Un subtítulo',
+			cover: '/cover.jpg',
+		})
+		expect(root.title).toBe('Libro')
+	})
+
+	test('leaves extra out without unknown frontmatter keys', async () => {
+		const markdown = await Bun.file('./tests/fixtures/frontmatter.md').text()
+
+		expect('extra' in parse(markdown)).toBe(false)
+		expect('extra' in parse('# Sin frontmatter\n\nUno.')).toBe(false)
+		expect('extra' in parse('---\ntitle: Libro\ncover: ~\n---\n\nUno.')).toBe(
+			false,
+		)
+	})
+
 	test('treats null-like frontmatter values as missing', () => {
 		const root = parse(
 			'---\ntitle: Libro\nauthor: ~\ntranslator: null\ndate: NULL\n---\n\nUno.',

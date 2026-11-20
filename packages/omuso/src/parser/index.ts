@@ -98,15 +98,23 @@ function splitBlocks(content: string): string[] {
 }
 
 function createInitialRoot(metadata: Record<string, string>): Root {
-	return {
+	const { title, author, language, translator, date, ...extra } = metadata
+
+	const root: Root = {
 		type: 'root',
-		title: metadata.title || undefined,
-		author: metadata.author || undefined,
-		language: metadata.language || undefined,
-		translator: metadata.translator || undefined,
-		date: metadata.date || undefined,
+		title: title || undefined,
+		author: author || undefined,
+		language: language || undefined,
+		translator: translator || undefined,
+		date: date || undefined,
 		content: [],
 	}
+
+	// Only when there are extra keys, so documents without them keep the
+	// same shape.
+	if (Object.keys(extra).length > 0) root.extra = extra
+
+	return root
 }
 
 const FRONTMATTER_DELIMITER = '---\n'

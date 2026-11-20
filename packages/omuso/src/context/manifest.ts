@@ -32,6 +32,7 @@ export const buildManifest = (
 		language: data?.language ?? '',
 		translator: data?.translator ?? '',
 		date: data?.date ?? '',
+		extra: data?.extra ?? {},
 	}
 
 	return {
