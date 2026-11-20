@@ -51,25 +51,29 @@ Use [BCP 47](https://www.rfc-editor.org/info/bcp47) language codes as the keys o
 
 ### 2. Pass it to the reader
 
-`context` is a required prop:
+`book` is a required prop:
 
 ```tsx
 import { Reader } from '@omuso/react-reader'
 import omuso from './omuso.config'
 
 export function App() {
-  return <Reader context={omuso} language="en" />
+  return <Reader book={omuso} defaultLanguage="en" />
 }
 ```
 
-`language` is the default language: it is used when the URL or the stored location don't specify one, or specify one that isn't in `markdowns`. A language missing from `markdowns` falls back to its base language (`pt-BR` → `pt`), then to `en`, and finally to the first language in `markdowns`.
+`defaultLanguage` is the book's language when the URL or the stored location don't specify one, or specify one that isn't in `markdowns`. A language missing from `markdowns` falls back to its base language (`pt-BR` → `pt`), then to `en`, and finally to the first language in `markdowns`. Without `defaultLanguage`, the reader starts in the first language in `markdowns`.
 
-`language` also sets the language of the UI labels, with the same fallback. Switching the book's language from the language menu doesn't change it.
+`locale` sets the language of the UI labels, with the same fallback. It defaults to `defaultLanguage`, and switching the book's language from the language menu doesn't change it:
+
+```tsx
+<Reader book={omuso} defaultLanguage="grc" locale="en" />
+```
 
 If your app is mounted under a URL prefix, pass `basePath` so links and history updates stay inside that prefix:
 
 ```tsx
-<Reader context={omuso} language="en" basePath="/reader" />
+<Reader book={omuso} defaultLanguage="en" basePath="/reader" />
 ```
 
 With `basePath="/reader"`, the reader keeps internal slugs unchanged (for example `/book/ch1`) but exposes them in the browser as `/reader/book/ch1`.
@@ -82,7 +86,7 @@ const searchFilter = useCallback(
   [visible],
 )
 
-<Reader context={omuso} language="en" searchFilter={searchFilter} />
+<Reader book={omuso} defaultLanguage="en" searchFilter={searchFilter} />
 ```
 
 The search is memoized apart from navigation, so moving between sections does not repeat it.
@@ -105,7 +109,7 @@ The default styles can be customized with CSS variables and the reader's `.om-*`
 
 ```tsx
 <div className="my-reader">
-  <Reader context={omuso} language="en" />
+  <Reader book={omuso} defaultLanguage="en" />
 </div>
 ```
 
@@ -181,7 +185,7 @@ Place this inline script in your HTML `<head>` before the app bundle. It uses th
 
 ## Errors
 
-The `context` prop is required and typed as `BookContext`. If it is missing or has the wrong shape, TypeScript fails at the call site, before anything runs.
+The `book` prop is required and typed as `BookContext`. If it is missing or has the wrong shape, TypeScript fails at the call site, before anything runs.
 
 ## Development
 

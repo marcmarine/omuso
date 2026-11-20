@@ -65,7 +65,7 @@ export const ReaderValueContext = React.createContext<ReaderValue | undefined>(
 export function BookContextProvider({
 	children,
 	defaultLanguage,
-	context,
+	book,
 	location: externalLocation,
 	basePath,
 	searchFilter,
@@ -73,15 +73,15 @@ export function BookContextProvider({
 }: {
 	children: React.ReactNode
 	defaultLanguage?: string
-	context: BookContext
+	book: BookContext
 	location?: Partial<Location>
 	basePath?: string
 	searchFilter?: SearchFilter
 	maxPageDepth?: number
 }) {
-	useDepthWarning(context, maxPageDepth)
+	useDepthWarning(book, maxPageDepth)
 
-	const manifests = React.useMemo(() => context.manifests, [context])
+	const manifests = React.useMemo(() => book.manifests, [book])
 	const manifestMap = manifests as Record<string, Manifest>
 	const availableLanguages = useMemo(() => Object.keys(manifests), [manifests])
 	const normalizedBasePath = useMemo(
@@ -121,7 +121,7 @@ export function BookContextProvider({
 	)
 
 	const { manifest, session } = useReaderSession(
-		context,
+		book,
 		location.path,
 		searchQuery,
 		validatedLanguage,
@@ -334,13 +334,13 @@ export function BookContextProvider({
 	)
 	const meta = React.useMemo<ReaderValue['meta']>(
 		() => ({
-			book: context,
+			book,
 			manifest,
 			languages: availableLanguages,
 			basePath: normalizedBasePath,
 			maxPageDepth,
 		}),
-		[context, manifest, availableLanguages, normalizedBasePath, maxPageDepth],
+		[book, manifest, availableLanguages, normalizedBasePath, maxPageDepth],
 	)
 	const value = React.useMemo<ReaderValue>(
 		() => ({ state, actions, meta }),
@@ -357,8 +357,8 @@ export function BookContextProvider({
 /**
  * Warns when prev/next can lead to sections that are rendered inline.
  */
-function useDepthWarning(context: BookContext, maxPageDepth: number) {
-	const navigationDepth = context.maxNavigationDepth ?? Infinity
+function useDepthWarning(book: BookContext, maxPageDepth: number) {
+	const navigationDepth = book.maxNavigationDepth ?? Infinity
 
 	React.useEffect(() => {
 		if (navigationDepth <= maxPageDepth) return

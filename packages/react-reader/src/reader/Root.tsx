@@ -7,8 +7,22 @@ import { RoutingProvider } from '../providers/RoutingProvider'
 import { ThemeProvider } from '../providers/ThemeProvider'
 
 export interface ReaderRootProps {
+	/**
+	 * The `BookContext` backing this reader, created via
+	 * `createContext({...})` from the `omuso` package.
+	 */
+	book: BookContext
+	/**
+	 * The book's language when the URL or the stored location don't give one.
+	 * Defaults to the first language of `book`.
+	 */
+	defaultLanguage?: string
+	/**
+	 * The language of the interface labels, independent of the book's: it
+	 * doesn't follow the language menu. Defaults to `defaultLanguage`.
+	 */
+	locale?: string
 	location?: Partial<Location>
-	language: string
 	basePath?: string
 	linkComponent?: React.ElementType
 	/**
@@ -26,11 +40,6 @@ export interface ReaderRootProps {
 	 * render.
 	 */
 	searchFilter?: SearchFilter
-	/**
-	 * The `BookContext` backing this reader, created via
-	 * `createContext({...})` from the `omuso` package.
-	 */
-	context: BookContext
 	children: React.ReactNode
 }
 
@@ -41,16 +50,18 @@ const RootContext = createContext(false)
  * it, and any other component, read the state through the hooks.
  */
 export default function Root({
+	book,
+	defaultLanguage,
+	locale,
 	location,
-	language,
 	basePath,
 	linkComponent,
 	maxPageDepth,
 	searchFilter,
-	context,
 	children,
 }: ReaderRootProps) {
 	const isNested = useContext(RootContext)
+	const language = defaultLanguage ?? book.languages[0]
 
 	useEffect(() => {
 		if (!isNested) return
@@ -61,10 +72,10 @@ export default function Root({
 
 	return (
 		<RootContext.Provider value={true}>
-			<I18nProvider locale={language}>
+			<I18nProvider locale={locale ?? language}>
 				<BookContextProvider
 					defaultLanguage={language}
-					context={context}
+					book={book}
 					location={location}
 					basePath={basePath}
 					searchFilter={searchFilter}

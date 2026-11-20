@@ -1,4 +1,5 @@
 import { afterEach, describe, expect, mock, spyOn, test } from 'bun:test'
+import { createContext } from 'omuso'
 import { act } from 'react'
 import { createRoot, type Root } from 'react-dom/client'
 import {
@@ -45,7 +46,7 @@ describe('Reader', () => {
 	test('opens the section in the URL', async () => {
 		window.history.pushState(null, '', '/libro/capitulo-dos')
 
-		const container = await render(<Reader context={book} language="en" />)
+		const container = await render(<Reader book={book} defaultLanguage="en" />)
 
 		expect(heading(container)).toBe('Capítulo dos')
 	})
@@ -54,13 +55,13 @@ describe('Reader', () => {
 		writeStoredLocation({ language: 'en', path: '1.1.1' })
 		window.history.pushState(null, '', '/nowhere')
 
-		const container = await render(<Reader context={book} language="es" />)
+		const container = await render(<Reader book={book} defaultLanguage="es" />)
 
 		expect(heading(container)).toBe('Part A')
 	})
 
 	test('opens the cover at the root', async () => {
-		const container = await render(<Reader context={book} language="en" />)
+		const container = await render(<Reader book={book} defaultLanguage="en" />)
 
 		expect(container.querySelector('.om-cover')).not.toBeNull()
 	})
@@ -92,7 +93,7 @@ describe('ReaderRoot', () => {
 
 	test('renders its children without DOM of its own', async () => {
 		const container = await render(
-			<ReaderRoot context={book} language="en">
+			<ReaderRoot book={book} defaultLanguage="en">
 				<p>Inside</p>
 			</ReaderRoot>,
 		)
@@ -104,7 +105,7 @@ describe('ReaderRoot', () => {
 		window.history.pushState(null, '', '/libro/capitulo-uno')
 
 		const container = await render(
-			<ReaderRoot context={book} language="en">
+			<ReaderRoot book={book} defaultLanguage="en">
 				<Probe />
 			</ReaderRoot>,
 		)
@@ -118,6 +119,54 @@ describe('ReaderRoot', () => {
 			label: 'Search',
 			leftOpen: false,
 			theme: 'light',
+		})
+	})
+
+	const probe = async (props: {
+		defaultLanguage?: string
+		locale?: string
+	}) => {
+		const container = await render(
+			<ReaderRoot book={book} {...props}>
+				<Probe />
+			</ReaderRoot>,
+		)
+		const { language, locale, label } = JSON.parse(container.textContent ?? '')
+		return { language, locale, label }
+	}
+
+	test('defaults to the first language of the book', async () => {
+		// Spanish first, so the default isn't the English fallback.
+		const spanishFirst = createContext({
+			markdowns: { es: '# Libro\n\nUno.', en: '# Book\n\nOne.' },
+		})
+		const container = await render(
+			<ReaderRoot book={spanishFirst}>
+				<Probe />
+			</ReaderRoot>,
+		)
+		const { language, locale, label } = JSON.parse(container.textContent ?? '')
+
+		expect({ language, locale, label }).toEqual({
+			language: 'es',
+			locale: 'es',
+			label: 'Buscar',
+		})
+	})
+
+	test('takes the locale from defaultLanguage', async () => {
+		expect(await probe({ defaultLanguage: 'es' })).toEqual({
+			language: 'es',
+			locale: 'es',
+			label: 'Buscar',
+		})
+	})
+
+	test('keeps the locale apart from the book language', async () => {
+		expect(await probe({ defaultLanguage: 'es', locale: 'ca' })).toEqual({
+			language: 'es',
+			locale: 'ca',
+			label: 'Cercar',
 		})
 	})
 
@@ -151,8 +200,8 @@ describe('ReaderRoot', () => {
 		const consoleWarn = spyOn(console, 'warn').mockImplementation(warn)
 
 		await render(
-			<ReaderRoot context={book} language="en">
-				<ReaderRoot context={book} language="es">
+			<ReaderRoot book={book} defaultLanguage="en">
+				<ReaderRoot book={book} defaultLanguage="es">
 					<p>Inside</p>
 				</ReaderRoot>
 			</ReaderRoot>,
@@ -167,7 +216,7 @@ describe('ReaderRoot', () => {
 		const consoleWarn = spyOn(console, 'warn').mockImplementation(() => {})
 
 		await render(
-			<ReaderRoot context={book} language="en">
+			<ReaderRoot book={book} defaultLanguage="en">
 				<p>Inside</p>
 			</ReaderRoot>,
 		)

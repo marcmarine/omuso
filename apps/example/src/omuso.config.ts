@@ -3,9 +3,9 @@ import en from './content/en.md' with { type: 'text' }
 import es from './content/es.md' with { type: 'text' }
 import grc from './content/grc.md' with { type: 'text' }
 
-const context = createContext({
+const book = createContext({
 	markdowns: { en, es, grc },
 	slugStyle: 'wiki',
 })
 
-export { context }
+export { book }
