@@ -109,6 +109,24 @@ The default styles can be customized with CSS variables and the reader's `.om-*`
 </div>
 ```
 
+The dark theme sets its colors on `[data-omuso-theme="dark"]`, which the reader adds to `<html>`. Colors you set yourself apply to both themes, so give the dark theme its own values:
+
+```css
+.my-reader {
+  --om-background: #fff;
+  --om-foreground: #222;
+  --om-dividers: #ddd;
+}
+
+[data-omuso-theme="dark"] .my-reader {
+  --om-background: #111;
+  --om-foreground: #eee;
+  --om-dividers: #333;
+}
+```
+
+Tokens that don't depend on the theme, like fonts and sizes, only need setting once.
+
 The reader's styles live in the `omuso` cascade layer, so any of your CSS outside a layer overrides them, whatever its specificity or load order. That includes global element rules: a `button { … }` or `a { color: … }` in your app also applies inside the reader. To keep them out, move them into a layer ordered before `omuso`.
 
 To order the layers, name `omuso` among yours in a `@layer` statement. Layers are ordered by where they are first named, and the reader's CSS loads when the package is imported, so the statement must come first: put it at the top of a stylesheet imported before `@omuso/react-reader`. With Tailwind v4, for example:
