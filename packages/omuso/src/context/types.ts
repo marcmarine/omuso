@@ -136,7 +136,7 @@ export type SearchResult = SectionResult | OrphanParagraphResult
  * within `omitPaths`, so the default behaviour can be reused.
  *
  * It decides on each section independently: excluding a section does not
- * exclude its children.
+ * exclude its children. To hide a subtree, use `isPathWithin`.
  *
  * In search, it replaces the exclusion of `omitPaths` and decides whether a
  * section's title and direct paragraphs are searched. It is called once per

@@ -1,5 +1,6 @@
 import { describe, expect, test } from 'bun:test'
 import { slugify } from '../src/common/utils'
+import { isPathWithin } from '../src/index'
 
 describe('slugify', () => {
 	test('turns dots between digits into hyphens', () => {
@@ -43,5 +44,25 @@ describe('slugify', () => {
 			expect(slugify('Self-help', 'wiki')).toBe('Self-help')
 			expect(slugify('Section 1.1. Intro.', 'wiki')).toBe('Section_1_1_Intro')
 		})
+	})
+})
+
+describe('isPathWithin', () => {
+	test('includes the section itself and its descendants', () => {
+		expect(isPathWithin('1', '1')).toBe(true)
+		expect(isPathWithin('1.1', '1')).toBe(true)
+		expect(isPathWithin('1.1.1', '1')).toBe(true)
+		expect(isPathWithin('3.10', '3')).toBe(true)
+	})
+
+	test('does not match a prefix without a dot', () => {
+		expect(isPathWithin('1.10', '1.1')).toBe(false)
+		expect(isPathWithin('10', '1')).toBe(false)
+		expect(isPathWithin('31', '3')).toBe(false)
+	})
+
+	test('is false when the ancestor is deeper than the path', () => {
+		expect(isPathWithin('1', '1.1')).toBe(false)
+		expect(isPathWithin('1.1', '1.1.1')).toBe(false)
 	})
 })

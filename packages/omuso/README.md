@@ -341,6 +341,16 @@ ctx.search(query, lang, {
 
 The filter decides on each section independently: excluding a section skips its title and paragraphs, but not its child sections, which are filtered on their own. A child result keeps its `depth` and its `parentSection`, even when that parent is excluded. Root paragraphs are not filtered.
 
+To hide a whole subtree from a filter, use `isPathWithin(path, ancestor)`. It tells whether `path` is the section `ancestor` or lies under it (`'3'`, `'3.1'` and `'3.10'` are within `'3'`; `'31'` is not). For example, to leave a preface at `'1'` and all its subsections out of the results:
+
+```javascript
+import { isPathWithin } from 'omuso'
+
+ctx.search(query, lang, {
+  filter: (path, omitted) => !omitted && !isPathWithin(path, '1'),
+})
+```
+
 Each instance keeps its own state, so you can load several books in the same process. Methods don’t depend on `this`, so they can be destructured:
 
 ```javascript
