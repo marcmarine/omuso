@@ -53,9 +53,15 @@ export type BookContext = {
 	 * @param path - The path to the current section.
 	 * @param query - The search query (if any).
 	 * @param lang - The language code for the session.
+	 * @param options - Session options (optional).
 	 * @returns A new Session object.
 	 */
-	session(path: string, query: string, lang: string): Session
+	session(
+		path: string,
+		query: string,
+		lang: string,
+		options?: SessionOptions,
+	): Session
 
 	/**
 	 * Searches the book in a language without building a session.
@@ -138,9 +144,13 @@ export type SearchResult = SectionResult | OrphanParagraphResult
  * It decides on each section independently: excluding a section does not
  * exclude its children. To hide a subtree, use `isPathWithin`.
  *
- * In search, it replaces the exclusion of `omitPaths` and decides whether a
- * section's title and direct paragraphs are searched. It is called once per
- * section, in document order.
+ * - In search, it replaces the exclusion of `omitPaths` and decides whether
+ *   a section's title and direct paragraphs are searched. It is called once
+ *   per section, in document order.
+ * - In the pager (`session`), it is combined with `maxNavigationDepth` and
+ *   the exclusion of `omitPaths`, and only called for sections that pass
+ *   both, so `omitted` is always `false`. It is called lazily, and maybe more
+ *   than once for the same section across calls.
  *
  * It should return the same result for the same path and do no other work:
  * prepare anything expensive beforehand (e.g. a `Set` of visible paths) and
@@ -157,6 +167,15 @@ export type SearchFilter = SectionFilter
 export interface SearchOptions {
 	/**
 	 * Replaces the default exclusion of `omitPaths`, in search only.
+	 */
+	filter?: SectionFilter
+}
+
+export interface SessionOptions {
+	/**
+	 * Hides sections from `prevSection` and `nextSection`, on top of
+	 * `omitPaths` and `maxNavigationDepth`, and decides which sections are
+	 * searched, as in `SearchOptions`.
 	 */
 	filter?: SectionFilter
 }

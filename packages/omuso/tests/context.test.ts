@@ -683,4 +683,86 @@ describe('context', () => {
 			)
 		})
 	})
+
+	describe('session filter', () => {
+		// nested.md paths: 1, 1.1, 1.1.1, 1.2, 2
+		const createWith = async (
+			config: { omitPaths?: Array<string>; maxNavigationDepth?: number } = {},
+		) => {
+			const markdown = await Bun.file('./tests/fixtures/nested.md').text()
+			return createContext({ markdowns: { en: markdown }, ...config })
+		}
+
+		test('next and prev skip sections the filter hides', async () => {
+			const ctx = await createWith()
+			const filter = (path: string) => path !== '1.1.1'
+
+			const session = ctx.session('1.1', '', 'en', { filter })
+			expect(session.nextSection?.path).toBe('1.2')
+			expect(ctx.session('1.2', '', 'en', { filter }).prevSection?.path).toBe(
+				'1.1',
+			)
+		})
+
+		test('next and prev skip omitted sections even if the filter keeps them', async () => {
+			const ctx = await createWith({ omitPaths: ['1.1'] })
+			const filter = () => true
+
+			expect(ctx.session('1', '', 'en', { filter }).nextSection?.path).toBe(
+				'1.2',
+			)
+			expect(ctx.session('1.2', '', 'en', { filter }).prevSection?.path).toBe(
+				'1',
+			)
+		})
+
+		test('does not call the filter for omitted or too deep sections', async () => {
+			const ctx = await createWith({
+				omitPaths: ['1.2'],
+				maxNavigationDepth: 2,
+			})
+			const filter = mock((_path: string, _omitted: boolean) => false)
+
+			ctx.session('1', '', 'en', { filter })
+			ctx.session('2', '', 'en', { filter })
+
+			const calledPaths = filter.mock.calls.map(([path]) => path)
+			expect(calledPaths).toEqual(['1.1', '2', '1.1', '1'])
+			expect(filter.mock.calls.every(([, omitted]) => !omitted)).toBe(true)
+		})
+
+		test('a hidden parent does not hide its children', async () => {
+			const ctx = await createWith()
+			const filter = (path: string) => path !== '1.1'
+
+			expect(ctx.session('1', '', 'en', { filter }).nextSection?.path).toBe(
+				'1.1.1',
+			)
+			expect(ctx.session('1.2', '', 'en', { filter }).prevSection?.path).toBe(
+				'1.1.1',
+			)
+		})
+
+		test('session search with a filter matches search with the same filter', async () => {
+			const ctx = await createWith({ omitPaths: ['1.1'] })
+			const filter = (path: string, omitted: boolean) =>
+				path !== '2' && (!omitted || path === '1.1.1')
+
+			for (const query of ['content', 'Section', 'Introduction', '']) {
+				expect(ctx.session('1', query, 'en', { filter }).search).toEqual(
+					ctx.search(query, 'en', { filter }),
+				)
+			}
+		})
+
+		test('without a filter, gives the same session as before', async () => {
+			const ctx = await createWith({ omitPaths: ['1.1'] })
+
+			for (const path of ['1', '1.1', '1.2', '2']) {
+				expect(ctx.session(path, 'content', 'en', {})).toEqual(
+					ctx.session(path, 'content', 'en'),
+				)
+			}
+		})
+	})
 })

@@ -3,6 +3,7 @@ import {
 	buildSearchState,
 	findSection,
 	type Manifest,
+	type SectionFilter,
 	type SectionReference,
 	type Session,
 } from '.'
@@ -16,6 +17,7 @@ export const generateReadingSession = (
 	language: string,
 	maxNavigationDepth?: number,
 	omittedPaths?: Array<string>,
+	filter?: SectionFilter,
 ): Session => {
 	const { breadcrumbIndex, paths, pathIndex, references } = manifest
 	const currentPath = initialPath
@@ -30,6 +32,7 @@ export const generateReadingSession = (
 	const navigator = createSectionNavigator(paths, pathIndex, references, {
 		maxNavigationDepth,
 		omittedPaths,
+		filter,
 	})
 
 	return {
@@ -37,7 +40,7 @@ export const generateReadingSession = (
 		breadcrumbs,
 		nextSection: currentPath ? navigator.getNext(currentPath) : null,
 		prevSection: currentPath ? navigator.getPrev(currentPath) : null,
-		search: buildSearchState(content, query, omittedPaths),
+		search: buildSearchState(content, query, omittedPaths, filter),
 		language,
 	}
 }
@@ -45,6 +48,7 @@ export const generateReadingSession = (
 interface SectionNavigatorOptions {
 	maxNavigationDepth?: number
 	omittedPaths?: Array<string>
+	filter?: SectionFilter
 }
 
 function createSectionNavigator(
@@ -53,41 +57,46 @@ function createSectionNavigator(
 	references: Record<string, SectionReference>,
 	options: SectionNavigatorOptions = {},
 ) {
-	const { maxNavigationDepth, omittedPaths } = options
+	const { maxNavigationDepth, omittedPaths, filter } = options
+	const limitsDepth =
+		maxNavigationDepth !== undefined && maxNavigationDepth !== Infinity
 
-	const withinDepth = (path: string): boolean =>
-		maxNavigationDepth === undefined || maxNavigationDepth === Infinity
-			? true
-			: path.split('.').length <= maxNavigationDepth
-
-	function getAdjacent(
-		currentPath: string,
-		direction: 'next' | 'prev',
-	): SectionReference | null {
-		const effectivePath =
-			maxNavigationDepth === undefined || maxNavigationDepth === Infinity
-				? currentPath
-				: clampPathToDepth(currentPath, maxNavigationDepth)
-		const index = Object.hasOwn(pathIndex, effectivePath)
-			? (pathIndex[effectivePath] as number)
-			: -1
-		if (direction === 'next' ? index === -1 : index <= 0) return null
-
-		const step = direction === 'next' ? 1 : -1
-		const withinBounds = (i: number) =>
-			direction === 'next' ? i < paths.length : i >= 0
-
-		for (let i = index + step; withinBounds(i); i += step) {
+	// The first listed section from `from` in the `step` direction. The
+	// condition is written inline: a helper called on every iteration made
+	// the pager measurably slower. The filter is checked last, so it is
+	// never called for sections the pager would skip anyway.
+	function scan(from: number, step: 1 | -1): SectionReference | null {
+		for (let i = from; i >= 0 && i < paths.length; i += step) {
 			const path = paths[i] as string
-			if (withinDepth(path) && !isPathOmitted(path, omittedPaths)) {
+			if (
+				(!limitsDepth ||
+					path.split('.').length <= (maxNavigationDepth as number)) &&
+				!isPathOmitted(path, omittedPaths) &&
+				(filter === undefined || filter(path, false))
+			) {
 				return references[path] ?? null
 			}
 		}
 		return null
 	}
 
+	function indexOf(currentPath: string): number {
+		const effectivePath = limitsDepth
+			? clampPathToDepth(currentPath, maxNavigationDepth as number)
+			: currentPath
+		return Object.hasOwn(pathIndex, effectivePath)
+			? (pathIndex[effectivePath] as number)
+			: -1
+	}
+
 	return {
-		getNext: (currentPath: string) => getAdjacent(currentPath, 'next'),
-		getPrev: (currentPath: string) => getAdjacent(currentPath, 'prev'),
+		getNext(currentPath: string): SectionReference | null {
+			const index = indexOf(currentPath)
+			return index === -1 ? null : scan(index + 1, 1)
+		},
+		getPrev(currentPath: string): SectionReference | null {
+			const index = indexOf(currentPath)
+			return index <= 0 ? null : scan(index - 1, -1)
+		},
 	}
 }

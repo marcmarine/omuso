@@ -309,7 +309,7 @@ const manifest = ctx.manifest('en')
 console.log(manifest?.paths)
 ```
 
-#### `ctx.session(path: string, query = '', lang: string)`
+#### `ctx.session(path: string, query = '', lang: string, options?: SessionOptions)`
 
 Creates a reading session for a specific section.
 
@@ -327,6 +327,19 @@ A session includes:
 - Breadcrumbs
 - Previous / Next section
 - Search state
+
+Pass `filter` to hide sections at runtime, for example the ones a reader can't access yet. It takes the same [`SectionFilter`](#sectionfilter) as `ctx.search`:
+
+```javascript
+const session = ctx.session(path, query, lang, {
+  filter: (path) => unlocked.has(path),
+})
+```
+
+- **Previous / Next:** the filter hides sections on top of `omitPaths` and `maxNavigationDepth`. It is only called for sections that pass both, so `omitted` is always `false` there.
+- **Search:** it works as in [`ctx.search`](#ctxsearchquery---lang-string-options-searchoptions): it replaces the exclusion of `omitPaths`.
+
+`currentSection` and `breadcrumbs` are returned even when the current section is hidden: deciding whether it can be read is up to you.
 
 #### `ctx.search(query = '', lang: string, options?: SearchOptions)`
 
@@ -419,6 +432,17 @@ interface Session {
   breadcrumbs: SectionReference[]
   search: SearchState
   language: string
+}
+```
+
+#### `SessionOptions`
+
+Options for `ctx.session`.
+
+```typescript
+interface SessionOptions {
+  // Hides sections from prev/next and decides which ones are searched
+  filter?: SectionFilter
 }
 ```
 

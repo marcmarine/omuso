@@ -9,6 +9,7 @@ import {
 	type Manifest,
 	type SearchOptions,
 	type SearchState,
+	type SessionOptions,
 } from '.'
 
 /**
@@ -52,7 +53,12 @@ export const createContext = (config?: BookContextConfig): BookContext => {
 		return state.manifests[lang] as Manifest
 	}
 
-	const session = (path: string, query: string = '', lang: string) => {
+	const session = (
+		path: string,
+		query: string = '',
+		lang: string,
+		options?: SessionOptions,
+	) => {
 		const root = state.roots[lang] as Root
 		const manifest = state.manifests[lang] as Manifest
 
@@ -64,6 +70,7 @@ export const createContext = (config?: BookContextConfig): BookContext => {
 			lang,
 			state.maxNavigationDepth,
 			state.omittedPaths,
+			options?.filter,
 		)
 	}
 
