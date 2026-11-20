@@ -1,16 +1,21 @@
-@import "./reset.css";
-@import "./tokens.css";
-@import "./base.css";
-@import "./resizable.css";
-@import "./reader.css";
-@import "./header.css";
-@import "./toolbar.css";
-@import "./sidebar.css";
-@import "./pager.css";
-@import "./cover.css";
-@import "./toc.css";
-@import "./search.css";
-@import "./breadcrumb.css";
-@import "./content.css";
-@import "./dropdown.css";
-@import "./language-menu.css";
+/* Every rule lives in a layer, so the app's unlayered CSS overrides the
+   reader regardless of specificity or load order. To place the reader among
+   the app's own layers, name `omuso` in the app's `@layer` statement. */
+@layer omuso.reset, omuso.base, omuso.layout, omuso.components;
+
+@import "./reset.css" layer(omuso.reset);
+@import "./tokens.css" layer(omuso.base);
+@import "./base.css" layer(omuso.base);
+@import "./resizable.css" layer(omuso.layout);
+@import "./reader.css" layer(omuso.layout);
+@import "./sidebar.css" layer(omuso.layout);
+@import "./header.css" layer(omuso.components);
+@import "./toolbar.css" layer(omuso.components);
+@import "./pager.css" layer(omuso.components);
+@import "./cover.css" layer(omuso.components);
+@import "./toc.css" layer(omuso.components);
+@import "./search.css" layer(omuso.components);
+@import "./breadcrumb.css" layer(omuso.components);
+@import "./content.css" layer(omuso.components);
+@import "./dropdown.css" layer(omuso.components);
+@import "./language-menu.css" layer(omuso.components);
