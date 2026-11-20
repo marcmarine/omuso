@@ -22,9 +22,11 @@
 	"scripts": {
 		"dev": "bun build ./src/index.ts --outdir ./dist --target browser --minify --packages external --footer=\"import './index.css';\" --watch",
 		"build:types": "tsc --emitDeclarationOnly",
-		"build": "bun build ./src/index.ts --outdir ./dist --target browser --minify --packages external --footer=\"import './index.css';\" && bun run build:types"
+		"build": "bun build ./src/index.ts --outdir ./dist --target browser --minify --packages external --footer=\"import './index.css';\" && bun run build:types",
+		"test": "bun test"
 	},
 	"devDependencies": {
+		"@happy-dom/global-registrator": "^21.0.4",
 		"@types/react": "^19",
 		"omuso": "workspace:*",
 		"react": "^19.3.0",
