@@ -2,20 +2,12 @@ import { memo, useCallback, useEffect, useRef, useState } from 'react'
 import { Link } from '../components/Link'
 import { useBookContext } from '../providers/BookContextProvider'
 import { useReaderI18n } from '../providers/I18nProvider'
-import { useLayout } from '../providers/LayoutProvider'
-import { isWideLayout } from '../utils'
 import { highlightMatches } from '../utils/dom'
 
 export function Search() {
 	const { session } = useBookContext()
-	const { panel, layoutRef } = useLayout()
 	const { query, results, totalMatches } = session.search
 	const { t } = useReaderI18n()
-
-	const closePanel = () => {
-		if (isWideLayout(layoutRef.current)) return
-		panel.right.close()
-	}
 
 	return (
 		<search className="om-search">
@@ -47,7 +39,6 @@ export function Search() {
 										path={item.path}
 										query={query}
 										className="om-search__result-link"
-										onClick={closePanel}
 									>
 										<p className="om-search__result-context">
 											{item.parentSection?.title || ''}
@@ -72,7 +63,6 @@ export function Search() {
 											path={item.path}
 											query={query}
 											className="om-search__result-action om-interactive"
-											onClick={closePanel}
 										>
 											View
 										</Link>
@@ -80,7 +70,6 @@ export function Search() {
 											path={item.path}
 											query={query}
 											className="om-search__result-source"
-											onClick={closePanel}
 										>
 											<p className="om-search__result-source-title">
 												{item.title}

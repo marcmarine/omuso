@@ -1,5 +1,6 @@
 import type React from 'react'
 import { useBookContext } from '../providers/BookContextProvider'
+import { useLayout } from '../providers/LayoutProvider'
 import { useRoutingStrategy } from '../providers/RoutingProvider'
 import { prependBasePath, slugForPath } from '../utils/routes'
 
@@ -47,6 +48,7 @@ export function Link({
 }: Props) {
 	const { Component = 'a' } = useRoutingStrategy()
 	const { navigate, basePath, manifest } = useBookContext()
+	const { closePanelsIfNarrow } = useLayout()
 
 	const slug = to ?? slugForPath(path as string, manifest)
 
@@ -56,13 +58,17 @@ export function Link({
 		const handleClick = (event: React.MouseEvent<HTMLElement>) => {
 			onClick?.(event)
 			if (event.defaultPrevented) return
+			closePanelsIfNarrow()
 			goToPath()
 		}
 
 		const handleKeyDown = (event: React.KeyboardEvent<HTMLElement>) => {
 			onKeyDown?.(event)
 			if (event.defaultPrevented) return
-			if (event.key === 'Enter') goToPath()
+			if (event.key === 'Enter') {
+				closePanelsIfNarrow()
+				goToPath()
+			}
 		}
 
 		// Without slugs there is no URL to point to. An anchor without `href`
@@ -94,6 +100,7 @@ export function Link({
 	const handleClick = (event: React.MouseEvent<HTMLElement>) => {
 		onClick?.(event)
 		if (event.defaultPrevented) return
+		closePanelsIfNarrow()
 		if (event.button !== 0) return
 		if (isModifiedClick(event)) return
 		if (hasExternalTarget(props.target)) return

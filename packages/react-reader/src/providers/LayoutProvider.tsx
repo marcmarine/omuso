@@ -2,19 +2,29 @@ import {
 	createContext,
 	useCallback,
 	useContext,
+	useEffect,
 	useMemo,
 	useRef,
 	useState,
 } from 'react'
 import useLocalStorage from '../hooks/useLocalStorage'
+import { isWideLayout } from '../utils'
+import { useBookContext } from './BookContextProvider'
+
+type Panels = Record<'left' | 'right', PanelState>
 
 type LayoutContextType = {
-	panel: Record<'left' | 'right', PanelState>
+	panel: Panels
 	/**
 	 * The `.om-layout` element, set by `Layout`. Pass it to `isWideLayout()` to
 	 * know whether the panels sit beside the page or over it.
 	 */
 	layoutRef: React.RefObject<HTMLDivElement | null>
+	/**
+	 * Closes both panels when they cover the page (narrow layout). Links call
+	 * it, so following one shows the page even when it doesn't change.
+	 */
+	closePanelsIfNarrow: () => void
 }
 
 interface LayoutProviderProps {
@@ -22,23 +32,83 @@ interface LayoutProviderProps {
 }
 
 const LayoutContext = createContext<LayoutContextType>({
-	panel: {} as LayoutContextType['panel'],
+	panel: {} as Panels,
 	layoutRef: { current: null },
+	closePanelsIfNarrow: () => {},
 })
 
 export const useLayout = () => useContext(LayoutContext)
 
+/**
+ * The reader's side panels. The panel policy lives here, so every piece that
+ * opens, closes or follows a link gets it:
+ * - When narrow, the panels cover the page, so opening one closes the other.
+ * - When narrow, a new page closes them, whatever led to it: a link, the
+ *   pager or the browser history.
+ */
+export const useReaderPanels = () => useContext(LayoutContext).panel
+
 export function LayoutProvider({ children }: LayoutProviderProps) {
-	const left = usePanelState('leftPanel', false, 250)
-	const right = usePanelState('rightPanel', false, 300)
-	const panel = useMemo(() => ({ left, right }), [left, right])
+	const { session } = useBookContext()
+	const currentPath = session.currentSection?.path
 	const layoutRef = useRef<HTMLDivElement>(null)
 
-	const value = useMemo(() => ({ panel, layoutRef }), [panel])
+	const leftState = usePanelState('leftPanel', false, 250)
+	const rightState = usePanelState('rightPanel', false, 300)
+
+	const isNarrow = useCallback(() => !isWideLayout(layoutRef.current), [])
+	const left = useExclusivePanel(leftState, rightState, isNarrow)
+	const right = useExclusivePanel(rightState, leftState, isNarrow)
+	const panel = useMemo(() => ({ left, right }), [left, right])
+
+	const closeLeft = leftState.close
+	const closeRight = rightState.close
+	const closePanelsIfNarrow = useCallback(() => {
+		if (!isNarrow()) return
+		closeLeft()
+		closeRight()
+	}, [isNarrow, closeLeft, closeRight])
+
+	// Only on a change, so a panel left open isn't closed on load.
+	const shownPath = useRef(currentPath)
+	useEffect(() => {
+		if (shownPath.current === currentPath) return
+		shownPath.current = currentPath
+		closePanelsIfNarrow()
+	}, [currentPath, closePanelsIfNarrow])
+
+	const value = useMemo(
+		() => ({ panel, layoutRef, closePanelsIfNarrow }),
+		[panel, closePanelsIfNarrow],
+	)
 
 	return (
 		<LayoutContext.Provider value={value}>{children}</LayoutContext.Provider>
 	)
+}
+
+/**
+ * Wraps a panel so that opening it closes `other` when narrow.
+ */
+function useExclusivePanel(
+	panel: PanelState,
+	other: PanelState,
+	isNarrow: () => boolean,
+): PanelState {
+	const { isOpen, open: openPanel, close } = panel
+	const closeOther = other.close
+
+	const open = useCallback(() => {
+		if (isNarrow()) closeOther()
+		openPanel()
+	}, [isNarrow, closeOther, openPanel])
+
+	const toggle = useCallback(() => {
+		if (isOpen) close()
+		else open()
+	}, [isOpen, close, open])
+
+	return useMemo(() => ({ ...panel, open, toggle }), [panel, open, toggle])
 }
 
 export interface PanelState {

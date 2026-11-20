@@ -5,9 +5,8 @@ import ThemeToggle from '../components/ThemeToggle'
 import TranslationSelector from '../components/TranslationSelector'
 import { useBookContext } from '../providers/BookContextProvider'
 import { useReaderI18n } from '../providers/I18nProvider'
-import { useLayout } from '../providers/LayoutProvider'
+import { useLayout, useReaderPanels } from '../providers/LayoutProvider'
 import { useTheme } from '../providers/ThemeProvider'
-import { isWideLayout } from '../utils'
 import { COVER_PATH } from '../utils/routes'
 import Navigation from './Navigation'
 
@@ -27,18 +26,6 @@ export default function Layout({ children }: { children: React.ReactNode }) {
 	useEffect(() => {
 		pageRef.current?.scrollTo({ top: 0 })
 	}, [currentPath])
-
-	// When narrow, the panels cover the page, so a new page closes them,
-	// whatever led to it: the pager, the header or the browser history. Only
-	// on a change, so a panel left open isn't closed on load.
-	const shownPath = useRef(currentPath)
-	useEffect(() => {
-		if (shownPath.current === currentPath) return
-		shownPath.current = currentPath
-		if (isWideLayout(layoutRef.current)) return
-		if (panel.left.isOpen) panel.left.close()
-		if (panel.right.isOpen) panel.right.close()
-	}, [currentPath, panel.left, panel.right, layoutRef])
 
 	const childrenArray = Children.toArray(children)
 	const [FirstChild, SecondChild, ThirdChild] = childrenArray
@@ -112,21 +99,11 @@ function Toolbar() {
 }
 
 function SearchToggle() {
-	const { panel, layoutRef } = useLayout()
+	const panel = useReaderPanels()
 	const { t } = useReaderI18n()
 	const { session } = useBookContext()
 	const { query } = session.search
-
-	const toggle = useCallback(() => {
-		if (
-			panel.left.isOpen &&
-			!panel.right.isOpen &&
-			!isWideLayout(layoutRef.current)
-		) {
-			panel.left.close()
-		}
-		panel.right.toggle()
-	}, [panel.left, panel.right, layoutRef])
+	const toggle = panel.right.toggle
 
 	const handleKeyDown = useCallback(
 		(event: KeyboardEvent) => {
@@ -178,19 +155,9 @@ function SearchToggle() {
 }
 
 function TOCToggle() {
-	const { panel, layoutRef } = useLayout()
+	const panel = useReaderPanels()
 	const { t } = useReaderI18n()
-
-	const toggle = useCallback(() => {
-		if (
-			panel.right.isOpen &&
-			!panel.left.isOpen &&
-			!isWideLayout(layoutRef.current)
-		) {
-			panel.right.close()
-		}
-		panel.left.toggle()
-	}, [panel.left, panel.right, layoutRef])
+	const toggle = panel.left.toggle
 
 	const handleKeyDown = useCallback(
 		(event: KeyboardEvent) => {

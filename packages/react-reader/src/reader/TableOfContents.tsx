@@ -3,11 +3,9 @@ import { Link } from '../components/Link'
 import useLocalStorage from '../hooks/useLocalStorage'
 import { useBookContext } from '../providers/BookContextProvider'
 import { useReaderI18n } from '../providers/I18nProvider'
-import { useLayout } from '../providers/LayoutProvider'
-import { classes, isWideLayout } from '../utils'
+import { classes } from '../utils'
 
 function BookTableOfContents() {
-	const { panel, layoutRef } = useLayout()
 	const { t } = useReaderI18n()
 	const { manifest, session, maxPageDepth } = useBookContext()
 	const { tableOfContents } = manifest
@@ -21,11 +19,6 @@ function BookTableOfContents() {
 			...expandedSections,
 			[id]: !expandedSections[id],
 		})
-	}
-
-	const closePanel = () => {
-		if (isWideLayout(layoutRef.current)) return
-		panel.left.close()
 	}
 
 	// The current section is the page; its ancestors are marked as current
@@ -94,7 +87,6 @@ function BookTableOfContents() {
 									query={search.query}
 									aria-current={ariaCurrent(section.path)}
 									className="om-toc__link"
-									onClick={closePanel}
 								>
 									{section.title}
 								</Link>
@@ -111,7 +103,6 @@ function BookTableOfContents() {
 														query={search.query}
 														aria-current={ariaCurrent(item.path)}
 														className="om-toc__link om-interactive"
-														onClick={closePanel}
 													>
 														{item.title}
 													</Link>
