@@ -33,6 +33,11 @@ export type Context = {
 	availableLanguages: Array<string>
 	setLanguage: (newLanguage: string) => void
 	basePath: string
+	/**
+	 * The deepest section level shown as a page. Deeper sections are
+	 * rendered inline within their page.
+	 */
+	maxPageDepth: number
 }
 
 export const BookContextContext = React.createContext<Context | undefined>(
@@ -46,6 +51,7 @@ export function BookContextProvider({
 	location: externalLocation,
 	basePath,
 	searchFilter,
+	maxPageDepth = Infinity,
 }: {
 	children: React.ReactNode
 	defaultLanguage?: string
@@ -53,7 +59,10 @@ export function BookContextProvider({
 	location?: Partial<Location>
 	basePath?: string
 	searchFilter?: SearchFilter
+	maxPageDepth?: number
 }) {
+	useDepthWarning(context, maxPageDepth)
+
 	const manifests = React.useMemo(() => context.manifests, [context])
 	const manifestMap = manifests as Record<string, Manifest>
 	const availableLanguages = useMemo(() => Object.keys(manifests), [manifests])
@@ -307,6 +316,7 @@ export function BookContextProvider({
 			availableLanguages,
 			setLanguage,
 			basePath: normalizedBasePath,
+			maxPageDepth,
 		}),
 		[
 			manifest,
@@ -317,6 +327,7 @@ export function BookContextProvider({
 			availableLanguages,
 			setLanguage,
 			normalizedBasePath,
+			maxPageDepth,
 		],
 	)
 
@@ -325,6 +336,20 @@ export function BookContextProvider({
 			{children}
 		</BookContextContext.Provider>
 	)
+}
+
+/**
+ * Warns when prev/next can lead to sections that are rendered inline.
+ */
+function useDepthWarning(context: BookContext, maxPageDepth: number) {
+	const navigationDepth = context.maxNavigationDepth ?? Infinity
+
+	React.useEffect(() => {
+		if (navigationDepth <= maxPageDepth) return
+		console.warn(
+			`maxNavigationDepth (${navigationDepth}) is deeper than the reader's maxPageDepth (${maxPageDepth}): prev/next will lead to sections already rendered inline.`,
+		)
+	}, [navigationDepth, maxPageDepth])
 }
 
 export function useBookContext() {

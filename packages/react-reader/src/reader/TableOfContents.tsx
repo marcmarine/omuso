@@ -7,9 +7,9 @@ import { useLayout } from '../providers/LayoutProvider'
 import { classes, isWideLayout } from '../utils'
 
 function BookTableOfContents() {
-	const { panel, layoutRef, maxPageDepth } = useLayout()
+	const { panel, layoutRef } = useLayout()
 	const { t } = useReaderI18n()
-	const { manifest, session } = useBookContext()
+	const { manifest, session, maxPageDepth } = useBookContext()
 	const { tableOfContents } = manifest
 	const { breadcrumbs, search, currentSection } = session
 	const [expandedSections, setExpandedSections] = useLocalStorage<{

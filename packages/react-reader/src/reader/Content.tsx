@@ -5,7 +5,6 @@ import { ContentRenderer } from '../content/ContentRenderer'
 import { HeadingElement } from '../content/HeadingElement'
 import { useBookContext } from '../providers/BookContextProvider'
 import { useReaderI18n } from '../providers/I18nProvider'
-import { useLayout } from '../providers/LayoutProvider'
 import { classes, sectionLevel } from '../utils'
 import { highlightMatches } from '../utils/dom'
 
@@ -95,9 +94,9 @@ export function ContentHeader({
 
 export default function Content() {
 	const context = useBookContext()
-	const { maxPageDepth } = useLayout()
 	const {
 		session: { currentSection, breadcrumbs, search },
+		maxPageDepth,
 	} = context
 	if (!currentSection) return null
 

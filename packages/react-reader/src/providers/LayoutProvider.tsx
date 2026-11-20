@@ -15,35 +15,26 @@ type LayoutContextType = {
 	 * know whether the panels sit beside the page or over it.
 	 */
 	layoutRef: React.RefObject<HTMLDivElement | null>
-	maxPageDepth: number
 }
 
 interface LayoutProviderProps {
 	children: React.ReactNode
-	maxPageDepth?: number
 }
 
 const LayoutContext = createContext<LayoutContextType>({
 	panel: {} as LayoutContextType['panel'],
 	layoutRef: { current: null },
-	maxPageDepth: Infinity,
 })
 
 export const useLayout = () => useContext(LayoutContext)
 
-export function LayoutProvider({
-	children,
-	maxPageDepth = Infinity,
-}: LayoutProviderProps) {
+export function LayoutProvider({ children }: LayoutProviderProps) {
 	const left = usePanelState('leftPanel', false, 250)
 	const right = usePanelState('rightPanel', false, 300)
 	const panel = useMemo(() => ({ left, right }), [left, right])
 	const layoutRef = useRef<HTMLDivElement>(null)
 
-	const value = useMemo(
-		() => ({ panel, layoutRef, maxPageDepth }),
-		[panel, maxPageDepth],
-	)
+	const value = useMemo(() => ({ panel, layoutRef }), [panel])
 
 	return (
 		<LayoutContext.Provider value={value}>{children}</LayoutContext.Provider>

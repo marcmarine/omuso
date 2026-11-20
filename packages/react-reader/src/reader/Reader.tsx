@@ -1,5 +1,4 @@
 import type { BookContext, SearchFilter } from 'omuso'
-import { useEffect } from 'react'
 import {
 	BookContextProvider,
 	type Context,
@@ -65,23 +64,10 @@ function Reader({ contentComponent: ContentComponent }: ReaderProps) {
 	)
 }
 
-function useDepthWarning(context: BookContext, maxPageDepth = Infinity) {
-	const navigationDepth = context.maxNavigationDepth ?? Infinity
-
-	useEffect(() => {
-		if (navigationDepth <= maxPageDepth) return
-		console.warn(
-			`maxNavigationDepth (${navigationDepth}) is deeper than the reader's maxPageDepth (${maxPageDepth}): prev/next will lead to sections already rendered inline.`,
-		)
-	}, [navigationDepth, maxPageDepth])
-}
-
 function withProviders<P extends ReaderProps>(
 	WrappedComponent: React.ComponentType<P>,
 ) {
 	return (props: P) => {
-		useDepthWarning(props.context, props.maxPageDepth)
-
 		return (
 			<I18nProvider locale={props.language}>
 				<BookContextProvider
@@ -90,9 +76,10 @@ function withProviders<P extends ReaderProps>(
 					location={props.location}
 					basePath={props.basePath}
 					searchFilter={props.searchFilter}
+					maxPageDepth={props.maxPageDepth}
 				>
 					<RoutingProvider linkComponent={props.linkComponent}>
-						<LayoutProvider maxPageDepth={props.maxPageDepth}>
+						<LayoutProvider>
 							<ThemeProvider>
 								<WrappedComponent {...props} />
 							</ThemeProvider>
