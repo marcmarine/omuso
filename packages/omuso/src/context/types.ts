@@ -132,18 +132,33 @@ export interface OrphanParagraphResult extends BaseResult {
 export type SearchResult = SectionResult | OrphanParagraphResult
 
 /**
- * Decides whether a section is searched (its title and direct paragraphs).
- * Child sections are still visited and filtered on their own. `omitted`
- * tells whether the path lies within `omitPaths`, so the default behaviour
- * can be reused. Called once per section, in document order.
+ * Decides whether a section is listed. `omitted` tells whether the path lies
+ * within `omitPaths`, so the default behaviour can be reused.
+ *
+ * It decides on each section independently: excluding a section does not
+ * exclude its children.
+ *
+ * In search, it replaces the exclusion of `omitPaths` and decides whether a
+ * section's title and direct paragraphs are searched. It is called once per
+ * section, in document order.
+ *
+ * It should return the same result for the same path and do no other work:
+ * prepare anything expensive beforehand (e.g. a `Set` of visible paths) and
+ * only look it up here, since it runs once per section on every search.
  */
-export type SearchFilter = (path: string, omitted: boolean) => boolean
+export type SectionFilter = (path: string, omitted: boolean) => boolean
+
+/**
+ * @deprecated Use `SectionFilter` instead. Will be removed in the next major
+ * version.
+ */
+export type SearchFilter = SectionFilter
 
 export interface SearchOptions {
 	/**
 	 * Replaces the default exclusion of `omitPaths`, in search only.
 	 */
-	filter?: SearchFilter
+	filter?: SectionFilter
 }
 
 export interface SearchState {

@@ -1,9 +1,9 @@
 import type { Content, Section } from '../parser/types'
 import type {
 	ParagraphResult,
-	SearchFilter,
 	SearchResult,
 	SearchState,
+	SectionFilter,
 	SectionReference,
 	SectionResult,
 } from './types'
@@ -64,7 +64,7 @@ function findMatchesInContent(
 	content: Content,
 	query: string,
 	omittedPaths: Array<string>,
-	filter: SearchFilter | undefined,
+	filter: SectionFilter | undefined,
 	parent: SectionReference | null = null,
 ): SearchResult[] {
 	const results: SearchResult[] = []
@@ -130,7 +130,7 @@ export function buildSearchResponse(
 	content: Content,
 	query: string,
 	omittedPaths: Array<string> = [],
-	filter?: SearchFilter,
+	filter?: SectionFilter,
 ): SearchResult[] {
 	if (!query.trim()) return []
 
@@ -144,7 +144,7 @@ export function buildSearchState(
 	content: Content,
 	query: string,
 	omittedPaths: Array<string> = [],
-	filter?: SearchFilter,
+	filter?: SectionFilter,
 ): SearchState {
 	const results = buildSearchResponse(content, query, omittedPaths, filter)
 

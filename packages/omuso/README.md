@@ -425,11 +425,20 @@ Options for `ctx.search`.
 ```typescript
 interface SearchOptions {
   // Replaces the default exclusion of `omitPaths`, in search only
-  filter?: SearchFilter
+  filter?: SectionFilter
 }
 
-// Decides whether a section is searched; child sections are filtered on their own
-type SearchFilter = (path: string, omitted: boolean) => boolean
+```
+
+#### `SectionFilter`
+
+Decides whether a section is listed, given its `path` and whether it lies within `omitPaths`. It decides on each section independently: excluding a section does not exclude its children. It should return the same result for the same path and stay cheap, since it runs once per section: prepare anything expensive beforehand (e.g. a `Set` of visible paths) and only look it up in the filter.
+
+> [!NOTE]
+> `SearchFilter` is a deprecated alias of `SectionFilter` and will be removed in the next major version.
+
+```typescript
+type SectionFilter = (path: string, omitted: boolean) => boolean
 ```
 
 #### `SectionReference`
