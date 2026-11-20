@@ -1,12 +1,15 @@
-import { useBookContext } from '../providers/BookContextProvider'
+import { useReader } from '../providers/BookContextProvider'
 import { getLanguageNames } from '../utils'
 import { Dropdown } from './Dropdown'
 
 export default function TranslationSelector() {
-	const { manifest, availableLanguages, setLanguage } = useBookContext()
-	const { language } = manifest.metadata
+	const {
+		state: { language },
+		actions: { setLanguage },
+		meta: { languages },
+	} = useReader()
 
-	if (availableLanguages.length === 1) return null
+	if (languages.length === 1) return null
 
 	return (
 		<Dropdown
@@ -40,7 +43,7 @@ export default function TranslationSelector() {
 			)}
 		>
 			{(closeDropdown) =>
-				availableLanguages.map((availableLanguage: string) => {
+				languages.map((availableLanguage: string) => {
 					const languageName = getLanguageNames(availableLanguage)
 					const isSelected = availableLanguage === language
 					return (

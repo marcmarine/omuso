@@ -3,7 +3,7 @@ import { Link } from '../components/Link'
 import { CollapsedSectionContent } from '../content/CollapsedSectionContent'
 import { ContentRenderer } from '../content/ContentRenderer'
 import { HeadingElement } from '../content/HeadingElement'
-import { useBookContext } from '../providers/BookContextProvider'
+import { useReader } from '../providers/BookContextProvider'
 import { useReaderI18n } from '../providers/I18nProvider'
 import { classes, sectionLevel } from '../utils'
 import { highlightMatches } from '../utils/dom'
@@ -93,11 +93,12 @@ export function ContentHeader({
 }
 
 export default function Content() {
-	const context = useBookContext()
 	const {
-		session: { currentSection, breadcrumbs, search },
-		maxPageDepth,
-	} = context
+		state: {
+			session: { currentSection, breadcrumbs, search },
+		},
+		meta: { maxPageDepth },
+	} = useReader()
 	if (!currentSection) return null
 
 	return (

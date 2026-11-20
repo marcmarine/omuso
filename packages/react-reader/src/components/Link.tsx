@@ -1,5 +1,5 @@
 import type React from 'react'
-import { useBookContext } from '../providers/BookContextProvider'
+import { useReader } from '../providers/BookContextProvider'
 import { useLayout } from '../providers/LayoutProvider'
 import { useRoutingStrategy } from '../providers/RoutingProvider'
 import { prependBasePath, slugForPath } from '../utils/routes'
@@ -47,7 +47,10 @@ export function Link({
 	...props
 }: Props) {
 	const { Component = 'a' } = useRoutingStrategy()
-	const { navigate, basePath, manifest } = useBookContext()
+	const {
+		actions: { navigate },
+		meta: { basePath, manifest },
+	} = useReader()
 	const { closePanelsIfNarrow } = useLayout()
 
 	const slug = to ?? slugForPath(path as string, manifest)

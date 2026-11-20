@@ -1,10 +1,9 @@
-import { useBookContext } from '../providers/BookContextProvider'
+import { useReader } from '../providers/BookContextProvider'
 import { useReaderI18n } from '../providers/I18nProvider'
 import { formatYear } from '../utils'
 
 export default function Cover() {
-	const { manifest } = useBookContext()
-	const { metadata } = manifest
+	const { metadata } = useReader().meta.manifest
 
 	const { t } = useReaderI18n()
 

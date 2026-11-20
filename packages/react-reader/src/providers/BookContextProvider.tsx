@@ -20,27 +20,45 @@ import {
 	stripBasePath,
 } from '../utils/routes'
 
-export type Context = {
-	manifest: Manifest
-	session: Session
-	/**
-	 * Navigates to a URL (slug) or to a section `path`. Paths go through
-	 * their slug when the book has one, so the URL stays in sync.
-	 */
-	navigate: (target: string | { path: string }) => void
-	search: (value: string) => void
-	resetSearch: () => void
-	availableLanguages: Array<string>
-	setLanguage: (newLanguage: string) => void
-	basePath: string
-	/**
-	 * The deepest section level shown as a page. Deeper sections are
-	 * rendered inline within their page.
-	 */
-	maxPageDepth: number
+/**
+ * The reader's live state, the actions that change it and the reference
+ * data that doesn't change while reading.
+ */
+export type ReaderValue = {
+	state: {
+		/**
+		 * The active language of the book.
+		 */
+		language: string
+		session: Session
+	}
+	actions: {
+		/**
+		 * Navigates to a URL (slug) or to a section `path`. Paths go through
+		 * their slug when the book has one, so the URL stays in sync.
+		 */
+		navigate: (target: string | { path: string }) => void
+		setQuery: (query: string) => void
+		clearQuery: () => void
+		setLanguage: (language: string) => void
+	}
+	meta: {
+		book: BookContext
+		/**
+		 * The manifest of the active language.
+		 */
+		manifest: Manifest
+		languages: Array<string>
+		basePath: string
+		/**
+		 * The deepest section level shown as a page. Deeper sections are
+		 * rendered inline within their page.
+		 */
+		maxPageDepth: number
+	}
 }
 
-export const BookContextContext = React.createContext<Context | undefined>(
+export const ReaderValueContext = React.createContext<ReaderValue | undefined>(
 	undefined,
 )
 
@@ -263,13 +281,13 @@ export function BookContextProvider({
 		],
 	)
 
-	const search = React.useCallback((value: string) => {
+	const setQuery = React.useCallback((value: string) => {
 		setSearchQuery((previousValue) =>
 			previousValue === value ? previousValue : value,
 		)
 	}, [])
 
-	const resetSearch = React.useCallback(() => {
+	const clearQuery = React.useCallback(() => {
 		setSearchQuery((previousValue) =>
 			previousValue === undefined ? previousValue : undefined,
 		)
@@ -306,35 +324,33 @@ export function BookContextProvider({
 		],
 	)
 
-	const value = React.useMemo<Context>(
+	const state = React.useMemo<ReaderValue['state']>(
+		() => ({ language: validatedLanguage, session }),
+		[validatedLanguage, session],
+	)
+	const actions = React.useMemo<ReaderValue['actions']>(
+		() => ({ navigate, setQuery, clearQuery, setLanguage }),
+		[navigate, setQuery, clearQuery, setLanguage],
+	)
+	const meta = React.useMemo<ReaderValue['meta']>(
 		() => ({
+			book: context,
 			manifest,
-			session,
-			navigate,
-			search,
-			resetSearch,
-			availableLanguages,
-			setLanguage,
+			languages: availableLanguages,
 			basePath: normalizedBasePath,
 			maxPageDepth,
 		}),
-		[
-			manifest,
-			session,
-			navigate,
-			search,
-			resetSearch,
-			availableLanguages,
-			setLanguage,
-			normalizedBasePath,
-			maxPageDepth,
-		],
+		[context, manifest, availableLanguages, normalizedBasePath, maxPageDepth],
+	)
+	const value = React.useMemo<ReaderValue>(
+		() => ({ state, actions, meta }),
+		[state, actions, meta],
 	)
 
 	return (
-		<BookContextContext.Provider value={value}>
+		<ReaderValueContext.Provider value={value}>
 			{children}
-		</BookContextContext.Provider>
+		</ReaderValueContext.Provider>
 	)
 }
 
@@ -352,10 +368,10 @@ function useDepthWarning(context: BookContext, maxPageDepth: number) {
 	}, [navigationDepth, maxPageDepth])
 }
 
-export function useBookContext() {
-	const context = React.useContext(BookContextContext)
-	if (!context) {
-		throw new Error('useBookContext must be used within a BookProvider')
+export function useReader(): ReaderValue {
+	const value = React.useContext(ReaderValueContext)
+	if (!value) {
+		throw new Error('useReader must be used within a reader')
 	}
-	return context
+	return value
 }

@@ -3,7 +3,7 @@ import { Link } from '../components/Link'
 import { ResizablePanel } from '../components/ResizablePanel'
 import ThemeToggle from '../components/ThemeToggle'
 import TranslationSelector from '../components/TranslationSelector'
-import { useBookContext } from '../providers/BookContextProvider'
+import { useReader } from '../providers/BookContextProvider'
 import { useReaderI18n } from '../providers/I18nProvider'
 import { useLayout, useReaderPanels } from '../providers/LayoutProvider'
 import { useTheme } from '../providers/ThemeProvider'
@@ -13,7 +13,10 @@ import Navigation from './Navigation'
 import '../styles/index.css'
 
 export default function Layout({ children }: { children: React.ReactNode }) {
-	const { manifest, session } = useBookContext()
+	const {
+		state: { session },
+		meta: { manifest },
+	} = useReader()
 	const { panel, layoutRef } = useLayout()
 	const { theme } = useTheme()
 	const { title, author } = manifest.metadata
@@ -101,8 +104,7 @@ function Toolbar() {
 function SearchToggle() {
 	const panel = useReaderPanels()
 	const { t } = useReaderI18n()
-	const { session } = useBookContext()
-	const { query } = session.search
+	const { query } = useReader().state.session.search
 	const toggle = panel.right.toggle
 
 	const handleKeyDown = useCallback(

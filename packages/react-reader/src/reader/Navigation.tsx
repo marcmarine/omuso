@@ -1,14 +1,17 @@
 import { Link } from '../components/Link'
-import { useBookContext } from '../providers/BookContextProvider'
+import { useReader } from '../providers/BookContextProvider'
 import { useReaderI18n } from '../providers/I18nProvider'
 import { COVER_PATH } from '../utils/routes'
 
 export default function Navigation() {
-	const context = useBookContext()
 	const {
-		session: { search, nextSection, prevSection, currentSection },
-		manifest: { paths },
-	} = context
+		state: {
+			session: { search, nextSection, prevSection, currentSection },
+		},
+		meta: {
+			manifest: { paths },
+		},
+	} = useReader()
 	const { t } = useReaderI18n()
 
 	const firstSectionPath = paths[0] ?? COVER_PATH

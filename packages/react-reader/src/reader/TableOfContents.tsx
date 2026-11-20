@@ -1,13 +1,16 @@
 import { memo } from 'react'
 import { Link } from '../components/Link'
 import useLocalStorage from '../hooks/useLocalStorage'
-import { useBookContext } from '../providers/BookContextProvider'
+import { useReader } from '../providers/BookContextProvider'
 import { useReaderI18n } from '../providers/I18nProvider'
 import { classes } from '../utils'
 
 function BookTableOfContents() {
 	const { t } = useReaderI18n()
-	const { manifest, session, maxPageDepth } = useBookContext()
+	const {
+		state: { session },
+		meta: { manifest, maxPageDepth },
+	} = useReader()
 	const { tableOfContents } = manifest
 	const { breadcrumbs, search, currentSection } = session
 	const [expandedSections, setExpandedSections] = useLocalStorage<{

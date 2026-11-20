@@ -1,11 +1,13 @@
 import { memo, useCallback, useEffect, useRef, useState } from 'react'
 import { Link } from '../components/Link'
-import { useBookContext } from '../providers/BookContextProvider'
+import { useReader } from '../providers/BookContextProvider'
 import { useReaderI18n } from '../providers/I18nProvider'
 import { highlightMatches } from '../utils/dom'
 
 export function Search() {
-	const { session } = useBookContext()
+	const {
+		state: { session },
+	} = useReader()
 	const { query, results, totalMatches } = session.search
 	const { t } = useReaderI18n()
 
@@ -89,7 +91,10 @@ export function Search() {
 
 function SearchInput() {
 	const ref = useRef<HTMLInputElement>(null)
-	const { session, search, resetSearch } = useBookContext()
+	const {
+		state: { session },
+		actions: { setQuery, clearQuery },
+	} = useReader()
 	const { query } = session.search
 	const [value, setValue] = useState(query)
 	const submittedQueryRef = useRef(query)
@@ -118,10 +123,10 @@ function SearchInput() {
 	useEffect(() => {
 		const handler = setTimeout(() => {
 			submittedQueryRef.current = value
-			search(value)
+			setQuery(value)
 		}, 280)
 		return () => clearTimeout(handler)
-	}, [value, search])
+	}, [value, setQuery])
 
 	const handleKeyDown = useCallback((event: KeyboardEvent) => {
 		if ((event.metaKey || event.ctrlKey) && event.key === 'k') {
@@ -144,7 +149,7 @@ function SearchInput() {
 	}, [handleKeyDown])
 
 	const handleReset = () => {
-		resetSearch()
+		clearQuery()
 		setValue('')
 	}
 

@@ -9,7 +9,7 @@ import {
 } from 'react'
 import useLocalStorage from '../hooks/useLocalStorage'
 import { isWideLayout } from '../utils'
-import { useBookContext } from './BookContextProvider'
+import { useReader } from './BookContextProvider'
 
 type Panels = Record<'left' | 'right', PanelState>
 
@@ -49,8 +49,7 @@ export const useLayout = () => useContext(LayoutContext)
 export const useReaderPanels = () => useContext(LayoutContext).panel
 
 export function LayoutProvider({ children }: LayoutProviderProps) {
-	const { session } = useBookContext()
-	const currentPath = session.currentSection?.path
+	const currentPath = useReader().state.session.currentSection?.path
 	const layoutRef = useRef<HTMLDivElement>(null)
 
 	const leftState = usePanelState('leftPanel', false, 250)

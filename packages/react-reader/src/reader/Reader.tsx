@@ -1,8 +1,8 @@
 import type { BookContext, SearchFilter } from 'omuso'
 import {
 	BookContextProvider,
-	type Context,
-	useBookContext,
+	type ReaderValue,
+	useReader,
 } from '../providers/BookContextProvider'
 import { I18nProvider } from '../providers/I18nProvider'
 import { LayoutProvider } from '../providers/LayoutProvider'
@@ -27,7 +27,7 @@ export interface ReaderProps {
 	 * already shown inline.
 	 */
 	maxPageDepth?: number
-	contentComponent?: React.ComponentType<{ context: Context }>
+	contentComponent?: React.ComponentType<{ context: ReaderValue }>
 	/**
 	 * Decides which sections are searched (see `SearchFilter` in `omuso`).
 	 * It replaces the exclusion of the context's `omitPaths` in search only.
@@ -43,9 +43,8 @@ export interface ReaderProps {
 }
 
 function Reader({ contentComponent: ContentComponent }: ReaderProps) {
-	const context = useBookContext()
-	const { session } = context
-	const { currentSection } = session
+	const context = useReader()
+	const { currentSection } = context.state.session
 
 	const mainContent = !currentSection ? (
 		<Cover />
