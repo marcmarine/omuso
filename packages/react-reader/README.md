@@ -109,6 +109,23 @@ The default styles can be customized with CSS variables and the reader's `.om-*`
 </div>
 ```
 
+The reader's styles live in the `omuso` cascade layer, so any of your CSS outside a layer overrides them, whatever its specificity or load order. That includes global element rules: a `button { … }` or `a { color: … }` in your app also applies inside the reader. To keep them out, move them into a layer ordered before `omuso`.
+
+To order the layers, name `omuso` among yours in a `@layer` statement. Layers are ordered by where they are first named, and the reader's CSS loads when the package is imported, so the statement must come first: put it at the top of a stylesheet imported before `@omuso/react-reader`. With Tailwind v4, for example:
+
+```css
+/* app.css */
+@layer theme, base, omuso, components, utilities;
+@import "tailwindcss";
+```
+
+```tsx
+import './app.css'
+import { Reader } from '@omuso/react-reader'
+```
+
+The layout follows the reader's width, not the window's. From `64rem` up the table of contents and the search sit beside the page; below that, they open over it. A reader embedded in a narrow column gets the narrow layout even on a wide screen.
+
 ### 4. Recommended viewport setting (mobile)
 
 When using the reader in mobile/full-screen layouts, include `viewport-fit=cover` in your viewport meta tag so the UI can use the full screen area (including safe-area handling on notched devices):
