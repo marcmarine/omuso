@@ -30,32 +30,30 @@ export default function Layout({ children }: { children: React.ReactNode }) {
 	const childrenArray = Children.toArray(children)
 	const [FirstChild, SecondChild, ThirdChild] = childrenArray
 
+	// The pieces are direct children of `.om-layout`, which places them by
+	// grid area.
 	return (
 		<section className="om-reader" aria-label={title}>
-			<div className="om-reader__body">
-				<div className="om-reader__main">
-					{/* Safari 26 tints its bars from the sticky header but doesn't
-					    notice when its color changes, so it's remounted whenever the
-					    color may change: on a new theme or page. */}
-					<Header
-						key={`${theme}:${currentPath ?? ''}`}
-						title={title}
-						author={author}
-					/>
-					<div className="om-reader__stage">
-						<ResizablePanel
-							maxWidth={250}
-							className="om-sidebar"
-							initialWidth={panel.left.width}
-							collapsed={!panel.left.open}
-							onResizeEnd={panel.left.setPanelWidth}
-						>
-							{FirstChild}
-						</ResizablePanel>
-						<div ref={pageRef} className="om-reader__page">
-							{SecondChild}
-						</div>
-					</div>
+			<div className="om-layout">
+				{/* Safari 26 tints its bars from the sticky header but doesn't
+				    notice when its color changes, so it's remounted whenever the
+				    color may change: on a new theme or page. */}
+				<Header
+					key={`${theme}:${currentPath ?? ''}`}
+					title={title}
+					author={author}
+				/>
+				<ResizablePanel
+					maxWidth={250}
+					className="om-sidebar"
+					initialWidth={panel.left.width}
+					collapsed={!panel.left.open}
+					onResizeEnd={panel.left.setPanelWidth}
+				>
+					{FirstChild}
+				</ResizablePanel>
+				<div ref={pageRef} className="om-page">
+					{SecondChild}
 				</div>
 				<ResizablePanel
 					minWidth={300}
@@ -67,8 +65,8 @@ export default function Layout({ children }: { children: React.ReactNode }) {
 				>
 					{ThirdChild}
 				</ResizablePanel>
+				<Toolbar />
 			</div>
-			<Toolbar />
 		</section>
 	)
 }
