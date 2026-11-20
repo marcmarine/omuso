@@ -7,7 +7,6 @@ import {
 	useState,
 } from 'react'
 import useLocalStorage from '../hooks/useLocalStorage'
-import { type TranslationKey, t } from '../i18n'
 
 type LayoutContextType = {
 	panel: Record<'left' | 'right', PanelState>
@@ -17,14 +16,10 @@ type LayoutContextType = {
 	 */
 	layoutRef: React.RefObject<HTMLDivElement | null>
 	maxPageDepth: number
-	i18n: {
-		t: (_key: TranslationKey) => string
-	}
 }
 
 interface LayoutProviderProps {
 	children: React.ReactNode
-	language?: string
 	maxPageDepth?: number
 }
 
@@ -32,16 +27,12 @@ const LayoutContext = createContext<LayoutContextType>({
 	panel: {} as LayoutContextType['panel'],
 	layoutRef: { current: null },
 	maxPageDepth: Infinity,
-	i18n: {
-		t: () => '',
-	},
 })
 
 export const useLayout = () => useContext(LayoutContext)
 
 export function LayoutProvider({
 	children,
-	language = 'en',
 	maxPageDepth = Infinity,
 }: LayoutProviderProps) {
 	const left = usePanelState('leftPanel', false, 250)
@@ -49,16 +40,9 @@ export function LayoutProvider({
 	const panel = useMemo(() => ({ left, right }), [left, right])
 	const layoutRef = useRef<HTMLDivElement>(null)
 
-	const i18n = useMemo(
-		() => ({
-			t: (key: TranslationKey) => t(key, language),
-		}),
-		[language],
-	)
-
 	const value = useMemo(
-		() => ({ panel, layoutRef, i18n, maxPageDepth }),
-		[panel, i18n, maxPageDepth],
+		() => ({ panel, layoutRef, maxPageDepth }),
+		[panel, maxPageDepth],
 	)
 
 	return (

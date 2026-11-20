@@ -1,6 +1,6 @@
 import { Link } from '../components/Link'
 import { useBookContext } from '../providers/BookContextProvider'
-import { useLayout } from '../providers/LayoutProvider'
+import { useReaderI18n } from '../providers/I18nProvider'
 import { COVER_PATH } from '../utils/routes'
 
 export default function Navigation() {
@@ -9,19 +9,19 @@ export default function Navigation() {
 		session: { search, nextSection, prevSection, currentSection },
 		manifest: { paths },
 	} = context
-	const { i18n } = useLayout()
+	const { t } = useReaderI18n()
 
 	const firstSectionPath = paths[0] ?? COVER_PATH
 	const isPrevDisabled = !currentSection
 	const isNextDisabled = Boolean(currentSection && !nextSection)
 
 	return (
-		<nav className="om-pager" aria-label={i18n.t('chapterNavigation')}>
+		<nav className="om-pager" aria-label={t('chapterNavigation')}>
 			<Link
 				path={prevSection?.path ?? COVER_PATH}
 				query={search.query}
 				rel="prev"
-				aria-label={i18n.t('previousChapter')}
+				aria-label={t('previousChapter')}
 				aria-disabled={isPrevDisabled || undefined}
 				tabIndex={isPrevDisabled ? -1 : undefined}
 				className="om-icon-button om-interactive om-pager__prev"
@@ -47,7 +47,7 @@ export default function Navigation() {
 				path={nextSection?.path ?? firstSectionPath}
 				query={search.query}
 				rel="next"
-				aria-label={i18n.t('nextChapter')}
+				aria-label={t('nextChapter')}
 				aria-disabled={isNextDisabled || undefined}
 				tabIndex={isNextDisabled ? -1 : undefined}
 				className="om-icon-button om-interactive om-pager__next"

@@ -1,12 +1,12 @@
 import { useBookContext } from '../providers/BookContextProvider'
-import { useLayout } from '../providers/LayoutProvider'
+import { useReaderI18n } from '../providers/I18nProvider'
 import { formatYear } from '../utils'
 
 export default function Cover() {
 	const { manifest } = useBookContext()
 	const { metadata } = manifest
 
-	const { i18n } = useLayout()
+	const { t } = useReaderI18n()
 
 	const year = formatYear(metadata.date, metadata.language)
 
@@ -24,7 +24,7 @@ export default function Cover() {
 				)}
 				{metadata.translator && (
 					<div className="om-cover__translator">
-						<p>{i18n.t('translatedBy')}</p>
+						<p>{t('translatedBy')}</p>
 						<p className="om-cover__translator-name">{metadata.translator}</p>
 					</div>
 				)}

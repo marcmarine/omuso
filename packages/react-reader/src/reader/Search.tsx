@@ -1,6 +1,7 @@
 import { memo, useCallback, useEffect, useRef, useState } from 'react'
 import { Link } from '../components/Link'
 import { useBookContext } from '../providers/BookContextProvider'
+import { useReaderI18n } from '../providers/I18nProvider'
 import { useLayout } from '../providers/LayoutProvider'
 import { isWideLayout } from '../utils'
 import { highlightMatches } from '../utils/dom'
@@ -9,7 +10,7 @@ export function Search() {
 	const { session } = useBookContext()
 	const { panel, layoutRef } = useLayout()
 	const { query, results, totalMatches } = session.search
-	const { i18n } = useLayout()
+	const { t } = useReaderI18n()
 
 	const closePanel = () => {
 		if (isWideLayout(layoutRef.current)) return
@@ -22,7 +23,7 @@ export function Search() {
 				<SearchInput />
 				<output className="om-search__meta">
 					{totalMatches > 0 && (
-						<span className="om-search__meta-text">{`${totalMatches} ${i18n.t('resultsIn')} ${results.length} ${i18n.t(results.length === 1 ? 'chapter' : 'chapters')} ${i18n.t('forWord')} "${query}"`}</span>
+						<span className="om-search__meta-text">{`${totalMatches} ${t('resultsIn')} ${results.length} ${t(results.length === 1 ? 'chapter' : 'chapters')} ${t('forWord')} "${query}"`}</span>
 					)}
 				</output>
 			</div>
@@ -30,7 +31,7 @@ export function Search() {
 				{query.length > 0 && results.length === 0 && (
 					<li className="om-search__empty">
 						<p className="om-search__empty-text">
-							{`${i18n.t('noResults')} "${query}"`}
+							{`${t('noResults')} "${query}"`}
 						</p>
 					</li>
 				)}
@@ -103,7 +104,7 @@ function SearchInput() {
 	const { query } = session.search
 	const [value, setValue] = useState(query)
 	const submittedQueryRef = useRef(query)
-	const { i18n } = useLayout()
+	const { t } = useReaderI18n()
 
 	// Follow query changes that did not come from this input (e.g. history
 	// navigation). Updating `value` also cancels any pending debounce.
@@ -179,17 +180,17 @@ function SearchInput() {
 			<input
 				ref={ref}
 				type="search"
-				aria-label={i18n.t('searchContent')}
+				aria-label={t('searchContent')}
 				value={value}
 				onChange={(e) => setValue(e.target.value)}
 				className="om-search__input"
-				placeholder={i18n.t('searchContent')}
+				placeholder={t('searchContent')}
 			/>
 			{value && (
 				<button
 					onClick={handleReset}
 					type="button"
-					aria-label={i18n.t('clearSearch')}
+					aria-label={t('clearSearch')}
 					className="om-search__reset om-interactive"
 				>
 					<svg

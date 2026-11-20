@@ -4,6 +4,7 @@ import { CollapsedSectionContent } from '../content/CollapsedSectionContent'
 import { ContentRenderer } from '../content/ContentRenderer'
 import { HeadingElement } from '../content/HeadingElement'
 import { useBookContext } from '../providers/BookContextProvider'
+import { useReaderI18n } from '../providers/I18nProvider'
 import { useLayout } from '../providers/LayoutProvider'
 import { classes, sectionLevel } from '../utils'
 import { highlightMatches } from '../utils/dom'
@@ -73,12 +74,12 @@ export function ContentHeader({
 	className?: string
 }) {
 	const parent = breadcrumbs.at(-2)
-	const { i18n } = useLayout()
+	const { t } = useReaderI18n()
 
 	return (
 		<div className={classes('om-content__header', className)}>
 			{parent && (
-				<nav className="om-breadcrumb" aria-label={i18n.t('breadcrumb')}>
+				<nav className="om-breadcrumb" aria-label={t('breadcrumb')}>
 					<ol>
 						<li className="om-breadcrumb__item">
 							<Link path={parent.path} query={query}>

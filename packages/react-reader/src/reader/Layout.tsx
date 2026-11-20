@@ -4,6 +4,7 @@ import { ResizablePanel } from '../components/ResizablePanel'
 import ThemeToggle from '../components/ThemeToggle'
 import TranslationSelector from '../components/TranslationSelector'
 import { useBookContext } from '../providers/BookContextProvider'
+import { useReaderI18n } from '../providers/I18nProvider'
 import { useLayout } from '../providers/LayoutProvider'
 import { useTheme } from '../providers/ThemeProvider'
 import { isWideLayout } from '../utils'
@@ -111,7 +112,8 @@ function Toolbar() {
 }
 
 function SearchToggle() {
-	const { panel, layoutRef, i18n } = useLayout()
+	const { panel, layoutRef } = useLayout()
+	const { t } = useReaderI18n()
 	const { session } = useBookContext()
 	const { query } = session.search
 
@@ -147,7 +149,7 @@ function SearchToggle() {
 			className="om-icon-button om-interactive"
 			onClick={toggle}
 			type="button"
-			aria-label={i18n.t('search')}
+			aria-label={t('search')}
 			aria-expanded={panel.right.open}
 		>
 			<svg
@@ -176,7 +178,8 @@ function SearchToggle() {
 }
 
 function TOCToggle() {
-	const { panel, layoutRef, i18n } = useLayout()
+	const { panel, layoutRef } = useLayout()
+	const { t } = useReaderI18n()
 
 	const toggle = useCallback(() => {
 		if (
@@ -211,7 +214,7 @@ function TOCToggle() {
 			type="button"
 			onClick={toggle}
 			className="om-icon-button om-interactive"
-			aria-label={i18n.t('tableOfContents')}
+			aria-label={t('tableOfContents')}
 			aria-expanded={panel.left.open}
 		>
 			<svg

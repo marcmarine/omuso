@@ -2,11 +2,13 @@ import { memo } from 'react'
 import { Link } from '../components/Link'
 import useLocalStorage from '../hooks/useLocalStorage'
 import { useBookContext } from '../providers/BookContextProvider'
+import { useReaderI18n } from '../providers/I18nProvider'
 import { useLayout } from '../providers/LayoutProvider'
 import { classes, isWideLayout } from '../utils'
 
 function BookTableOfContents() {
-	const { panel, layoutRef, maxPageDepth, i18n } = useLayout()
+	const { panel, layoutRef, maxPageDepth } = useLayout()
+	const { t } = useReaderI18n()
 	const { manifest, session } = useBookContext()
 	const { tableOfContents } = manifest
 	const { breadcrumbs, search, currentSection } = session
@@ -35,7 +37,7 @@ function BookTableOfContents() {
 	}
 
 	return (
-		<nav className="om-toc" aria-label={i18n.t('tableOfContents')}>
+		<nav className="om-toc" aria-label={t('tableOfContents')}>
 			<ul className="om-toc__list" data-depth={1}>
 				{tableOfContents.map((section) => {
 					const hasChildren = section.content.some(

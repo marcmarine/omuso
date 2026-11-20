@@ -5,6 +5,7 @@ import {
 	type Context,
 	useBookContext,
 } from '../providers/BookContextProvider'
+import { I18nProvider } from '../providers/I18nProvider'
 import { LayoutProvider } from '../providers/LayoutProvider'
 import { RoutingProvider } from '../providers/RoutingProvider'
 import { ThemeProvider } from '../providers/ThemeProvider'
@@ -82,24 +83,23 @@ function withProviders<P extends ReaderProps>(
 		useDepthWarning(props.context, props.maxPageDepth)
 
 		return (
-			<BookContextProvider
-				defaultLanguage={props.language}
-				context={props.context}
-				location={props.location}
-				basePath={props.basePath}
-				searchFilter={props.searchFilter}
-			>
-				<RoutingProvider linkComponent={props.linkComponent}>
-					<LayoutProvider
-						language={props.language}
-						maxPageDepth={props.maxPageDepth}
-					>
-						<ThemeProvider>
-							<WrappedComponent {...props} />
-						</ThemeProvider>
-					</LayoutProvider>
-				</RoutingProvider>
-			</BookContextProvider>
+			<I18nProvider locale={props.language}>
+				<BookContextProvider
+					defaultLanguage={props.language}
+					context={props.context}
+					location={props.location}
+					basePath={props.basePath}
+					searchFilter={props.searchFilter}
+				>
+					<RoutingProvider linkComponent={props.linkComponent}>
+						<LayoutProvider maxPageDepth={props.maxPageDepth}>
+							<ThemeProvider>
+								<WrappedComponent {...props} />
+							</ThemeProvider>
+						</LayoutProvider>
+					</RoutingProvider>
+				</BookContextProvider>
+			</I18nProvider>
 		)
 	}
 }
