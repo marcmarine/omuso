@@ -33,6 +33,16 @@
 * Add type declarations for Node projects ([aab472e](https://github.com/marcmarine/omuso/commit/aab472e18c5e7913ed4798b5234e626fbecc52bd))
 * Update slugify to handle numbers in section names ([4b3298f](https://github.com/marcmarine/omuso/commit/4b3298fd8db5f81ed7231cacf8c843d6a0caaed5))
 
+## [1.9.0](https://github.com/marcmarine/omuso/compare/omuso-v1.8.0...omuso-v1.9.0) (2026-11-20)
+
+
+### Features
+
+* Add SectionFilter type ([347ac95](https://github.com/marcmarine/omuso/commit/347ac95fec634bc4fbf19c671139657e2bbe2321))
+* Export isPathWithin helper ([d977d0a](https://github.com/marcmarine/omuso/commit/d977d0a7da350478de7371f9e8854be4d54871f7))
+* Filter sections in reading session ([6a63050](https://github.com/marcmarine/omuso/commit/6a63050a33b42c529fbc09ce14c6fc357a96372b))
+* Keep extra frontmatter in metadata ([176e7d9](https://github.com/marcmarine/omuso/commit/176e7d9472ed68d331b581e87cc4210c461c2e5f))
+
 ## [1.8.0](https://github.com/marcmarine/omuso/compare/omuso-v1.7.0...omuso-v1.8.0) (2026-10-30)
 
 
