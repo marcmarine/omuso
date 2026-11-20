@@ -25,7 +25,7 @@ function BookTableOfContents() {
 
 	const closePanel = () => {
 		if (isWideLayout(layoutRef.current)) return
-		panel.left.toggle()
+		panel.left.close()
 	}
 
 	// The current section is the page; its ancestors are marked as current

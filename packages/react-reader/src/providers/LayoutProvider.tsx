@@ -42,10 +42,12 @@ export function LayoutProvider({ children }: LayoutProviderProps) {
 }
 
 export interface PanelState {
-	open: boolean
+	isOpen: boolean
+	open: () => void
+	close: () => void
 	toggle: () => void
 	width: number
-	setPanelWidth: (newWidth: number) => void
+	setWidth: (width: number) => void
 }
 
 function usePanelState(
@@ -59,24 +61,30 @@ function usePanelState(
 		defaultWidth,
 	)
 
-	const [open, setOpen] = useState(storedOpen)
-	const [width, setWidth] = useState(storedWidth)
+	const [isOpen, setIsOpen] = useState(storedOpen)
+	const [width, setWidthState] = useState(storedWidth)
 
-	const toggle = useCallback(() => {
-		setOpen(!open)
-		setStoredOpen(!open)
-	}, [open, setStoredOpen])
+	const setOpen = useCallback(
+		(nextOpen: boolean) => {
+			setIsOpen(nextOpen)
+			setStoredOpen(nextOpen)
+		},
+		[setStoredOpen],
+	)
+	const open = useCallback(() => setOpen(true), [setOpen])
+	const close = useCallback(() => setOpen(false), [setOpen])
+	const toggle = useCallback(() => setOpen(!isOpen), [isOpen, setOpen])
 
-	const setPanelWidth = useCallback(
+	const setWidth = useCallback(
 		(newWidth: number) => {
-			setWidth(newWidth)
+			setWidthState(newWidth)
 			setStoredWidth(newWidth)
 		},
 		[setStoredWidth],
 	)
 
 	return useMemo(
-		() => ({ open, toggle, width, setPanelWidth }),
-		[open, toggle, width, setPanelWidth],
+		() => ({ isOpen, open, close, toggle, width, setWidth }),
+		[isOpen, open, close, toggle, width, setWidth],
 	)
 }

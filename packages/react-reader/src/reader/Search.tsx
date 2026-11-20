@@ -14,7 +14,7 @@ export function Search() {
 
 	const closePanel = () => {
 		if (isWideLayout(layoutRef.current)) return
-		panel.right.toggle()
+		panel.right.close()
 	}
 
 	return (

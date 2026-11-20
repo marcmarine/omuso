@@ -36,8 +36,8 @@ export default function Layout({ children }: { children: React.ReactNode }) {
 		if (shownPath.current === currentPath) return
 		shownPath.current = currentPath
 		if (isWideLayout(layoutRef.current)) return
-		if (panel.left.open) panel.left.toggle()
-		if (panel.right.open) panel.right.toggle()
+		if (panel.left.isOpen) panel.left.close()
+		if (panel.right.isOpen) panel.right.close()
 	}, [currentPath, panel.left, panel.right, layoutRef])
 
 	const childrenArray = Children.toArray(children)
@@ -60,8 +60,8 @@ export default function Layout({ children }: { children: React.ReactNode }) {
 					maxWidth={250}
 					className="om-sidebar"
 					initialWidth={panel.left.width}
-					collapsed={!panel.left.open}
-					onResizeEnd={panel.left.setPanelWidth}
+					collapsed={!panel.left.isOpen}
+					onResizeEnd={panel.left.setWidth}
 				>
 					{FirstChild}
 				</ResizablePanel>
@@ -72,8 +72,8 @@ export default function Layout({ children }: { children: React.ReactNode }) {
 					minWidth={300}
 					className="om-sidebar"
 					initialWidth={panel.right.width}
-					collapsed={!panel.right.open}
-					onResizeEnd={panel.right.setPanelWidth}
+					collapsed={!panel.right.isOpen}
+					onResizeEnd={panel.right.setWidth}
 					position="right"
 				>
 					{ThirdChild}
@@ -119,11 +119,11 @@ function SearchToggle() {
 
 	const toggle = useCallback(() => {
 		if (
-			panel.left.open &&
-			!panel.right.open &&
+			panel.left.isOpen &&
+			!panel.right.isOpen &&
 			!isWideLayout(layoutRef.current)
 		) {
-			panel.left.toggle()
+			panel.left.close()
 		}
 		panel.right.toggle()
 	}, [panel.left, panel.right, layoutRef])
@@ -150,7 +150,7 @@ function SearchToggle() {
 			onClick={toggle}
 			type="button"
 			aria-label={t('search')}
-			aria-expanded={panel.right.open}
+			aria-expanded={panel.right.isOpen}
 		>
 			<svg
 				xmlns="http://www.w3.org/2000/svg"
@@ -170,7 +170,7 @@ function SearchToggle() {
 			</svg>
 			<span
 				className="om-icon-button__badge"
-				data-visible={(query && !panel.right.open) || undefined}
+				data-visible={(query && !panel.right.isOpen) || undefined}
 			/>
 			{/* <kbd>⌘K</kbd> */}
 		</button>
@@ -183,11 +183,11 @@ function TOCToggle() {
 
 	const toggle = useCallback(() => {
 		if (
-			panel.right.open &&
-			!panel.left.open &&
+			panel.right.isOpen &&
+			!panel.left.isOpen &&
 			!isWideLayout(layoutRef.current)
 		) {
-			panel.right.toggle()
+			panel.right.close()
 		}
 		panel.left.toggle()
 	}, [panel.left, panel.right, layoutRef])
@@ -215,7 +215,7 @@ function TOCToggle() {
 			onClick={toggle}
 			className="om-icon-button om-interactive"
 			aria-label={t('tableOfContents')}
-			aria-expanded={panel.left.open}
+			aria-expanded={panel.left.isOpen}
 		>
 			<svg
 				aria-hidden="true"
