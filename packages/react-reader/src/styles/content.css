@@ -37,7 +37,7 @@
 	& > li + li {
 		margin-top: 1rem;
 
-		@media (min-width: 48rem) {
+		@container reader (min-width: 48rem) {
 			margin-top: 0.5rem;
 		}
 	}

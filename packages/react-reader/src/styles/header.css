@@ -14,7 +14,7 @@
 	border-bottom: var(--om-dividers-width) solid var(--om-dividers);
 	font-size: var(--om-ui-font-size);
 
-	@media (min-width: 48rem) {
+	@container reader (min-width: 48rem) {
 		justify-content: space-between;
 	}
 }
@@ -36,7 +36,7 @@
 	padding-inline: 0.375rem;
 	opacity: 0.8;
 
-	@media (min-width: 48rem) {
+	@container reader (min-width: 48rem) {
 		display: block;
 	}
 }

@@ -18,7 +18,7 @@
 	width: 1rem;
 	height: 1rem;
 
-	@media (min-width: 40rem) {
+	@container reader (min-width: 40rem) {
 		width: 0.875rem;
 		height: 0.875rem;
 	}
@@ -41,7 +41,7 @@
 	color: inherit;
 	cursor: pointer;
 
-	@media (min-width: 40rem) {
+	@container reader (min-width: 40rem) {
 		padding: 0.25rem;
 	}
 

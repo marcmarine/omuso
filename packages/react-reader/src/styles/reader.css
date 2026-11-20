@@ -1,4 +1,7 @@
+/* The reader's box and the container its responsive styles query, so they
+   follow the reader's width rather than the window's. */
 .om-reader {
+	container: reader / inline-size;
 	width: 100%;
 	height: 100%;
 	overflow: hidden;
