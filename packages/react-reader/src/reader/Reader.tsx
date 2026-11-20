@@ -1,48 +1,29 @@
-import type { BookContext, SearchFilter } from 'omuso'
-import {
-	BookContextProvider,
-	type ReaderValue,
-	useReader,
-} from '../providers/BookContextProvider'
-import { I18nProvider } from '../providers/I18nProvider'
-import { LayoutProvider } from '../providers/LayoutProvider'
-import { RoutingProvider } from '../providers/RoutingProvider'
-import { ThemeProvider } from '../providers/ThemeProvider'
+import { type ReaderValue, useReader } from '../providers/BookContextProvider'
 import SectionContent from './Content'
 import Cover from './Cover'
 import Layout from './Layout'
+import Root, { type ReaderRootProps } from './Root'
 import Search from './Search'
 import TableOfContents from './TableOfContents'
 
-export interface ReaderProps {
-	location?: Partial<Location>
-	language: string
-	basePath?: string
-	linkComponent?: React.ElementType
-	/**
-	 * The deepest section level shown as a page, counted in path levels
-	 * (`'1'` → 1, `'1.2'` → 2) like `maxNavigationDepth` in `omuso`. Deeper
-	 * sections are rendered inline within their page. Keep the context's
-	 * `maxNavigationDepth` at or below it, or prev/next lead to sections
-	 * already shown inline.
-	 */
-	maxPageDepth?: number
+export interface ReaderProps extends Omit<ReaderRootProps, 'children'> {
 	contentComponent?: React.ComponentType<{ context: ReaderValue }>
-	/**
-	 * Decides which sections are searched (see `SearchFilter` in `omuso`).
-	 * It replaces the exclusion of the context's `omitPaths` in search only.
-	 * Memoize it (e.g. with `useCallback`), or the search reruns on every
-	 * render.
-	 */
-	searchFilter?: SearchFilter
-	/**
-	 * The `BookContext` backing this reader, created via
-	 * `createContext({...})` from the `omuso` package.
-	 */
-	context: BookContext
 }
 
-function Reader({ contentComponent: ContentComponent }: ReaderProps) {
+/**
+ * The complete reader: a `Root` with the default layout.
+ */
+export default function Reader({ contentComponent, ...props }: ReaderProps) {
+	return (
+		<Root {...props}>
+			<DefaultLayout contentComponent={contentComponent} />
+		</Root>
+	)
+}
+
+function DefaultLayout({
+	contentComponent: ContentComponent,
+}: Pick<ReaderProps, 'contentComponent'>) {
 	const context = useReader()
 	const { currentSection } = context.state.session
 
@@ -62,32 +43,3 @@ function Reader({ contentComponent: ContentComponent }: ReaderProps) {
 		</Layout>
 	)
 }
-
-function withProviders<P extends ReaderProps>(
-	WrappedComponent: React.ComponentType<P>,
-) {
-	return (props: P) => {
-		return (
-			<I18nProvider locale={props.language}>
-				<BookContextProvider
-					defaultLanguage={props.language}
-					context={props.context}
-					location={props.location}
-					basePath={props.basePath}
-					searchFilter={props.searchFilter}
-					maxPageDepth={props.maxPageDepth}
-				>
-					<RoutingProvider linkComponent={props.linkComponent}>
-						<LayoutProvider>
-							<ThemeProvider>
-								<WrappedComponent {...props} />
-							</ThemeProvider>
-						</LayoutProvider>
-					</RoutingProvider>
-				</BookContextProvider>
-			</I18nProvider>
-		)
-	}
-}
-
-export default withProviders(Reader)

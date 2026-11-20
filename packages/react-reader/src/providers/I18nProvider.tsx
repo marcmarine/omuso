@@ -1,7 +1,7 @@
 import { createContext, useContext, useMemo } from 'react'
 import { type TranslationKey, t } from '../i18n'
 
-type I18nContextType = {
+export type ReaderI18n = {
 	/**
 	 * The language of the reader's interface, independent of the book's.
 	 */
@@ -11,12 +11,18 @@ type I18nContextType = {
 
 const DEFAULT_LOCALE = 'en'
 
-const I18nContext = createContext<I18nContextType>({
-	locale: DEFAULT_LOCALE,
-	t: (key) => t(key, DEFAULT_LOCALE),
-})
+const I18nContext = createContext<ReaderI18n | undefined>(undefined)
 
-export const useReaderI18n = () => useContext(I18nContext)
+/**
+ * The language of the interface and the labels translated into it.
+ */
+export function useReaderI18n(): ReaderI18n {
+	const value = useContext(I18nContext)
+	if (!value) {
+		throw new Error('useReaderI18n must be used within a reader Root')
+	}
+	return value
+}
 
 export function I18nProvider({
 	children,

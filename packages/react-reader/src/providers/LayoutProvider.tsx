@@ -11,7 +11,7 @@ import useLocalStorage from '../hooks/useLocalStorage'
 import { isWideLayout } from '../utils'
 import { useReader } from './BookContextProvider'
 
-type Panels = Record<'left' | 'right', PanelState>
+export type Panels = Record<'left' | 'right', PanelState>
 
 type LayoutContextType = {
 	panel: Panels
@@ -31,13 +31,15 @@ interface LayoutProviderProps {
 	children: React.ReactNode
 }
 
-const LayoutContext = createContext<LayoutContextType>({
-	panel: {} as Panels,
-	layoutRef: { current: null },
-	closePanelsIfNarrow: () => {},
-})
+const LayoutContext = createContext<LayoutContextType | undefined>(undefined)
 
-export const useLayout = () => useContext(LayoutContext)
+export function useLayout(): LayoutContextType {
+	const value = useContext(LayoutContext)
+	if (!value) {
+		throw new Error('useReaderPanels must be used within a reader Root')
+	}
+	return value
+}
 
 /**
  * The reader's side panels. The panel policy lives here, so every piece that
@@ -46,7 +48,7 @@ export const useLayout = () => useContext(LayoutContext)
  * - When narrow, a new page closes them, whatever led to it: a link, the
  *   pager or the browser history.
  */
-export const useReaderPanels = () => useContext(LayoutContext).panel
+export const useReaderPanels = (): Panels => useLayout().panel
 
 export function LayoutProvider({ children }: LayoutProviderProps) {
 	const currentPath = useReader().state.session.currentSection?.path

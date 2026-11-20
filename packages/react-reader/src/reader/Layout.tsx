@@ -6,7 +6,7 @@ import TranslationSelector from '../components/TranslationSelector'
 import { useReader } from '../providers/BookContextProvider'
 import { useReaderI18n } from '../providers/I18nProvider'
 import { useLayout, useReaderPanels } from '../providers/LayoutProvider'
-import { useTheme } from '../providers/ThemeProvider'
+import { useReaderTheme } from '../providers/ThemeProvider'
 import { COVER_PATH } from '../utils/routes'
 import Navigation from './Navigation'
 
@@ -18,7 +18,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
 		meta: { manifest },
 	} = useReader()
 	const { panel, layoutRef } = useLayout()
-	const { theme } = useTheme()
+	const { theme } = useReaderTheme()
 	const { title, author } = manifest.metadata
 	const pageRef = useRef<HTMLDivElement>(null)
 	const currentPath = session.currentSection?.path

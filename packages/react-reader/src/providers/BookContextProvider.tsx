@@ -368,10 +368,21 @@ function useDepthWarning(context: BookContext, maxPageDepth: number) {
 	}, [navigationDepth, maxPageDepth])
 }
 
+/**
+ * The reader's state, actions and reference data.
+ */
 export function useReader(): ReaderValue {
 	const value = React.useContext(ReaderValueContext)
 	if (!value) {
-		throw new Error('useReader must be used within a reader')
+		throw new Error('useReader must be used within a reader Root')
 	}
 	return value
+}
+
+/**
+ * The metadata of the book in the active language, with the rest of its
+ * frontmatter in `extra`.
+ */
+export function useReaderMetadata(): Manifest['metadata'] {
+	return useReader().meta.manifest.metadata
 }

@@ -1,7 +1,7 @@
-import { useTheme } from '../providers/ThemeProvider'
+import { useReaderTheme } from '../providers/ThemeProvider'
 
 export default function ThemeToggle() {
-	const { theme, toggleTheme } = useTheme()
+	const { theme, toggle } = useReaderTheme()
 
 	const isDarkTheme = theme === 'dark'
 
@@ -9,7 +9,7 @@ export default function ThemeToggle() {
 		<button
 			type="button"
 			className="om-icon-button om-interactive"
-			onClick={toggleTheme}
+			onClick={toggle}
 			aria-label={isDarkTheme ? 'Switch to light mode' : 'Switch to dark mode'}
 		>
 			{isDarkTheme ? (

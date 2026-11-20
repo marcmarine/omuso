@@ -17,13 +17,12 @@ const DARK_SCHEME_QUERY = '(prefers-color-scheme: dark)'
 function isTheme(value: string | null): value is Theme {
 	return value === 'light' || value === 'dark'
 }
-type ThemeContextType = {
+export type ThemeState = {
 	theme: Theme
-	setTheme: (theme: Theme) => void
-	toggleTheme: () => void
+	toggle: () => void
 }
 
-const ThemeContext = createContext<ThemeContextType | undefined>(undefined)
+const ThemeContext = createContext<ThemeState | undefined>(undefined)
 
 function getSystemTheme(): Theme {
 	if (typeof window === 'undefined') return 'light'
@@ -61,22 +60,22 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
 		setStoredTheme(nextTheme)
 	}, [])
 
-	const toggleTheme = useCallback(() => {
+	const toggle = useCallback(() => {
 		setTheme(theme === 'light' ? 'dark' : 'light')
 	}, [setTheme, theme])
 
-	const value = useMemo(
-		() => ({ theme, setTheme, toggleTheme }),
-		[theme, setTheme, toggleTheme],
-	)
+	const value = useMemo(() => ({ theme, toggle }), [theme, toggle])
 
 	return <ThemeContext.Provider value={value}>{children}</ThemeContext.Provider>
 }
 
-export function useTheme() {
+/**
+ * The color theme: the one the user picked, or the system's until then.
+ */
+export function useReaderTheme(): ThemeState {
 	const context = useContext(ThemeContext)
 	if (context === undefined) {
-		throw new Error('useTheme must be used within a ThemeProvider')
+		throw new Error('useReaderTheme must be used within a reader Root')
 	}
 	return context
 }
