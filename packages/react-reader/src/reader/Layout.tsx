@@ -27,6 +27,18 @@ export default function Layout({ children }: { children: React.ReactNode }) {
 		pageRef.current?.scrollTo({ top: 0 })
 	}, [currentPath])
 
+	// When narrow, the panels cover the page, so a new page closes them,
+	// whatever led to it: the pager, the header or the browser history. Only
+	// on a change, so a panel left open isn't closed on load.
+	const shownPath = useRef(currentPath)
+	useEffect(() => {
+		if (shownPath.current === currentPath) return
+		shownPath.current = currentPath
+		if (isWideLayout(layoutRef.current)) return
+		if (panel.left.open) panel.left.toggle()
+		if (panel.right.open) panel.right.toggle()
+	}, [currentPath, panel.left, panel.right, layoutRef])
+
 	const childrenArray = Children.toArray(children)
 	const [FirstChild, SecondChild, ThirdChild] = childrenArray
 
