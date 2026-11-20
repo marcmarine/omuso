@@ -10,6 +10,8 @@
 /* The grid that places the pieces, its direct children. A piece that isn't
    rendered leaves no gap: its `auto` tracks measure 0. */
 .om-layout {
+	/* Read from JS by `isWideLayout()`, so the breakpoint only lives in CSS. */
+	--om-layout: narrow;
 	display: grid;
 	height: 100%;
 	grid-template:
@@ -17,6 +19,10 @@
 		"left    page    right" minmax(0, 1fr)
 		"toolbar toolbar toolbar" auto
 		/ auto minmax(0, 1fr) auto;
+
+	@container reader (min-width: 64rem) {
+		--om-layout: wide;
+	}
 }
 
 .om-layout > .om-header {

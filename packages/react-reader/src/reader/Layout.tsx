@@ -6,7 +6,7 @@ import TranslationSelector from '../components/TranslationSelector'
 import { useBookContext } from '../providers/BookContextProvider'
 import { useLayout } from '../providers/LayoutProvider'
 import { useTheme } from '../providers/ThemeProvider'
-import { isWideViewport } from '../utils'
+import { isWideLayout } from '../utils'
 import { COVER_PATH } from '../utils/routes'
 import Navigation from './Navigation'
 
@@ -14,7 +14,7 @@ import '../styles/index.css'
 
 export default function Layout({ children }: { children: React.ReactNode }) {
 	const { manifest, session } = useBookContext()
-	const { panel } = useLayout()
+	const { panel, layoutRef } = useLayout()
 	const { theme } = useTheme()
 	const { title, author } = manifest.metadata
 	const pageRef = useRef<HTMLDivElement>(null)
@@ -34,7 +34,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
 	// grid area.
 	return (
 		<section className="om-reader" aria-label={title}>
-			<div className="om-layout">
+			<div ref={layoutRef} className="om-layout">
 				{/* Safari 26 tints its bars from the sticky header but doesn't
 				    notice when its color changes, so it's remounted whenever the
 				    color may change: on a new theme or page. */}
@@ -99,16 +99,20 @@ function Toolbar() {
 }
 
 function SearchToggle() {
-	const { panel, i18n } = useLayout()
+	const { panel, layoutRef, i18n } = useLayout()
 	const { session } = useBookContext()
 	const { query } = session.search
 
 	const toggle = useCallback(() => {
-		if (panel.left.open && !panel.right.open && !isWideViewport()) {
+		if (
+			panel.left.open &&
+			!panel.right.open &&
+			!isWideLayout(layoutRef.current)
+		) {
 			panel.left.toggle()
 		}
 		panel.right.toggle()
-	}, [panel.left, panel.right])
+	}, [panel.left, panel.right, layoutRef])
 
 	const handleKeyDown = useCallback(
 		(event: KeyboardEvent) => {
@@ -160,14 +164,18 @@ function SearchToggle() {
 }
 
 function TOCToggle() {
-	const { panel, i18n } = useLayout()
+	const { panel, layoutRef, i18n } = useLayout()
 
 	const toggle = useCallback(() => {
-		if (panel.right.open && !panel.left.open && !isWideViewport()) {
+		if (
+			panel.right.open &&
+			!panel.left.open &&
+			!isWideLayout(layoutRef.current)
+		) {
 			panel.right.toggle()
 		}
 		panel.left.toggle()
-	}, [panel.left, panel.right])
+	}, [panel.left, panel.right, layoutRef])
 
 	const handleKeyDown = useCallback(
 		(event: KeyboardEvent) => {

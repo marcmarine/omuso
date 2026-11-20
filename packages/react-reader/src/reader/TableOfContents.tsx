@@ -3,10 +3,10 @@ import { Link } from '../components/Link'
 import useLocalStorage from '../hooks/useLocalStorage'
 import { useBookContext } from '../providers/BookContextProvider'
 import { useLayout } from '../providers/LayoutProvider'
-import { classes, isWideViewport } from '../utils'
+import { classes, isWideLayout } from '../utils'
 
 function BookTableOfContents() {
-	const { panel, maxPageDepth, i18n } = useLayout()
+	const { panel, layoutRef, maxPageDepth, i18n } = useLayout()
 	const { manifest, session } = useBookContext()
 	const { tableOfContents } = manifest
 	const { breadcrumbs, search, currentSection } = session
@@ -22,7 +22,7 @@ function BookTableOfContents() {
 	}
 
 	const closePanel = () => {
-		if (isWideViewport()) return
+		if (isWideLayout(layoutRef.current)) return
 		panel.left.toggle()
 	}
 

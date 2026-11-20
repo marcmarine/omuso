@@ -2,17 +2,17 @@ import { memo, useCallback, useEffect, useRef, useState } from 'react'
 import { Link } from '../components/Link'
 import { useBookContext } from '../providers/BookContextProvider'
 import { useLayout } from '../providers/LayoutProvider'
-import { isWideViewport } from '../utils'
+import { isWideLayout } from '../utils'
 import { highlightMatches } from '../utils/dom'
 
 export function Search() {
 	const { session } = useBookContext()
-	const { panel } = useLayout()
+	const { panel, layoutRef } = useLayout()
 	const { query, results, totalMatches } = session.search
 	const { i18n } = useLayout()
 
 	const closePanel = () => {
-		if (isWideViewport()) return
+		if (isWideLayout(layoutRef.current)) return
 		panel.right.toggle()
 	}
 

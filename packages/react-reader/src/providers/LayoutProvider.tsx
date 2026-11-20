@@ -3,6 +3,7 @@ import {
 	useCallback,
 	useContext,
 	useMemo,
+	useRef,
 	useState,
 } from 'react'
 import useLocalStorage from '../hooks/useLocalStorage'
@@ -10,6 +11,11 @@ import { type TranslationKey, t } from '../i18n'
 
 type LayoutContextType = {
 	panel: Record<'left' | 'right', PanelState>
+	/**
+	 * The `.om-layout` element, set by `Layout`. Pass it to `isWideLayout()` to
+	 * know whether the panels sit beside the page or over it.
+	 */
+	layoutRef: React.RefObject<HTMLDivElement | null>
 	maxPageDepth: number
 	i18n: {
 		t: (_key: TranslationKey) => string
@@ -24,6 +30,7 @@ interface LayoutProviderProps {
 
 const LayoutContext = createContext<LayoutContextType>({
 	panel: {} as LayoutContextType['panel'],
+	layoutRef: { current: null },
 	maxPageDepth: Infinity,
 	i18n: {
 		t: () => '',
@@ -40,6 +47,7 @@ export function LayoutProvider({
 	const left = usePanelState('leftPanel', false, 250)
 	const right = usePanelState('rightPanel', false, 300)
 	const panel = useMemo(() => ({ left, right }), [left, right])
+	const layoutRef = useRef<HTMLDivElement>(null)
 
 	const i18n = useMemo(
 		() => ({
@@ -49,7 +57,7 @@ export function LayoutProvider({
 	)
 
 	const value = useMemo(
-		() => ({ panel, i18n, maxPageDepth }),
+		() => ({ panel, layoutRef, i18n, maxPageDepth }),
 		[panel, i18n, maxPageDepth],
 	)
 

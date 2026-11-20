@@ -20,13 +20,16 @@ export function classes(...values: ClassValue[]) {
 }
 
 /**
- * Mirrors the `64rem` breakpoint in `styles/layout.css`: from this width up
- * the panels sit beside the content instead of overlaying it.
+ * Whether the reader is wide enough for the panels to sit beside the page
+ * instead of over it. The breakpoint lives only in CSS (`styles/reader.css`
+ * sets `--om-layout` from a container query), so it's read from there.
+ * Without a layout element it's narrow, like the styles.
  */
-const WIDE_VIEWPORT_QUERY = '(min-width: 64rem)'
-
-export function isWideViewport() {
-	return window.matchMedia(WIDE_VIEWPORT_QUERY).matches
+export function isWideLayout(layout: Element | null) {
+	if (!layout) return false
+	return (
+		getComputedStyle(layout).getPropertyValue('--om-layout').trim() === 'wide'
+	)
 }
 
 /**
