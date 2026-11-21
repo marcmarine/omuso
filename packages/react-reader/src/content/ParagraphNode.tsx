@@ -1,6 +1,6 @@
 import type * as omuso from 'omuso'
 import { applyMarks } from '../utils/dom'
-import { ParagraphElement } from './ParagraphElement'
+import { useContentComponents } from './ContentComponents'
 
 export function ParagraphNode({
 	paragraph,
@@ -9,9 +9,11 @@ export function ParagraphNode({
 	paragraph: omuso.Paragraph
 	query?: string
 }) {
+	const { paragraph: Paragraph } = useContentComponents()
+
 	return (
-		<ParagraphElement
-			value={applyMarks(paragraph.value, paragraph.marks, query)}
-		/>
+		<Paragraph paragraph={paragraph}>
+			{applyMarks(paragraph.value, paragraph.marks, query)}
+		</Paragraph>
 	)
 }

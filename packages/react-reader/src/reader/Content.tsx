@@ -1,8 +1,14 @@
 import type * as omuso from 'omuso'
+import { useMemo } from 'react'
 import { Link } from '../components/Link'
 import { CollapsedSectionContent } from '../content/CollapsedSectionContent'
+import {
+	type ContentComponents,
+	ContentComponentsContext,
+	defaultContentComponents,
+	useContentComponents,
+} from '../content/ContentComponents'
 import { ContentRenderer } from '../content/ContentRenderer'
-import { HeadingElement } from '../content/HeadingElement'
 import { useReader } from '../providers/BookContextProvider'
 import { useReaderI18n } from '../providers/I18nProvider'
 import { classes, sectionLevel } from '../utils'
@@ -45,14 +51,14 @@ export function ContentBody({
 	query?: string
 	maxPageDepth: number
 }) {
+	const { heading: Heading } = useContentComponents()
+
 	return (
 		<div className="om-content__body">
-			<HeadingElement
-				id={section.path}
-				value={highlightMatches(section.title, query)}
-				// Normalize heading depth so each page can use a single h1.
-				depth={1}
-			/>
+			{/* Normalize heading depth so each page can use a single h1. */}
+			<Heading section={section} id={section.path} depth={1}>
+				{highlightMatches(section.title, query)}
+			</Heading>
 
 			<CurrentSectionContent
 				section={section}
@@ -92,23 +98,36 @@ export function ContentHeader({
 	)
 }
 
-export default function Content() {
+export default function Content({
+	components,
+}: {
+	/**
+	 * Replaces how paragraphs, headings and subsection indexes are rendered.
+	 */
+	components?: ContentComponents
+}) {
 	const {
 		state: {
 			session: { currentSection, breadcrumbs, search },
 		},
 		meta: { maxPageDepth },
 	} = useReader()
+	const value = useMemo(
+		() => ({ ...defaultContentComponents, ...components }),
+		[components],
+	)
 	if (!currentSection) return null
 
 	return (
-		<article className="om-content">
-			<ContentHeader query={search.query} breadcrumbs={breadcrumbs} />
-			<ContentBody
-				section={currentSection}
-				query={search.query}
-				maxPageDepth={maxPageDepth}
-			/>
-		</article>
+		<ContentComponentsContext.Provider value={value}>
+			<article className="om-content">
+				<ContentHeader query={search.query} breadcrumbs={breadcrumbs} />
+				<ContentBody
+					section={currentSection}
+					query={search.query}
+					maxPageDepth={maxPageDepth}
+				/>
+			</article>
+		</ContentComponentsContext.Provider>
 	)
 }

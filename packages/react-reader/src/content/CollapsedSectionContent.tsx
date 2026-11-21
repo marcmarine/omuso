@@ -1,7 +1,7 @@
 import type * as omuso from 'omuso'
 import { splitContent } from '../utils'
+import { useContentComponents } from './ContentComponents'
 import { ParagraphNode } from './ParagraphNode'
-import { SectionIndex } from './SectionIndex'
 
 export function CollapsedSectionContent({
 	section,
@@ -11,6 +11,7 @@ export function CollapsedSectionContent({
 	query?: string
 }) {
 	const { paragraphs, sections } = splitContent(section.content)
+	const { sectionIndex: SectionIndex } = useContentComponents()
 
 	return (
 		<>

@@ -1,5 +1,11 @@
 export type { BookContext, SearchFilter } from 'omuso'
 export { Link as ReaderLink } from './components/Link'
+export type {
+	ContentComponents,
+	HeadingProps,
+	ParagraphProps,
+	SectionIndexProps,
+} from './content/ContentComponents'
 export { HeadingElement as ReaderHeading } from './content/HeadingElement'
 export { ParagraphElement as ReaderParagraph } from './content/ParagraphElement'
 export { useShortcut } from './hooks/useShortcut'
