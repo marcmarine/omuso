@@ -1,8 +1,8 @@
+import { Dropdown } from '../components/Dropdown'
 import { useReader } from '../providers/BookContextProvider'
 import { getLanguageNames } from '../utils'
-import { Dropdown } from './Dropdown'
 
-export default function TranslationSelector() {
+export default function LanguageSelect() {
 	const {
 		state: { language },
 		actions: { setLanguage },
