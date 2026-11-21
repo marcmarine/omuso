@@ -1,13 +1,11 @@
 import { Children, useCallback, useEffect, useRef } from 'react'
-import { Link } from '../components/Link'
 import { ResizablePanel } from '../components/ResizablePanel'
 import ThemeToggle from '../components/ThemeToggle'
 import TranslationSelector from '../components/TranslationSelector'
 import { useReader } from '../providers/BookContextProvider'
 import { useReaderI18n } from '../providers/I18nProvider'
 import { useLayout, useReaderPanels } from '../providers/LayoutProvider'
-import { useReaderTheme } from '../providers/ThemeProvider'
-import { COVER_PATH } from '../utils/routes'
+import Header from './Header'
 import Navigation from './Navigation'
 
 import '../styles/index.css'
@@ -18,8 +16,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
 		meta: { manifest },
 	} = useReader()
 	const { panel, layoutRef } = useLayout()
-	const { theme } = useReaderTheme()
-	const { title, author } = manifest.metadata
+	const { title } = manifest.metadata
 	const pageRef = useRef<HTMLDivElement>(null)
 	const currentPath = session.currentSection?.path
 
@@ -38,14 +35,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
 	return (
 		<section className="om-reader" aria-label={title}>
 			<div ref={layoutRef} className="om-layout">
-				{/* Safari 26 tints its bars from the sticky header but doesn't
-				    notice when its color changes, so it's remounted whenever the
-				    color may change: on a new theme or page. */}
-				<Header
-					key={`${theme}:${currentPath ?? ''}`}
-					title={title}
-					author={author}
-				/>
+				<Header />
 				<ResizablePanel
 					maxWidth={250}
 					className="om-sidebar"
@@ -71,17 +61,6 @@ export default function Layout({ children }: { children: React.ReactNode }) {
 				<Toolbar />
 			</div>
 		</section>
-	)
-}
-
-function Header({ title, author }: { title: string; author?: string }) {
-	return (
-		<header className="om-header">
-			<Link path={COVER_PATH} className="om-header__title om-interactive">
-				{title}
-			</Link>
-			{author && <p className="om-header__author">{author}</p>}
-		</header>
 	)
 }
 
