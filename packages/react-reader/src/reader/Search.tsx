@@ -3,6 +3,7 @@ import { Link } from '../components/Link'
 import { useShortcut } from '../hooks/useShortcut'
 import { useReader } from '../providers/BookContextProvider'
 import { useReaderI18n } from '../providers/I18nProvider'
+import { useReaderPanels } from '../providers/LayoutProvider'
 import { highlightMatches } from '../utils/dom'
 
 export function Search() {
@@ -129,7 +130,20 @@ function SearchInput() {
 		return () => clearTimeout(handler)
 	}, [value, setQuery])
 
-	useShortcut('mod+k', () => ref.current?.focus())
+	// ⌘K toggles the panel (see `SearchToggle`). The input can't take focus
+	// while the panel is hidden, so it's focused once the panel has opened,
+	// and left alone when ⌘K closes it.
+	const { right } = useReaderPanels()
+	const focusOnOpen = useRef(false)
+	useShortcut('mod+k', () => {
+		focusOnOpen.current = !right.isOpen
+	})
+	useEffect(() => {
+		if (!right.isOpen || !focusOnOpen.current) return
+		focusOnOpen.current = false
+		ref.current?.focus()
+	}, [right.isOpen])
+
 	useShortcut('escape', () => ref.current?.blur())
 
 	const handleReset = () => {
