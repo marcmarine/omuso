@@ -1,5 +1,25 @@
 # Changelog
 
+## [0.5.0](https://github.com/marcmarine/omuso/compare/react-reader-v0.4.2...react-reader-v0.5.0) (2026-11-21)
+
+
+### Features
+
+* Add components map to Content ([e3c762c](https://github.com/marcmarine/omuso/commit/e3c762cc65b1f055500c5ed41af09cd9a42bdcfa))
+* Add Root component and public hooks ([10bb5ff](https://github.com/marcmarine/omuso/commit/10bb5ff2d92879c6a4ebbb1caecf8ee752d50eea))
+* Add useShortcut hook ([cccdf13](https://github.com/marcmarine/omuso/commit/cccdf1343baee9c5efc10ee9151b673b272f218d))
+* Compose layout from named pieces ([f59c2e7](https://github.com/marcmarine/omuso/commit/f59c2e7ba60605aee11616d54834b163cbecdd57))
+* Make Root children optional ([8ad55a0](https://github.com/marcmarine/omuso/commit/8ad55a0aeb5a103ba20b1813fdfd6e3031a7402e))
+* Rename reader props to book and locale ([211abf4](https://github.com/marcmarine/omuso/commit/211abf41989a9978715d4049554c75790cbd6947))
+* Wrap package styles in cascade layers ([8a57eb8](https://github.com/marcmarine/omuso/commit/8a57eb81907e79d69231048e4929207c66c6e0e4))
+
+
+### Bug Fixes
+
+* Apply border-box to reset pseudo-elements ([3e19555](https://github.com/marcmarine/omuso/commit/3e1955516a32f953507cea998b8656f9049b3b06))
+* Close panels on page change when narrow ([e2bc610](https://github.com/marcmarine/omuso/commit/e2bc610f514624476033c5dde00335bb3ec73f49))
+* Focus search input when opened with ⌘K ([ca7538b](https://github.com/marcmarine/omuso/commit/ca7538b4a9b2b8d1455c83a5dc9652be253666be))
+
 ## [0.4.2](https://github.com/marcmarine/omuso/compare/react-reader-v0.4.1...react-reader-v0.4.2) (2026-10-31)
 
 
