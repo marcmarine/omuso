@@ -1,12 +1,8 @@
 import { useReader } from '../providers/BookContextProvider'
 import { useLayout } from '../providers/LayoutProvider'
-import Content from './Content'
-import Cover from './Cover'
 import Header from './Header'
 import Page from './Page'
-import Search from './Search'
 import Sidebar from './Sidebar'
-import TableOfContents from './TableOfContents'
 import Toolbar from './Toolbar'
 
 import '../styles/index.css'
@@ -30,16 +26,9 @@ function DefaultPieces() {
 	return (
 		<>
 			<Header />
-			<Sidebar side="left">
-				<TableOfContents />
-			</Sidebar>
-			<Page>
-				<Cover />
-				<Content />
-			</Page>
-			<Sidebar side="right">
-				<Search />
-			</Sidebar>
+			<Sidebar side="left" />
+			<Page />
+			<Sidebar side="right" />
 			<Toolbar />
 		</>
 	)

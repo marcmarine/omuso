@@ -4,9 +4,7 @@ import Header from './Header'
 import Layout from './Layout'
 import Page from './Page'
 import Root, { type ReaderRootProps } from './Root'
-import Search from './Search'
 import Sidebar from './Sidebar'
-import TableOfContents from './TableOfContents'
 import Toolbar from './Toolbar'
 
 export interface ReaderProps extends Omit<ReaderRootProps, 'children'> {
@@ -19,10 +17,8 @@ export interface ReaderProps extends Omit<ReaderRootProps, 'children'> {
 export default function Reader({ contentComponent, ...props }: ReaderProps) {
 	return (
 		<Root {...props}>
-			{contentComponent ? (
+			{contentComponent && (
 				<CustomContentLayout contentComponent={contentComponent} />
-			) : (
-				<Layout />
 			)}
 		</Root>
 	)
@@ -39,16 +35,12 @@ function CustomContentLayout({
 	return (
 		<Layout>
 			<Header />
-			<Sidebar side="left">
-				<TableOfContents />
-			</Sidebar>
+			<Sidebar side="left" />
 			<Page>
 				<Cover />
 				{currentSection && <ContentComponent context={context} />}
 			</Page>
-			<Sidebar side="right">
-				<Search />
-			</Sidebar>
+			<Sidebar side="right" />
 			<Toolbar />
 		</Layout>
 	)

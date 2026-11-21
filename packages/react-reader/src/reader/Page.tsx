@@ -1,7 +1,9 @@
 import { useEffect, useRef } from 'react'
 import { useReader } from '../providers/BookContextProvider'
+import Content from './Content'
+import Cover from './Cover'
 
-export default function Page({ children }: { children: React.ReactNode }) {
+export default function Page({ children }: { children?: React.ReactNode }) {
 	const path = useReader().state.session.currentSection?.path
 	const ref = useRef<HTMLDivElement>(null)
 
@@ -13,7 +15,12 @@ export default function Page({ children }: { children: React.ReactNode }) {
 
 	return (
 		<div ref={ref} className="om-page">
-			{children}
+			{children ?? (
+				<>
+					<Cover />
+					<Content />
+				</>
+			)}
 		</div>
 	)
 }

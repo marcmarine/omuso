@@ -5,6 +5,7 @@ import { I18nProvider } from '../providers/I18nProvider'
 import { LayoutProvider } from '../providers/LayoutProvider'
 import { RoutingProvider } from '../providers/RoutingProvider'
 import { ThemeProvider } from '../providers/ThemeProvider'
+import Layout from './Layout'
 
 export interface ReaderRootProps {
 	/**
@@ -40,7 +41,10 @@ export interface ReaderRootProps {
 	 * render.
 	 */
 	searchFilter?: SearchFilter
-	children: React.ReactNode
+	/**
+	 * The pieces to render. Without them, the complete reader.
+	 */
+	children?: React.ReactNode
 }
 
 const RootContext = createContext(false)
@@ -83,7 +87,7 @@ export default function Root({
 				>
 					<RoutingProvider linkComponent={linkComponent}>
 						<LayoutProvider>
-							<ThemeProvider>{children}</ThemeProvider>
+							<ThemeProvider>{children ?? <Layout />}</ThemeProvider>
 						</LayoutProvider>
 					</RoutingProvider>
 				</BookContextProvider>

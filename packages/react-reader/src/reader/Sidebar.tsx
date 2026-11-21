@@ -1,5 +1,7 @@
 import { ResizablePanel } from '../components/ResizablePanel'
 import { useReaderPanels } from '../providers/LayoutProvider'
+import Search from './Search'
+import TableOfContents from './TableOfContents'
 
 const WIDTH_LIMITS = {
 	left: { maxWidth: 250 },
@@ -11,7 +13,7 @@ export default function Sidebar({
 	children,
 }: {
 	side: 'left' | 'right'
-	children: React.ReactNode
+	children?: React.ReactNode
 }) {
 	const panel = useReaderPanels()[side]
 
@@ -24,7 +26,7 @@ export default function Sidebar({
 			onResizeEnd={panel.setWidth}
 			position={side}
 		>
-			{children}
+			{children ?? (side === 'left' ? <TableOfContents /> : <Search />)}
 		</ResizablePanel>
 	)
 }
