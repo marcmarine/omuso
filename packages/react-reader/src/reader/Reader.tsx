@@ -5,6 +5,7 @@ import Layout from './Layout'
 import Page from './Page'
 import Root, { type ReaderRootProps } from './Root'
 import Search from './Search'
+import Sidebar from './Sidebar'
 import TableOfContents from './TableOfContents'
 
 export interface ReaderProps extends Omit<ReaderRootProps, 'children'> {
@@ -30,7 +31,9 @@ function DefaultLayout({
 
 	return (
 		<Layout>
-			<TableOfContents />
+			<Sidebar side="left">
+				<TableOfContents />
+			</Sidebar>
 			<Page>
 				<Cover />
 				{ContentComponent ? (
@@ -39,7 +42,9 @@ function DefaultLayout({
 					<SectionContent />
 				)}
 			</Page>
-			<Search />
+			<Sidebar side="right">
+				<Search />
+			</Sidebar>
 		</Layout>
 	)
 }
