@@ -2,6 +2,7 @@ export type { BookContext, SearchFilter } from 'omuso'
 export { Link as ReaderLink } from './components/Link'
 export { HeadingElement as ReaderHeading } from './content/HeadingElement'
 export { ParagraphElement as ReaderParagraph } from './content/ParagraphElement'
+export { useShortcut } from './hooks/useShortcut'
 export type { ReaderValue as ReaderContext } from './providers/BookContextProvider'
 export {
 	type ReaderValue,
