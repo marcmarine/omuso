@@ -16,8 +16,9 @@ export type Panels = Record<'left' | 'right', PanelState>
 type LayoutContextType = {
 	panel: Panels
 	/**
-	 * The `.om-layout` element, set by `Layout`. Pass it to `isWideLayout()` to
-	 * know whether the panels sit beside the page or over it.
+	 * The `.om-layout` element, registered by `Layout`. Pass it to
+	 * `isWideLayout()` to know whether the panels sit beside the page or over
+	 * it. `null` without a `Layout`.
 	 */
 	layoutRef: React.RefObject<HTMLDivElement | null>
 	/**
@@ -57,7 +58,12 @@ export function LayoutProvider({ children }: LayoutProviderProps) {
 	const leftState = usePanelState('leftPanel', false, 250)
 	const rightState = usePanelState('rightPanel', false, 300)
 
-	const isNarrow = useCallback(() => !isWideLayout(layoutRef.current), [])
+	// The panels cover the page when the layout is narrow. Without a `Layout`
+	// there's nothing for them to cover, so the policy doesn't apply.
+	const isNarrow = useCallback(() => {
+		const layout = layoutRef.current
+		return layout !== null && !isWideLayout(layout)
+	}, [])
 	const left = useExclusivePanel(leftState, rightState, isNarrow)
 	const right = useExclusivePanel(rightState, leftState, isNarrow)
 	const panel = useMemo(() => ({ left, right }), [left, right])

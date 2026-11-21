@@ -1,12 +1,13 @@
 import { type ReaderValue, useReader } from '../providers/BookContextProvider'
-import SectionContent from './Content'
 import Cover from './Cover'
+import Header from './Header'
 import Layout from './Layout'
 import Page from './Page'
 import Root, { type ReaderRootProps } from './Root'
 import Search from './Search'
 import Sidebar from './Sidebar'
 import TableOfContents from './TableOfContents'
+import Toolbar from './Toolbar'
 
 export interface ReaderProps extends Omit<ReaderRootProps, 'children'> {
 	contentComponent?: React.ComponentType<{ context: ReaderValue }>
@@ -18,33 +19,37 @@ export interface ReaderProps extends Omit<ReaderRootProps, 'children'> {
 export default function Reader({ contentComponent, ...props }: ReaderProps) {
 	return (
 		<Root {...props}>
-			<DefaultLayout contentComponent={contentComponent} />
+			{contentComponent ? (
+				<CustomContentLayout contentComponent={contentComponent} />
+			) : (
+				<Layout />
+			)}
 		</Root>
 	)
 }
 
-function DefaultLayout({
+function CustomContentLayout({
 	contentComponent: ContentComponent,
-}: Pick<ReaderProps, 'contentComponent'>) {
+}: {
+	contentComponent: NonNullable<ReaderProps['contentComponent']>
+}) {
 	const context = useReader()
 	const { currentSection } = context.state.session
 
 	return (
 		<Layout>
+			<Header />
 			<Sidebar side="left">
 				<TableOfContents />
 			</Sidebar>
 			<Page>
 				<Cover />
-				{ContentComponent ? (
-					currentSection && <ContentComponent context={context} />
-				) : (
-					<SectionContent />
-				)}
+				{currentSection && <ContentComponent context={context} />}
 			</Page>
 			<Sidebar side="right">
 				<Search />
 			</Sidebar>
+			<Toolbar />
 		</Layout>
 	)
 }
