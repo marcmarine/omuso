@@ -3,9 +3,14 @@ import { useReaderI18n } from '../providers/I18nProvider'
 import { formatYear } from '../utils'
 
 export default function Cover() {
-	const { metadata } = useReader().meta.manifest
-
+	const {
+		state: { session },
+		meta: { manifest },
+	} = useReader()
+	const { metadata } = manifest
 	const { t } = useReaderI18n()
+
+	if (session.currentSection) return null
 
 	const year = formatYear(metadata.date, metadata.language)
 

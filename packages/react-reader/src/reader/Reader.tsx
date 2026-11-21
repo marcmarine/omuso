@@ -2,6 +2,7 @@ import { type ReaderValue, useReader } from '../providers/BookContextProvider'
 import SectionContent from './Content'
 import Cover from './Cover'
 import Layout from './Layout'
+import Page from './Page'
 import Root, { type ReaderRootProps } from './Root'
 import Search from './Search'
 import TableOfContents from './TableOfContents'
@@ -27,18 +28,17 @@ function DefaultLayout({
 	const context = useReader()
 	const { currentSection } = context.state.session
 
-	const mainContent = !currentSection ? (
-		<Cover />
-	) : ContentComponent ? (
-		<ContentComponent context={context} />
-	) : (
-		<SectionContent />
-	)
-
 	return (
 		<Layout>
 			<TableOfContents />
-			{mainContent}
+			<Page>
+				<Cover />
+				{ContentComponent ? (
+					currentSection && <ContentComponent context={context} />
+				) : (
+					<SectionContent />
+				)}
+			</Page>
 			<Search />
 		</Layout>
 	)
