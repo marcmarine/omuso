@@ -1,5 +1,6 @@
-import { memo, useCallback, useEffect, useRef, useState } from 'react'
+import { memo, useEffect, useRef, useState } from 'react'
 import { Link } from '../components/Link'
+import { useShortcut } from '../hooks/useShortcut'
 import { useReader } from '../providers/BookContextProvider'
 import { useReaderI18n } from '../providers/I18nProvider'
 import { highlightMatches } from '../utils/dom'
@@ -128,25 +129,8 @@ function SearchInput() {
 		return () => clearTimeout(handler)
 	}, [value, setQuery])
 
-	const handleKeyDown = useCallback((event: KeyboardEvent) => {
-		if ((event.metaKey || event.ctrlKey) && event.key === 'k') {
-			if (ref.current) {
-				ref.current.focus()
-			}
-		}
-		if (event.key === 'Escape') {
-			if (ref.current) {
-				ref.current.blur()
-			}
-		}
-	}, [])
-
-	useEffect(() => {
-		document.addEventListener('keydown', handleKeyDown)
-		return () => {
-			document.removeEventListener('keydown', handleKeyDown)
-		}
-	}, [handleKeyDown])
+	useShortcut('mod+k', () => ref.current?.focus())
+	useShortcut('escape', () => ref.current?.blur())
 
 	const handleReset = () => {
 		clearQuery()
